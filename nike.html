@@ -1,0 +1,1155 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nike — Designing for the Nike+ ecosystem — Benjamin Lynch</title>
+
+  <style>
+
+    /* ─── Cabinet Grotesk (display) + Satoshi (body) ────────── */
+    @font-face {
+      font-family: 'Cabinet Grotesk';
+      src: url('Fonts/CabinetGrotesk_Complete/Fonts/WEB/fonts/CabinetGrotesk-Variable.woff2') format('woff2-variations'),
+           url('Fonts/CabinetGrotesk_Complete/Fonts/WEB/fonts/CabinetGrotesk-Variable.woff') format('woff-variations');
+      font-weight: 100 900;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Satoshi';
+      src: url('Fonts/Satoshi_Complete/Fonts/WEB/fonts/Satoshi-Variable.woff2') format('woff2-variations'),
+           url('Fonts/Satoshi_Complete/Fonts/WEB/fonts/Satoshi-Variable.woff') format('woff-variations');
+      font-weight: 300 900;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Satoshi';
+      src: url('Fonts/Satoshi_Complete/Fonts/WEB/fonts/Satoshi-VariableItalic.woff2') format('woff2-variations'),
+           url('Fonts/Satoshi_Complete/Fonts/WEB/fonts/Satoshi-VariableItalic.woff') format('woff-variations');
+      font-weight: 300 900;
+      font-style: italic;
+      font-display: swap;
+    }
+
+    /* ─── Reset ─────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    em, i { font-style: normal; } /* override browser default italics */
+
+    /* ─── Dark theme (default) ───────────────────────────────── */
+    :root {
+      --bg:           #181716;
+      --bg-raised:    #222120;
+      --bg-surface:   #2C2A28;
+      --ink:          #FFFFFF;
+      --ink-mid:      #B5B2AC;
+      --ink-light:    #A8A59F;
+      --rule:         rgba(255,255,255,0.10);
+      --accent:       #C8A96E;
+      --phone-bg:     #242220;
+      --phone-border: rgba(255,255,255,0.07);
+      --more-bg:      #111110;
+      --icon-bg:      #0E0D0B;
+      --icon-border:  rgba(255,255,255,0.12);
+      --serif:        'Satoshi', -apple-system, BlinkMacSystemFont, sans-serif; /* display/headlines (was Cabinet Grotesk) */
+      --sans:         'Satoshi', -apple-system, BlinkMacSystemFont, sans-serif;
+      --pad:          64px;
+    }
+
+    /* ─── Light theme override ───────────────────────────────── */
+    [data-theme="light"] {
+      --bg:           #F8F6F2;
+      --bg-raised:    #EFEDE9;
+      --bg-surface:   #E4E2DE;
+      --ink:          #0E0D0B;
+      --ink-mid:      #4A4844;
+      --ink-light:    #6E6C68;
+      --rule:         rgba(14,13,11,0.14);
+      --phone-bg:     #E0DEDB;
+      --phone-border: rgba(14,13,11,0.08);
+      --more-bg:      #EFEDE9;
+      --icon-bg:      #0E0D0B;
+      --icon-border:  rgba(14,13,11,0.12);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: var(--sans);
+      font-size: 15px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      transition: background 0.35s ease, color 0.35s ease;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    /* ─── Nav ───────────────────────────────────────────────── */
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 var(--pad);
+      height: 60px;
+      border-bottom: 1px solid var(--rule);
+      transition: background 0.35s ease, border-color 0.35s ease;
+    }
+
+    .nav-logo {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      color: var(--ink);
+      text-decoration: none;
+    }
+
+    .nav-logo-icon {
+      width: 22px;
+      height: 22px;
+      display: block;
+      flex-shrink: 0;
+      transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .nav-logo > span {
+      transition: font-weight 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .nav-logo:hover .nav-logo-icon {
+      transform: scale(1.08);
+    }
+
+    .nav-logo:hover > span {
+      font-weight: 700;
+    }
+
+    .nav-logo-ring {
+      transform-box: view-box;
+      transform-origin: 40px 40px;
+      animation-timing-function: linear;
+      animation-iteration-count: infinite;
+      animation-play-state: paused;
+    }
+
+    .nav-logo-ring--a {
+      animation-name: nav-logo-spin-cw;
+      animation-duration: 5s;
+    }
+
+    .nav-logo-ring--b {
+      animation-name: nav-logo-spin-ccw;
+      animation-duration: 14s;
+    }
+
+    .nav-logo:hover .nav-logo-ring {
+      animation-play-state: running;
+    }
+
+    @keyframes nav-logo-spin-cw {
+      from { transform: rotate(0deg); }
+      to   { transform: rotate(360deg); }
+    }
+
+    @keyframes nav-logo-spin-ccw {
+      from { transform: rotate(0deg); }
+      to   { transform: rotate(-360deg); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .nav-logo-ring { animation: none; }
+      .nav-logo:hover .nav-logo-icon { transform: none; }
+      .nav-logo:hover > span { font-weight: 600; }
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 36px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 36px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--ink-mid);
+      transition: color 0.2s;
+      position: relative;
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -2px; left: 0;
+      width: 100%; height: 1px;
+      background: var(--ink);
+      transform: scaleX(0);
+      transform-origin: right;
+      transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .nav-links a:hover { color: var(--ink); }
+    .nav-links a:hover::after { transform: scaleX(1); transform-origin: left; }
+
+
+    /* ─── Back button ────────────────────────────────────────── */
+    .project-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ink-light);
+      margin-bottom: 32px;
+      transition: color 0.2s;
+    }
+
+    .project-back:hover { color: var(--ink); }
+
+    .project-back svg {
+      width: 12px;
+      height: 12px;
+      transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .project-back:hover svg { transform: translateX(-3px); }
+
+    /* ─── Theme toggle ───────────────────────────────────────── */
+    .theme-toggle {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      background: none;
+      border: 1px solid var(--rule);
+      border-radius: 100px;
+      padding: 6px 12px 6px 8px;
+      cursor: pointer;
+      font-family: var(--sans);
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--ink-mid);
+      transition: color 0.2s, border-color 0.2s, background 0.2s;
+    }
+
+    .theme-toggle:hover {
+      color: var(--ink);
+      border-color: var(--ink-mid);
+    }
+
+    .theme-toggle svg {
+      width: 13px;
+      height: 13px;
+      flex-shrink: 0;
+    }
+
+    [data-theme="dark"]  .toggle-sun  { display: none; }
+    [data-theme="light"] .toggle-moon { display: none; }
+
+    /* ─── Project Header ─────────────────────────────────────── */
+    .project-header {
+      padding: 64px var(--pad) 56px;
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .project-icon {
+      width: 52px;
+      height: 52px;
+      background: var(--icon-bg);
+      border: 1px solid var(--icon-border);
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 0;
+      flex-shrink: 0;
+    }
+
+    .project-icon svg {
+      width: 60%;
+      height: auto;
+      color: #FFFFFF;
+    }
+
+    .project-brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 24px;
+    }
+
+    .project-title {
+      font-family: var(--sans);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--ink-light);
+    }
+
+    .project-desc {
+      font-family: var(--serif);
+      font-size: clamp(28px, 3.2vw, 48px);
+      font-weight: 500;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      color: var(--ink);
+      max-width: 980px;
+      margin-bottom: 0;
+    }
+
+    .project-header-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0 48px;
+      margin-top: 40px;
+      padding-top: 28px;
+      border-top: 1px solid var(--rule);
+    }
+
+    .header-meta-item {
+      min-width: 100px;
+    }
+
+    .header-meta-label {
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--ink-mid);
+      margin-bottom: 6px;
+    }
+
+    .header-meta-val {
+      font-size: 13px;
+      font-weight: 400;
+      line-height: 1.5;
+      color: var(--ink-mid);
+    }
+
+    .ptag {
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ink-mid);
+      border: 1px solid var(--rule);
+      padding: 4px 10px;
+      border-radius: 100px;
+    }
+
+    .header-meta-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      padding-top: 2px;
+    }
+
+    /* ─── Hero Image ─────────────────────────────────────────── */
+    .hero-image {
+      width: 100%;
+      aspect-ratio: 16 / 7;
+      overflow: hidden;
+      position: relative;
+      background: transparent;
+    }
+
+    .hero-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* ─── Project brief ──────────────────────────────────────── */
+    .brief-block {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 64px;
+      padding: 80px var(--pad);
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .brief-col-label {
+      font-family: var(--sans);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--ink-mid);
+      margin-bottom: 22px;
+    }
+
+    .brief-col-text {
+      font-family: var(--sans);
+      font-size: clamp(18px, 1.5vw, 22px);
+      font-weight: 400;
+      line-height: 1.35;
+      color: var(--ink);
+      letter-spacing: -0.01em;
+    }
+
+    /* ─── Content Sections ───────────────────────────────────── */
+    .cs-section {
+      padding: 80px var(--pad);
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .cs-section-header {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      align-items: start;
+      margin-bottom: 56px;
+    }
+
+    .cs-section-label {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .cs-label-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--accent);
+      flex-shrink: 0;
+    }
+
+    .cs-label-text {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+
+    .cs-section-title {
+      font-family: var(--serif);
+      font-weight: 400;
+      font-size: clamp(32px, 3.5vw, 52px);
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      color: var(--ink);
+    }
+
+    .cs-section-title em { font-style: normal; }
+
+    .cs-section-body {
+      font-size: 15px;
+      font-weight: 400;
+      line-height: 1.8;
+      color: var(--ink-mid);
+      padding-top: 6px;
+    }
+
+    /* ─── Mockup row ─────────────────────────────────────────── */
+    .mockup-row {
+      display: grid;
+      gap: 16px;
+    }
+
+    .mockup-row-4 { grid-template-columns: repeat(4, 1fr); }
+    .mockup-row-3 { grid-template-columns: repeat(3, 1fr); }
+    .mockup-row-2 { grid-template-columns: repeat(2, 1fr); }
+
+    .mockup-frame {
+      border-radius: 20px;
+      overflow: hidden;
+      background: var(--bg-surface);
+      position: relative;
+    }
+
+    .mockup-frame img { width: 100%; display: block; }
+
+    .mockup-frame.aspect-square { aspect-ratio: 1 / 1; }
+    .mockup-frame.aspect-square img { height: 100%; object-fit: cover; }
+
+    /* ─── Bento grid ─────────────────────────────────────────── */
+    .bento-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: repeat(2, 1fr);
+      gap: 16px;
+      aspect-ratio: 3 / 2;
+    }
+
+    .bento-tile {
+      position: relative;
+      overflow: hidden;
+      border-radius: 20px;
+      background: var(--bg-surface);
+    }
+
+    .bento-tile img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+      transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .bento-tile:hover img { transform: scale(1.03); }
+
+    .bento-tile-1 { grid-column: 1 / 3; grid-row: 1; }
+    .bento-tile-2 { grid-column: 3;     grid-row: 1; }
+    .bento-tile-3 { grid-column: 1;     grid-row: 2; }
+    .bento-tile-4 { grid-column: 2 / 4; grid-row: 2; }
+
+    /* ─── Section feature image ──────────────────────────────── */
+    .section-feature {
+      position: relative;
+      overflow: hidden;
+      border-radius: 20px;
+      background: var(--bg-surface);
+    }
+
+    .section-feature img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    /* ─── Carousel dots ──────────────────────────────────────── */
+    .carousel-dots {
+      display: none;
+      justify-content: center;
+      gap: 6px;
+      margin-top: 20px;
+    }
+
+    .c-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      border: none;
+      background: var(--rule);
+      padding: 0;
+      cursor: pointer;
+      transition: background 0.25s ease, transform 0.25s ease;
+    }
+
+    .c-dot.active {
+      background: var(--ink);
+      transform: scale(1.4);
+    }
+
+    /* ─── CTA Panel ──────────────────────────────────────────── */
+    .cta-panel {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .cta-left {
+      padding: 80px var(--pad);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      border-right: 1px solid var(--rule);
+    }
+
+    .cta-eyebrow {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--ink-light);
+      margin-bottom: 20px;
+    }
+
+    .cta-heading {
+      font-family: var(--serif);
+      font-weight: 400;
+      font-size: clamp(24px, 2.8vw, 40px);
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      color: var(--ink);
+      margin-bottom: 32px;
+    }
+
+    .cta-heading em { font-style: normal; }
+
+    .cta-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--ink);
+      color: var(--bg);
+      font-family: var(--sans);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 14px 24px;
+      width: fit-content;
+      will-change: transform;
+      transition: gap 0.2s, transform 0.15s ease;
+    }
+
+    .cta-btn:hover { gap: 16px; }
+    .cta-btn svg { width: 12px; height: 12px; }
+
+    .cta-right {
+      position: relative;
+      overflow: hidden;
+      min-height: 320px;
+      background: var(--bg-raised);
+    }
+
+    /* ─── Metadata Footer ────────────────────────────────────── */
+    .meta-footer {
+      padding: 64px var(--pad);
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .meta-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 40px;
+    }
+
+    .meta-col-label {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--ink-light);
+      margin-bottom: 14px;
+    }
+
+    .meta-col-value {
+      font-size: 13px;
+      font-weight: 400;
+      line-height: 1.8;
+      color: var(--ink-mid);
+    }
+
+    .meta-col-value strong {
+      display: block;
+      font-weight: 500;
+      color: var(--ink);
+      margin-bottom: 1px;
+    }
+
+    /* ─── More Case Studies ──────────────────────────────────── */
+    .more-section {
+      padding: 64px var(--pad);
+      background: var(--more-bg);
+      transition: background 0.35s ease;
+    }
+
+    .more-label {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--ink-light);
+      margin-bottom: 32px;
+    }
+
+    .more-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+    }
+
+    .more-card {
+      background: var(--bg-raised);
+      cursor: pointer;
+      transition: background 0.35s ease;
+    }
+
+    .more-card-img {
+      aspect-ratio: 5 / 4;
+      overflow: hidden;
+      position: relative;
+      background: var(--bg-surface);
+    }
+
+    .more-card-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .more-card:hover .more-card-img img { transform: scale(1.04); }
+
+    .more-card-body {
+      padding: 18px 22px 22px;
+      border-top: 1px solid var(--rule);
+    }
+
+    .more-card-client {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ink-light);
+      margin-bottom: 6px;
+    }
+
+    .more-card-title {
+      font-family: var(--sans);
+      font-weight: 400;
+      font-size: 17px;
+      line-height: 1.35;
+      letter-spacing: -0.01em;
+      color: var(--ink);
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       RESPONSIVE
+    ══════════════════════════════════════════════════════════ */
+
+    @media (max-width: 1080px) {
+      :root { --pad: 40px; }
+      .cs-section-header { gap: 32px; }
+      .meta-grid { grid-template-columns: repeat(2, 1fr); }
+      .more-grid { grid-template-columns: repeat(2, 1fr); }
+      .mockup-row {
+        display: flex;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        gap: 12px;
+        margin-left: calc(-1 * var(--pad));
+        margin-right: calc(-1 * var(--pad));
+        padding-left: var(--pad);
+        padding-right: var(--pad);
+        padding-bottom: 4px;
+      }
+      .mockup-row::-webkit-scrollbar { display: none; }
+      .mockup-row > * { flex: 0 0 56%; max-width: 420px; scroll-snap-align: start; }
+      .carousel-dots { display: flex; }
+
+      .bento-grid { gap: 12px; aspect-ratio: 3 / 2.1; }
+      .bento-tile { border-radius: 16px; }
+
+      .brief-block { gap: 40px; padding: 64px var(--pad); }
+    }
+
+    @media (max-width: 767px) {
+      :root { --pad: 20px; }
+      nav { padding: 0 var(--pad); height: 52px; }
+      .nav-links { gap: 20px; }
+      .nav-links a { font-size: 10px; letter-spacing: 0.08em; }
+      .nav-right { gap: 16px; }
+      .project-header { padding: 40px var(--pad) 36px; }
+      .hero-image { aspect-ratio: 4 / 3; }
+      .cs-section { padding: 56px var(--pad); }
+      .cs-section-header { grid-template-columns: 1fr; gap: 14px; margin-bottom: 36px; }
+      .mockup-row > * { flex: 0 0 78%; max-width: 980px; }
+      .cta-panel { grid-template-columns: 1fr; }
+      .cta-left { padding: 56px var(--pad); border-right: none; border-bottom: 1px solid var(--rule); }
+      .cta-right { min-height: 220px; }
+      .meta-footer { padding: 48px var(--pad); }
+      .meta-grid { grid-template-columns: repeat(2, 1fr); gap: 28px; }
+      .more-section { padding: 48px var(--pad); }
+      .more-grid { grid-template-columns: 1fr; }
+
+      .bento-grid {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto;
+        aspect-ratio: auto;
+        gap: 10px;
+      }
+      .bento-tile { border-radius: 14px; aspect-ratio: 16 / 9; }
+      .bento-tile-1, .bento-tile-2, .bento-tile-3, .bento-tile-4 {
+        grid-column: 1; grid-row: auto;
+      }
+
+      .brief-block {
+        grid-template-columns: 1fr;
+        gap: 36px;
+        padding: 48px var(--pad);
+      }
+      .brief-col-label { margin-bottom: 14px; }
+    }
+
+    @media (max-width: 480px) {
+      .meta-grid { grid-template-columns: 1fr; }
+      .mockup-row > * { flex: 0 0 88%; }
+    }
+
+  </style>
+</head>
+<body>
+
+  <!-- Nav -->
+  <nav>
+    <a href="index.html" class="nav-logo">
+      <svg class="nav-logo-icon" viewBox="0 0 81 80" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+        <circle cx="40" cy="40" r="37" stroke="currentColor" stroke-width="6"/>
+        <path class="nav-logo-ring nav-logo-ring--a" d="M25.7864 25.5814C33.2846 18.0833 41.7683 13.1964 49.304 11.2549C56.9155 9.29396 62.9687 10.4378 66.5238 13.9929C70.0787 17.548 71.222 23.6008 69.2611 31.212C67.3196 38.7477 62.4327 47.2314 54.9346 54.7296C47.4364 62.2277 38.9527 67.1145 31.4171 69.0561C23.8058 71.0169 17.7531 69.8737 14.1979 66.3188C10.6428 62.7637 9.49898 56.7104 11.4599 49.0989C13.4015 41.5633 18.2883 33.0796 25.7864 25.5814Z" stroke="currentColor" stroke-width="6"/>
+        <path class="nav-logo-ring nav-logo-ring--b" d="M34.4329 45.538C26.8208 37.9258 20.8808 30.2395 17.4036 24.03C15.6545 20.9064 14.6155 18.3096 14.2293 16.3768C13.8167 14.3118 14.2815 13.8027 14.2852 13.799C14.3002 13.7853 14.8204 13.3359 16.8623 13.7438C18.7951 14.13 21.3925 15.1684 24.5161 16.9175C30.7257 20.3946 38.4114 26.3354 46.0235 33.9474C53.6358 41.5597 59.577 49.2459 63.0542 55.4555C64.8033 58.5791 65.8416 61.1766 66.2278 63.1094C66.6358 65.1512 66.1863 65.6715 66.1726 65.6864C66.1689 65.6901 65.6598 66.1549 63.5948 65.7424C61.6621 65.3562 59.0652 64.3171 55.9417 62.568C49.732 59.0908 42.0452 53.1503 34.4329 45.538Z" stroke="currentColor" stroke-width="6"/>
+      </svg>
+      <span>Benjamin Lynch</span>
+    </a>
+    <div class="nav-right">
+      <ul class="nav-links">
+        <li><a href="index.html">Work</a></li>
+        <li><a href="https://linkedin.com" target="_blank">LinkedIn</a></li>
+        <li><a href="mailto:benflynch@gmail.com">Contact</a></li>
+      </ul>
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+        <svg class="toggle-moon" viewBox="0 0 16 16" fill="currentColor">
+          <path d="M6 0a6 6 0 1 0 6 6A4.54 4.54 0 0 1 6 0z"/>
+        </svg>
+        <svg class="toggle-sun" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+          <circle cx="8" cy="8" r="2.5"/>
+          <path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.05 3.05l1.42 1.42M11.53 11.53l1.42 1.42M3.05 12.95l1.42-1.42M11.53 4.47l1.42-1.42"/>
+        </svg>
+        <span class="toggle-label-dark">Light</span>
+        <span class="toggle-label-light" style="display:none">Dark</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Project Header -->
+  <div class="project-header">
+
+    <a href="index.html" class="project-back">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M19 12H5M12 19l-7-7 7-7"/>
+      </svg>
+      All work
+    </a>
+
+    <div class="project-brand">
+      <div class="project-icon">
+        <svg viewBox="0 0 109 109" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M78.3854 46.3177L43.1694 60.9961C39.3742 62.5815 33.4312 64.3993 30.9515 60.4599C29.5636 58.2765 30.4389 54.8812 32.4792 51.7809C33.7795 49.813 35.4443 47.9822 37.1145 46.1738C36.1878 47.6588 33.5721 52.6195 36.9974 55.1052C38.3337 56.0526 40.6787 56.146 43.5893 55.3984L78.3854 46.3177Z" fill="currentColor"/>
+        </svg>
+      </div>
+    </div>
+
+    <p class="project-desc">Designing for the Nike+ ecosystem — a personalised feed, a connected story across Nike's apps, and exclusive product drops reserved for members.</p>
+
+    <div class="project-header-meta">
+      <div class="header-meta-item">
+        <div class="header-meta-label">Client</div>
+        <div class="header-meta-val">Nike (Portland)</div>
+      </div>
+      <div class="header-meta-item">
+        <div class="header-meta-label">Sector</div>
+        <div class="header-meta-val">Sport · Consumer</div>
+      </div>
+      <div class="header-meta-item">
+        <div class="header-meta-label">Tags</div>
+        <div class="header-meta-val header-meta-tags">
+          <span class="ptag">Mobile App</span> <span class="ptag">Personalisation</span> <span class="ptag">Ecosystem</span> <span class="ptag">Membership</span>
+        </div>
+      </div>
+      <div class="header-meta-item">
+        <div class="header-meta-label">Role</div>
+        <div class="header-meta-val">Product Designer, AKQA London</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Hero Image -->
+  <div class="hero-image">
+    <picture>
+      <source media="(max-width: 767px)" srcset="Imagery/Hero/Mobile/Nike.jpg" />
+      <img src="Imagery/Hero/Mobile/Nike.jpg" alt="Nike+ App hero" />
+    </picture>
+  </div>
+
+  <!-- Project Brief -->
+  <div class="brief-block">
+    <div>
+      <div class="brief-col-label">Brand challenge</div>
+      <p class="brief-col-text">Give Nike+ members a single home for product drops, athlete content and exclusive access — without fragmenting the wider app ecosystem.</p>
+    </div>
+    <div>
+      <div class="brief-col-label">Approach</div>
+      <p class="brief-col-text">A personalised feed pattern, an ecosystem map across Nike.com, Training, Running and SNKRS, and an inbox-led "Reserved for You" flow.</p>
+    </div>
+    <div>
+      <div class="brief-col-label">Outcome</div>
+      <p class="brief-col-text">A dynamic feed and inbox experience that shipped to iOS and Android, picked up coverage from Forbes, Fortune and Complex.</p>
+    </div>
+  </div>
+
+  <!-- Section 01 -->
+  <section class="cs-section">
+    <div class="cs-section-header">
+      <div>
+        <div class="cs-section-label">
+          <div class="cs-label-dot"></div>
+          <span class="cs-label-text">01</span>
+        </div>
+        <h2 class="cs-section-title">A personal<br><em>news feed</em></h2>
+      </div>
+      <div class="cs-section-body">
+        <p>The Nike+ App opens onto a personalised feed: cards surface new sneaker drops, social activity from Nike+ friends, and campaigns tailored to each member. I supported the launch by designing UI treatments for the feed card, including content patterns for product display.</p>
+        <p style="margin-top:1em;">The challenge was balancing density with energy — keeping the visual language unmistakably Nike, while letting the content do the talking and routing members efficiently into product, services and events.</p>
+      </div>
+    </div>
+    <div class="section-feature">
+      <img src="Imagery/Nike/Bento/feed-features-1.png" alt="Nike+ feed cards and content patterns" loading="lazy">
+    </div>
+  </section>
+
+  <!-- Section 02 -->
+  <section class="cs-section">
+    <div class="cs-section-header">
+      <div>
+        <div class="cs-section-label">
+          <div class="cs-label-dot"></div>
+          <span class="cs-label-text">02</span>
+        </div>
+        <h2 class="cs-section-title">Connecting the<br><em>product ecosystem</em></h2>
+      </div>
+      <div class="cs-section-body">
+        <p>Nike's digital footprint spans the .com store, Training, Running and SNKRS. I worked with the core Nike team to visualise how those products connect, mapping dependencies and desired states across Inbox, Feed and Store features.</p>
+        <p style="margin-top:1em;">The work made the trade-offs visible: where to consolidate, where to specialise, and how a member's journey could feel continuous across surfaces that had grown up independently.</p>
+      </div>
+    </div>
+    <div class="bento-grid">
+      <div class="bento-tile bento-tile-1">
+        <img src="Imagery/Nike/tile-10.png" alt="Nike ecosystem — Inbox flow" loading="lazy">
+      </div>
+      <div class="bento-tile bento-tile-2">
+        <img src="Imagery/Nike/tile-11.png" alt="Nike ecosystem — Feed states" loading="lazy">
+      </div>
+      <div class="bento-tile bento-tile-3">
+        <img src="Imagery/Nike/tile-12.png" alt="Nike ecosystem — Store handoff" loading="lazy">
+      </div>
+      <div class="bento-tile bento-tile-4">
+        <img src="Imagery/Nike/tile-13.png" alt="Nike ecosystem — Cross-app dependencies" loading="lazy">
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 03 -->
+  <section class="cs-section">
+    <div class="cs-section-header">
+      <div>
+        <div class="cs-section-label">
+          <div class="cs-label-dot"></div>
+          <span class="cs-label-text">03</span>
+        </div>
+        <h2 class="cs-section-title">Reserved<br><em>for you</em></h2>
+      </div>
+      <div class="cs-section-body">
+        <p>Exclusive products and drops are surfaced to members as "Reserved for You" — a dedicated flow that runs from a notification or inbox card straight through to checkout.</p>
+        <p style="margin-top:1em;">I led design exploration across the flow, from notification framing to wireframes and final UI treatments. The pattern needed to feel premium but unfussy: clear what was being offered, clear how long the member had, and a frictionless route to purchase.</p>
+      </div>
+    </div>
+    <div class="section-feature" style="margin-bottom: 24px;">
+      <img src="Imagery/Nike/Bento/app-features-2.png" alt="Reserved for You — feature highlights" loading="lazy">
+    </div>
+    <div class="mockup-row mockup-row-3" id="carousel-03">
+      <div class="mockup-frame aspect-square">
+        <img src="Imagery/Nike/tile-06.png" alt="Reserved for You — UI treatment 1" loading="lazy">
+      </div>
+      <div class="mockup-frame aspect-square">
+        <img src="Imagery/Nike/tile-07.png" alt="Reserved for You — UI treatment 2" loading="lazy">
+      </div>
+      <div class="mockup-frame aspect-square">
+        <img src="Imagery/Nike/tile-08.png" alt="Reserved for You — UI treatment 3" loading="lazy">
+      </div>
+      <div class="mockup-frame aspect-square">
+        <img src="Imagery/Nike/tile-14.png" alt="Reserved for You — UI treatment 4" loading="lazy">
+      </div>
+      <div class="mockup-frame aspect-square">
+        <img src="Imagery/Nike/tile-15.png" alt="Reserved for You — UI treatment 5" loading="lazy">
+      </div>
+      <div class="mockup-frame aspect-square">
+        <img src="Imagery/Nike/tile-16.png" alt="Reserved for You — UI treatment 6" loading="lazy">
+      </div>
+    </div>
+    <div class="carousel-dots" id="dots-03"></div>
+  </section>
+
+  <!-- CTA Panel -->
+  <div class="cta-panel">
+    <div class="cta-left">
+      <p class="cta-eyebrow">Get in touch</p>
+      <h3 class="cta-heading">Let's Talk —<br>Reach out to learn<br>more about this<br><em>case study</em></h3>
+      <a href="mailto:benflynch@gmail.com" class="cta-btn">
+        Email me
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M5 12h14M13 6l6 6-6 6"/>
+        </svg>
+      </a>
+    </div>
+    <div class="cta-right">
+      <img src="Imagery/Nike/Bento/nike-mobile.jpg" alt="Nike+ App on mobile" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;">
+    </div>
+  </div>
+
+  <!-- Metadata Footer -->
+  <div class="meta-footer">
+    <div class="meta-grid">
+      <div>
+        <div class="meta-col-label">Deliverables</div>
+        <div class="meta-col-value">
+          <strong>UX & UI Design</strong>
+          <strong>Wireframes</strong>
+          <strong>Ecosystem Mapping</strong>
+          <strong>Prototypes</strong>
+        </div>
+      </div>
+      <div>
+        <div class="meta-col-label">Made Using</div>
+        <div class="meta-col-value">
+          <strong>Sketch</strong>
+          <strong>Zeplin</strong>
+          <strong>Photoshop</strong>
+          <strong>Keynote</strong>
+          <strong>Illustrator</strong>
+          <strong>After Effects</strong>
+        </div>
+      </div>
+      <div>
+        <div class="meta-col-label">Role</div>
+        <div class="meta-col-value">
+          <strong>Product Designer</strong>
+          <strong>AKQA London</strong>
+        </div>
+      </div>
+      <div>
+        <div class="meta-col-label">Client</div>
+        <div class="meta-col-value">
+          <strong>Nike</strong>
+          <strong>Portland HQ</strong>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- More Case Studies -->
+  <div class="more-section">
+    <p class="more-label">More case studies</p>
+    <div class="more-grid">
+      <a href="google-freeletics.html" class="more-card">
+        <div class="more-card-img">
+          <img src="Imagery/Thumbnails/Freeletics.jpg" alt="Google x Freeletics" loading="lazy" decoding="async" />
+        </div>
+        <div class="more-card-body">
+          <div class="more-card-client">Google x Freeletics</div>
+          <div class="more-card-title">A 14-day workout challenge powered by Google Assistant</div>
+        </div>
+      </a>
+      <a href="virgin-sport.html" class="more-card">
+        <div class="more-card-img">
+          <img src="Imagery/Thumbnails/VirginSport.jpg" alt="Virgin Sport" loading="lazy" decoding="async" />
+        </div>
+        <div class="more-card-body">
+          <div class="more-card-client">Virgin Sport</div>
+          <div class="more-card-title">Festival of sport — digital launch</div>
+        </div>
+      </a>
+      <a href="peloton-ar.html" class="more-card">
+        <div class="more-card-img">
+          <img src="Imagery/Thumbnails/Peloton06.jpg" alt="Peloton" loading="lazy" decoding="async" />
+        </div>
+        <div class="more-card-body">
+          <div class="more-card-client">Peloton</div>
+          <div class="more-card-title">AR home visualisation tool</div>
+        </div>
+      </a>
+    </div>
+  </div>
+
+  <script>
+
+    /* Theme toggle */
+    const html        = document.documentElement;
+    const themeToggle = document.getElementById('themeToggle');
+    const labelDark   = themeToggle.querySelector('.toggle-label-dark');
+    const labelLight  = themeToggle.querySelector('.toggle-label-light');
+
+    const saved = localStorage.getItem('cs-theme');
+    if (saved) html.dataset.theme = saved;
+
+    function updateToggleLabel() {
+      const isDark = html.dataset.theme === 'dark';
+      labelDark.style.display  = isDark  ? '' : 'none';
+      labelLight.style.display = isDark  ? 'none' : '';
+    }
+
+    updateToggleLabel();
+
+    themeToggle.addEventListener('click', () => {
+      const next = html.dataset.theme === 'dark' ? 'light' : 'dark';
+      html.dataset.theme = next;
+      localStorage.setItem('cs-theme', next);
+      updateToggleLabel();
+    });
+
+    /* Carousel dots */
+    function initCarousel(rowId, dotsId) {
+      const row   = document.getElementById(rowId);
+      const dotsEl = document.getElementById(dotsId);
+      if (!row || !dotsEl) return;
+      const items = [...row.children];
+      if (items.length < 2) return;
+      items.forEach((_, i) => {
+        const btn = document.createElement('button');
+        btn.className = 'c-dot' + (i === 0 ? ' active' : '');
+        btn.setAttribute('aria-label', `Slide ${i + 1}`);
+        btn.addEventListener('click', () => {
+          items[i].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
+        });
+        dotsEl.appendChild(btn);
+      });
+      const dots = [...dotsEl.querySelectorAll('.c-dot')];
+      const obs = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting && entry.intersectionRatio >= 0.5) {
+            const idx = items.indexOf(entry.target);
+            if (idx !== -1) dots.forEach((d, i) => d.classList.toggle('active', i === idx));
+          }
+        });
+      }, { root: row, threshold: 0.5 });
+      items.forEach(item => obs.observe(item));
+    }
+
+    initCarousel('carousel-03', 'dots-03');
+
+    /* Magnetic CTA */
+    document.querySelectorAll('.cta-btn').forEach(btn => {
+      btn.addEventListener('mouseenter', () => {
+        btn.style.transition = 'transform 0.15s ease, gap 0.2s ease';
+      });
+      btn.addEventListener('mousemove', e => {
+        const r = btn.getBoundingClientRect();
+        const x = (e.clientX - r.left - r.width  / 2) * 0.22;
+        const y = (e.clientY - r.top  - r.height / 2) * 0.32;
+        btn.style.transform = `translate(${x}px, ${y}px)`;
+      });
+      btn.addEventListener('mouseleave', () => {
+        btn.style.transition = 'transform 0.55s cubic-bezier(0.22,1,0.36,1), gap 0.2s ease';
+        btn.style.transform = '';
+        setTimeout(() => { btn.style.transition = ''; }, 550);
+      });
+    });
+
+  </script>
+</body>
+</html>

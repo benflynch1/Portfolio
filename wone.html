@@ -1,0 +1,1145 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Walking on Earth — Benjamin Lynch</title>
+
+  <style>
+
+    /* ─── Cabinet Grotesk (display) + Satoshi (body) ────────── */
+    @font-face {
+      font-family: 'Cabinet Grotesk';
+      src: url('Fonts/CabinetGrotesk_Complete/Fonts/WEB/fonts/CabinetGrotesk-Variable.woff2') format('woff2-variations'),
+           url('Fonts/CabinetGrotesk_Complete/Fonts/WEB/fonts/CabinetGrotesk-Variable.woff') format('woff-variations');
+      font-weight: 100 900;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Satoshi';
+      src: url('Fonts/Satoshi_Complete/Fonts/WEB/fonts/Satoshi-Variable.woff2') format('woff2-variations'),
+           url('Fonts/Satoshi_Complete/Fonts/WEB/fonts/Satoshi-Variable.woff') format('woff-variations');
+      font-weight: 300 900;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Satoshi';
+      src: url('Fonts/Satoshi_Complete/Fonts/WEB/fonts/Satoshi-VariableItalic.woff2') format('woff2-variations'),
+           url('Fonts/Satoshi_Complete/Fonts/WEB/fonts/Satoshi-VariableItalic.woff') format('woff-variations');
+      font-weight: 300 900;
+      font-style: italic;
+      font-display: swap;
+    }
+
+    /* ─── Reset ─────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    em, i { font-style: normal; } /* override browser default italics */
+
+    /* ─── Dark theme (default) ───────────────────────────────── */
+    :root {
+      --bg:           #181716;
+      --bg-raised:    #222120;
+      --bg-surface:   #2C2A28;
+      --ink:          #FFFFFF;
+      --ink-mid:      #B5B2AC;
+      --ink-light:    #A8A59F;
+      --rule:         rgba(255,255,255,0.08);
+      --accent:       #C8A96E;
+      --phone-bg:     #242220;
+      --phone-border: rgba(255,255,255,0.07);
+      --more-bg:      #111110;
+      --icon-bg:      #0E0D0B;
+      --icon-border:  rgba(255,255,255,0.12);
+      --serif:        'Satoshi', -apple-system, BlinkMacSystemFont, sans-serif; /* display/headlines (was Cabinet Grotesk) */
+      --sans:         'Satoshi', -apple-system, BlinkMacSystemFont, sans-serif;
+      --pad:          64px;
+    }
+
+    /* ─── Light theme override ───────────────────────────────── */
+    [data-theme="light"] {
+      --bg:           #F8F6F2;
+      --bg-raised:    #EFEDE9;
+      --bg-surface:   #E4E2DE;
+      --ink:          #0E0D0B;
+      --ink-mid:      #5C5A56;
+      --ink-light:    #6A6863;
+      --rule:         rgba(14,13,11,0.1);
+      --phone-bg:     #E0DEDB;
+      --phone-border: rgba(14,13,11,0.08);
+      --more-bg:      #EFEDE9;
+      --icon-bg:      #0E0D0B;
+      --icon-border:  rgba(14,13,11,0.12);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: var(--sans);
+      font-size: 15px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      transition: background 0.35s ease, color 0.35s ease;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    /* ─── Nav ───────────────────────────────────────────────── */
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 var(--pad);
+      height: 60px;
+      border-bottom: 1px solid var(--rule);
+      transition: background 0.35s ease, border-color 0.35s ease;
+    }
+
+    .nav-logo {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      color: var(--ink);
+      text-decoration: none;
+    }
+
+    .nav-logo-icon {
+      width: 22px;
+      height: 22px;
+      display: block;
+      flex-shrink: 0;
+      transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .nav-logo > span {
+      transition: font-weight 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .nav-logo:hover .nav-logo-icon {
+      transform: scale(1.08);
+    }
+
+    .nav-logo:hover > span {
+      font-weight: 700;
+    }
+
+    .nav-logo-ring {
+      transform-box: view-box;
+      transform-origin: 40px 40px;
+      animation-timing-function: linear;
+      animation-iteration-count: infinite;
+      animation-play-state: paused;
+    }
+
+    .nav-logo-ring--a {
+      animation-name: nav-logo-spin-cw;
+      animation-duration: 5s;
+    }
+
+    .nav-logo-ring--b {
+      animation-name: nav-logo-spin-ccw;
+      animation-duration: 14s;
+    }
+
+    .nav-logo:hover .nav-logo-ring {
+      animation-play-state: running;
+    }
+
+    @keyframes nav-logo-spin-cw {
+      from { transform: rotate(0deg); }
+      to   { transform: rotate(360deg); }
+    }
+
+    @keyframes nav-logo-spin-ccw {
+      from { transform: rotate(0deg); }
+      to   { transform: rotate(-360deg); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .nav-logo-ring { animation: none; }
+      .nav-logo:hover .nav-logo-icon { transform: none; }
+      .nav-logo:hover > span { font-weight: 600; }
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 36px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 36px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--ink-mid);
+      transition: color 0.2s;
+      position: relative;
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -2px; left: 0;
+      width: 100%; height: 1px;
+      background: var(--ink);
+      transform: scaleX(0);
+      transform-origin: right;
+      transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .nav-links a:hover { color: var(--ink); }
+    .nav-links a:hover::after { transform: scaleX(1); transform-origin: left; }
+
+
+    /* ─── Back button ────────────────────────────────────────── */
+    .project-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ink-light);
+      margin-bottom: 32px;
+      transition: color 0.2s;
+    }
+
+    .project-back:hover { color: var(--ink); }
+
+    .project-back svg {
+      width: 12px;
+      height: 12px;
+      transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .project-back:hover svg { transform: translateX(-3px); }
+
+    /* ─── Theme toggle ───────────────────────────────────────── */
+    .theme-toggle {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      background: none;
+      border: 1px solid var(--rule);
+      border-radius: 100px;
+      padding: 6px 12px 6px 8px;
+      cursor: pointer;
+      font-family: var(--sans);
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--ink-mid);
+      transition: color 0.2s, border-color 0.2s, background 0.2s;
+    }
+
+    .theme-toggle:hover {
+      color: var(--ink);
+      border-color: var(--ink-mid);
+    }
+
+    .theme-toggle svg {
+      width: 13px;
+      height: 13px;
+      flex-shrink: 0;
+    }
+
+    [data-theme="dark"]  .toggle-sun  { display: none; }
+    [data-theme="light"] .toggle-moon { display: none; }
+
+    /* ─── Project Header ─────────────────────────────────────── */
+    .project-header {
+      padding: 64px var(--pad) 56px;
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .project-icon {
+      width: 52px;
+      height: 52px;
+      background: var(--icon-bg);
+      border: 1px solid var(--icon-border);
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 0;
+      flex-shrink: 0;
+    }
+
+    .project-icon svg {
+      width: 60%;
+      height: auto;
+      color: #FFFFFF;
+    }
+
+    .project-brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 24px;
+    }
+
+    .project-title {
+      font-family: var(--sans);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--ink-light);
+    }
+
+    .project-desc {
+      font-family: var(--serif);
+      font-size: clamp(28px, 3.2vw, 48px);
+      font-weight: 500;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      color: var(--ink);
+      max-width: 980px;
+      margin-bottom: 0;
+    }
+
+    .project-header-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0 48px;
+      margin-top: 40px;
+      padding-top: 28px;
+      border-top: 1px solid var(--rule);
+    }
+
+    .header-meta-item {
+      min-width: 100px;
+    }
+
+    .header-meta-label {
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--ink-mid);
+      margin-bottom: 6px;
+    }
+
+    .header-meta-val {
+      font-size: 13px;
+      font-weight: 400;
+      line-height: 1.5;
+      color: var(--ink-mid);
+    }
+
+    .project-tags {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .ptag {
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ink-mid);
+      border: 1px solid var(--rule);
+      padding: 4px 10px;
+      border-radius: 100px;
+      transition: color 0.2s, border-color 0.2s;
+    }
+
+    .header-meta-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      padding-top: 2px;
+    }
+
+    /* ─── Hero Image ─────────────────────────────────────────── */
+    .hero-image {
+      width: 100%;
+      aspect-ratio: 16 / 7;
+      overflow: hidden;
+      position: relative;
+      background: var(--bg-surface);
+    }
+
+    .hero-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* ─── Project brief (Objective / Market / Learnings) ─────── */
+    .brief-block {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 64px;
+      padding: 80px var(--pad);
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .brief-col-label {
+      font-family: var(--sans);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--ink-mid);
+      margin-bottom: 22px;
+    }
+
+    .brief-col-text {
+      font-family: var(--sans);
+      font-size: clamp(18px, 1.5vw, 22px);
+      font-weight: 400;
+      line-height: 1.35;
+      color: var(--ink);
+      letter-spacing: -0.01em;
+    }
+
+    @media (max-width: 1080px) {
+      .brief-block { gap: 40px; padding: 64px var(--pad); }
+    }
+
+    @media (max-width: 767px) {
+      .brief-block {
+        grid-template-columns: 1fr;
+        gap: 36px;
+        padding: 48px var(--pad);
+      }
+      .brief-col-label { margin-bottom: 14px; }
+    }
+
+    /* ─── Content Sections ───────────────────────────────────── */
+    .cs-section {
+      padding: 80px var(--pad);
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .cs-section-header {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      align-items: start;
+      margin-bottom: 56px;
+    }
+
+    .cs-section-label {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .cs-label-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--accent);
+      flex-shrink: 0;
+    }
+
+    .cs-label-text {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+
+    .cs-section-title {
+      font-family: var(--serif);
+      font-weight: 400;
+      font-size: clamp(32px, 3.5vw, 52px);
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      color: var(--ink);
+    }
+
+    .cs-section-title em { font-style: normal; }
+
+    .cs-section-body {
+      font-size: 15px;
+      font-weight: 400;
+      line-height: 1.8;
+      color: var(--ink-mid);
+      padding-top: 6px;
+    }
+
+    /* ─── Device frames ──────────────────────────────────────── */
+    .mockup-row {
+      display: grid;
+      gap: 16px;
+    }
+
+    .mockup-row-4 { grid-template-columns: repeat(4, 1fr); }
+    .mockup-row-3 { grid-template-columns: repeat(3, 1fr); }
+    .mockup-row-2 { grid-template-columns: repeat(2, 1fr); }
+
+    .mockup-frame {
+      border-radius: 20px;
+      overflow: hidden;
+      background: var(--bg-surface);
+      position: relative;
+    }
+
+    .mockup-frame img { width: 100%; display: block; }
+
+    .phone-placeholder {
+      aspect-ratio: 9 / 19;
+      background: var(--phone-bg);
+      border-radius: 28px;
+      border: 1px solid var(--phone-border);
+      transition: background 0.35s ease, border-color 0.35s ease;
+    }
+
+    /* ─── Carousel dots ──────────────────────────────────────── */
+    .carousel-dots {
+      display: none;
+      justify-content: center;
+      gap: 6px;
+      margin-top: 20px;
+    }
+
+    .c-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      border: none;
+      background: var(--rule);
+      padding: 0;
+      cursor: pointer;
+      transition: background 0.25s ease, transform 0.25s ease;
+    }
+
+    .c-dot.active {
+      background: var(--ink);
+      transform: scale(1.4);
+    }
+
+    /* ─── CTA Panel ──────────────────────────────────────────── */
+    .cta-panel {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .cta-left {
+      padding: 80px var(--pad);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      border-right: 1px solid var(--rule);
+    }
+
+    .cta-eyebrow {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--ink-light);
+      margin-bottom: 20px;
+    }
+
+    .cta-heading {
+      font-family: var(--serif);
+      font-weight: 400;
+      font-size: clamp(24px, 2.8vw, 40px);
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      color: var(--ink);
+      margin-bottom: 32px;
+    }
+
+    .cta-heading em { font-style: normal; }
+
+    .cta-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--ink);
+      color: var(--bg);
+      font-family: var(--sans);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 14px 24px;
+      width: fit-content;
+      will-change: transform;
+      transition: gap 0.2s, transform 0.15s ease;
+    }
+
+    .cta-btn:hover { gap: 16px; }
+    .cta-btn svg { width: 12px; height: 12px; }
+
+    .cta-right {
+      position: relative;
+      overflow: hidden;
+      min-height: 320px;
+      background: var(--bg-raised);
+    }
+
+    /* ─── Metadata Footer ────────────────────────────────────── */
+    .meta-footer {
+      padding: 64px var(--pad);
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .meta-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 40px;
+    }
+
+    .meta-col-label {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--ink-light);
+      margin-bottom: 14px;
+    }
+
+    .meta-col-value {
+      font-size: 13px;
+      font-weight: 400;
+      line-height: 1.8;
+      color: var(--ink-mid);
+    }
+
+    .meta-col-value strong {
+      display: block;
+      font-weight: 500;
+      color: var(--ink);
+      margin-bottom: 1px;
+    }
+
+    /* ─── More Case Studies ──────────────────────────────────── */
+    .more-section {
+      padding: 64px var(--pad);
+      background: var(--more-bg);
+      transition: background 0.35s ease;
+    }
+
+    .more-label {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--ink-light);
+      margin-bottom: 32px;
+    }
+
+    .more-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+    }
+
+    .more-card {
+      background: var(--bg-raised);
+      cursor: pointer;
+      transition: background 0.35s ease;
+    }
+
+    .more-card-img {
+      aspect-ratio: 5 / 4;
+      overflow: hidden;
+      position: relative;
+      background: var(--bg-surface);
+    }
+
+    .more-card-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .more-card:hover .more-card-img img { transform: scale(1.04); }
+
+    .more-card-body {
+      padding: 18px 22px 22px;
+      border-top: 1px solid var(--rule);
+    }
+
+    .more-card-client {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ink-light);
+      margin-bottom: 6px;
+    }
+
+    .more-card-title {
+      font-family: var(--sans);
+      font-weight: 400;
+      font-size: 17px;
+      line-height: 1.35;
+      letter-spacing: -0.01em;
+      color: var(--ink);
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       RESPONSIVE
+    ══════════════════════════════════════════════════════════ */
+
+    @media (max-width: 1080px) {
+      :root { --pad: 40px; }
+      .cs-section-header { gap: 32px; }
+      .meta-grid { grid-template-columns: repeat(2, 1fr); }
+      .more-grid { grid-template-columns: repeat(2, 1fr); }
+      .mockup-row {
+        display: flex;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        gap: 12px;
+        margin-left: calc(-1 * var(--pad));
+        margin-right: calc(-1 * var(--pad));
+        padding-left: var(--pad);
+        padding-right: var(--pad);
+        padding-bottom: 4px;
+      }
+      .mockup-row::-webkit-scrollbar { display: none; }
+      .mockup-row > * { flex: 0 0 72%; max-width: 320px; scroll-snap-align: start; }
+      .carousel-dots { display: flex; }
+    }
+
+    @media (max-width: 767px) {
+      :root { --pad: 20px; }
+      nav { padding: 0 var(--pad); height: 52px; }
+      .nav-links { gap: 20px; }
+      .nav-links a { font-size: 10px; letter-spacing: 0.08em; }
+      .nav-right { gap: 16px; }
+      .project-header { padding: 40px var(--pad) 36px; }
+      .hero-image { aspect-ratio: 4 / 3; }
+      .cs-section { padding: 56px var(--pad); }
+      .cs-section-header { grid-template-columns: 1fr; gap: 14px; margin-bottom: 36px; }
+      .mockup-row > * { flex: 0 0 80%; max-width: 980px; }
+      .cta-panel { grid-template-columns: 1fr; }
+      .cta-left { padding: 56px var(--pad); border-right: none; border-bottom: 1px solid var(--rule); }
+      .cta-right { min-height: 220px; }
+      .meta-footer { padding: 48px var(--pad); }
+      .meta-grid { grid-template-columns: repeat(2, 1fr); gap: 28px; }
+      .more-section { padding: 48px var(--pad); }
+      .more-grid { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 480px) {
+      .meta-grid { grid-template-columns: 1fr; }
+      .mockup-row > * { flex: 0 0 88%; }
+    }
+
+  </style>
+</head>
+<body>
+
+  <!-- Nav -->
+  <nav>
+    <a href="index.html" class="nav-logo">
+      <svg class="nav-logo-icon" viewBox="0 0 81 80" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+        <circle cx="40" cy="40" r="37" stroke="currentColor" stroke-width="6"/>
+        <path class="nav-logo-ring nav-logo-ring--a" d="M25.7864 25.5814C33.2846 18.0833 41.7683 13.1964 49.304 11.2549C56.9155 9.29396 62.9687 10.4378 66.5238 13.9929C70.0787 17.548 71.222 23.6008 69.2611 31.212C67.3196 38.7477 62.4327 47.2314 54.9346 54.7296C47.4364 62.2277 38.9527 67.1145 31.4171 69.0561C23.8058 71.0169 17.7531 69.8737 14.1979 66.3188C10.6428 62.7637 9.49898 56.7104 11.4599 49.0989C13.4015 41.5633 18.2883 33.0796 25.7864 25.5814Z" stroke="currentColor" stroke-width="6"/>
+        <path class="nav-logo-ring nav-logo-ring--b" d="M34.4329 45.538C26.8208 37.9258 20.8808 30.2395 17.4036 24.03C15.6545 20.9064 14.6155 18.3096 14.2293 16.3768C13.8167 14.3118 14.2815 13.8027 14.2852 13.799C14.3002 13.7853 14.8204 13.3359 16.8623 13.7438C18.7951 14.13 21.3925 15.1684 24.5161 16.9175C30.7257 20.3946 38.4114 26.3354 46.0235 33.9474C53.6358 41.5597 59.577 49.2459 63.0542 55.4555C64.8033 58.5791 65.8416 61.1766 66.2278 63.1094C66.6358 65.1512 66.1863 65.6715 66.1726 65.6864C66.1689 65.6901 65.6598 66.1549 63.5948 65.7424C61.6621 65.3562 59.0652 64.3171 55.9417 62.568C49.732 59.0908 42.0452 53.1503 34.4329 45.538Z" stroke="currentColor" stroke-width="6"/>
+      </svg>
+      <span>Benjamin Lynch</span>
+    </a>
+    <div class="nav-right">
+      <ul class="nav-links">
+        <li><a href="index.html">Work</a></li>
+        <li><a href="https://linkedin.com" target="_blank">LinkedIn</a></li>
+        <li><a href="mailto:benflynch@gmail.com">Contact</a></li>
+      </ul>
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+        <svg class="toggle-moon" viewBox="0 0 16 16" fill="currentColor">
+          <path d="M6 0a6 6 0 1 0 6 6A4.54 4.54 0 0 1 6 0z"/>
+        </svg>
+        <svg class="toggle-sun" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+          <circle cx="8" cy="8" r="2.5"/>
+          <path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.05 3.05l1.42 1.42M11.53 11.53l1.42 1.42M3.05 12.95l1.42-1.42M11.53 4.47l1.42-1.42"/>
+        </svg>
+        <span class="toggle-label-dark">Light</span>
+        <span class="toggle-label-light" style="display:none">Dark</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Project Header -->
+  <div class="project-header">
+
+    <a href="index.html" class="project-back">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M19 12H5M12 19l-7-7 7-7"/>
+      </svg>
+      All work
+    </a>
+
+    <div class="project-brand">
+        <div class="project-icon">
+      <svg viewBox="36 65 77 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M63.934 66.5024V66.9631C62.8732 67.0328 62.3009 67.5353 61.7984 68.7636L55.964 83.6289H55.5033L51.0368 72.2671L46.5423 83.6289H46.0817L40.2054 68.7636C39.7029 67.5912 39.1446 67.0328 38 66.9631V66.5024H44.2671V66.9631C42.8016 66.991 42.1037 67.7028 42.4945 68.7636L46.961 80.265L50.4924 70.969L49.627 68.7636C49.1664 67.5632 48.5941 67.0328 47.4217 66.9631V66.5024H53.6888V66.9631C52.2232 66.991 51.5253 67.7028 51.9161 68.7636L56.3827 80.265L60.7515 68.7636C61.1563 67.7307 60.5143 66.991 59.1464 66.9631V66.5024H63.92H63.934Z" fill="currentColor"/>
+        <path d="M63.2642 75.1704C63.2642 69.7687 66.3908 66 70.969 66C75.5472 66 78.3388 69.4616 78.3388 74.4725C78.3388 79.8743 75.2122 83.601 70.634 83.601C66.0558 83.601 63.2642 80.1674 63.2642 75.1704ZM76.0357 75.5054C76.0357 72.309 74.5981 66.9352 70.4665 66.9352C67.4934 66.9352 65.5951 69.8664 65.5951 73.9979C65.5951 77.2641 66.963 82.6659 71.1644 82.6659C74.1374 82.6659 76.0357 79.6649 76.0357 75.5054Z" fill="currentColor"/>
+        <path d="M96.9025 82.6658V83.1264H90.0631V82.6658C91.2356 82.4704 92.3941 82.2052 92.3941 80.6977V71.0946C92.3941 68.8893 91.1658 67.5912 89.1558 67.5912C87.3273 67.5912 85.8617 68.4566 83.9495 70.6898V80.6838C83.9495 82.1773 85.122 82.4564 86.2805 82.6519V83.1125H79.4411V82.6519C80.6415 82.4564 81.8139 82.1912 81.8139 80.6838V69.4057C81.8139 68.2332 81.3114 67.7447 80.0831 67.6749H79.2177V67.2143L83.4889 66.0139H83.9495V69.9501C85.8478 67.3818 87.6205 66.0139 89.9794 66.0139C92.8128 66.0139 94.5157 67.7866 94.5157 70.983V80.7117C94.5157 82.2052 95.6882 82.4844 96.8886 82.6798L96.9025 82.6658Z" fill="currentColor"/>
+        <path d="M111 78.8274C110.163 81.5632 107.664 83.601 104.496 83.601C100.001 83.601 97.1257 79.9999 97.1257 75.1704C97.1257 69.7407 100.252 66 104.831 66C108.669 66 110.958 69.0708 110.958 73.3H99.3869C99.3869 73.5652 99.359 73.8025 99.359 74.0677C99.2194 78.632 101.83 81.5632 105.654 81.5632C108.153 81.5632 109.66 80.1255 110.623 78.6599L110.986 78.8274H111ZM99.5265 72.3649H108.488C108.418 69.5035 106.854 66.9352 104.356 66.9352C101.857 66.9352 100.057 69.1685 99.5265 72.3649Z" fill="currentColor"/>
+      </svg>
+    </div>
+      </div>
+
+    <p class="project-desc">Redesigning Walking on Earth's stress-intelligence app to incorporate a new gold standard in measuring stress.</p>
+
+    <div class="project-header-meta">
+      <div class="header-meta-item">
+        <div class="header-meta-label">Client</div>
+        <div class="header-meta-val">Walking on Earth</div>
+        </div>
+      <div class="header-meta-item">
+        <div class="header-meta-label">Sector</div>
+        <div class="header-meta-val">Health · Wellbeing</div>
+      </div>
+      <div class="header-meta-item">
+        <div class="header-meta-label">Tags</div>
+        <div class="header-meta-val header-meta-tags">
+          <span class="ptag">B2B</span> <span class="ptag">Health</span> <span class="ptag">Mobile App</span>
+        </div>
+      </div>
+      <div class="header-meta-item">
+        <div class="header-meta-label">Role</div>
+        <div class="header-meta-val">Product Designer</div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <!-- Hero Image -->
+  <div class="hero-image">
+    <picture>
+      <source media="(max-width: 767px)" srcset="Imagery/Hero/Mobile/WONE.jpg" />
+      <img src="Imagery/Hero/Desktop/WONE%20Desktop.jpg" alt="Walking on Earth hero" />
+    </picture>
+  </div>
+
+  <!-- Project Brief -->
+  <div class="brief-block">
+    <div>
+      <div class="brief-col-label">North Star Metric</div>
+      <p class="brief-col-text">Help improve stress resilience in 10million lives</p>
+    </div>
+    <div>
+      <div class="brief-col-label">Challenge</div>
+      <p class="brief-col-text">Being a B2B2C product, the app struggled with a low/inconsistent user base making tracking product metrics and improvements highly difficult.</p>
+    </div>
+    <div>
+      <div class="brief-col-label">Learnings to uncover</div>
+      <p class="brief-col-text">Retention challenges beyond initial usage, why do users abandon the app and what would get them to return</p>
+    </div>
+  </div>
+
+  <!-- Section 01 -->
+  <section class="cs-section">
+    <div class="cs-section-header">
+      <div>
+        <div class="cs-section-label">
+          <div class="cs-label-dot"></div>
+          <span class="cs-label-text">01</span>
+        </div>
+        <h2 class="cs-section-title">About<br><em>the project</em></h2>
+      </div>
+      <p class="cs-section-body">WONE is a workplace wellbeing platform that uses biometric data from wearables to give employees and organisations real-time stress intelligence — grounded in the latest clinical research. The brief was to evolve the app to support a new, validated biomarker: the gold standard for stress measurement.</p>
+    </div>
+    <div class="mockup-row mockup-row-3" id="carousel-01">
+      <div class="phone-placeholder"></div>
+      <div class="phone-placeholder"></div>
+      <div class="phone-placeholder"></div>
+    </div>
+    <div class="carousel-dots" id="dots-01"></div>
+  </section>
+
+  <!-- Section 02 -->
+  <section class="cs-section">
+    <div class="cs-section-header">
+      <div>
+        <div class="cs-section-label">
+          <div class="cs-label-dot"></div>
+          <span class="cs-label-text">02</span>
+        </div>
+        <h2 class="cs-section-title">Conducting a<br><em>Design Audit</em></h2>
+      </div>
+      <p class="cs-section-body">In order to understand the challenges ahead and areas of friction in current product, a design audit of the current product was proposed by the CEO within month 1. Typically, some guardrails would be put in place to focus on specific flows, accessibility, a specific platform or general UX/UI suggestions. The request from leadership team was to audit everything &mdash; which required collaborating with product and engineering to quickly understand the product.</p>
+    </div>
+    <div class="mockup-row mockup-row-3" id="carousel-02">
+      <div class="phone-placeholder"></div>
+      <div class="phone-placeholder"></div>
+      <div class="phone-placeholder"></div>
+    </div>
+    <div class="carousel-dots" id="dots-02"></div>
+  </section>
+
+  <!-- Section 03 -->
+  <section class="cs-section">
+    <div class="cs-section-header">
+      <div>
+        <div class="cs-section-label">
+          <div class="cs-label-dot"></div>
+          <span class="cs-label-text">03</span>
+        </div>
+        <h2 class="cs-section-title">Ways of<br><em>Working</em></h2>
+      </div>
+      <p class="cs-section-body">Leadership team requested design audit improvements implemented, alongside BAO product tasks in addition to vision work (a design prototype re-imagining the product) within 3 months. It became an in-perfect process but one where BAO tasks took priority to improve key metrics, design audit updates were implemented adhoc or when engineers were light on tasks between sprints, and vision work turned into an 8 week sprint outside of product tasks.</p>
+    </div>
+    <div class="mockup-row mockup-row-4" id="carousel-03">
+      <div class="phone-placeholder"></div>
+      <div class="phone-placeholder"></div>
+      <div class="phone-placeholder"></div>
+      <div class="phone-placeholder"></div>
+    </div>
+    <div class="carousel-dots" id="dots-03"></div>
+  </section>
+
+  <!-- Section 04 -->
+  <section class="cs-section">
+    <div class="cs-section-header">
+      <div>
+        <div class="cs-section-label">
+          <div class="cs-label-dot"></div>
+          <span class="cs-label-text">04</span>
+        </div>
+        <h2 class="cs-section-title">Making content<br><em>easier to discover</em></h2>
+      </div>
+      <p class="cs-section-body">One of the key findings from the design audit was that Expert Sessions on the platform were suffering from a series of issues. Live Sessions, On-Demand Sessions and Articles were each split into separate pages, leading to abandonment and drop off. They also lacked the ability to filter, search and find newly released or trending sessions.<br><br>Our redesign brought these all into the same tab, contained in a nested structure, reducing clicks and friction throughout the process that prevented customers finding the sessions they wanted. Quick action buttons were also introduced on desktop to start or save a session without having to dive back and forth, whilst the Session pages themselves were redesigned to promote practical information about the sessions, practitioners and more.</p>
+    </div>
+    <div class="mockup-row mockup-row-4" id="carousel-04">
+      <div class="phone-placeholder"></div>
+      <div class="phone-placeholder"></div>
+      <div class="phone-placeholder"></div>
+      <div class="phone-placeholder"></div>
+    </div>
+    <div class="carousel-dots" id="dots-04"></div>
+  </section>
+
+  <!-- Section 05 -->
+  <section class="cs-section">
+    <div class="cs-section-header">
+      <div>
+        <div class="cs-section-label">
+          <div class="cs-label-dot"></div>
+          <span class="cs-label-text">05</span>
+        </div>
+        <h2 class="cs-section-title">Introducing<br><em>Ori</em></h2>
+      </div>
+      <p class="cs-section-body">Ori was born from the vision work conducted in Summer 2025. The hypothesis from leadership team was that an AI stress coach could layer in a personalised approach to stress management within the app. The work involved partnering with a Chief Technology Officer and Chief Scientific Officer to establish guardrails and safety parameters within the existing UX of the app.</p>
+    </div>
+    <div class="mockup-row mockup-row-3" id="carousel-05">
+      <div class="phone-placeholder"></div>
+      <div class="phone-placeholder"></div>
+      <div class="phone-placeholder"></div>
+    </div>
+    <div class="carousel-dots" id="dots-05"></div>
+  </section>
+
+  <!-- Section 06 -->
+  <section class="cs-section">
+    <div class="cs-section-header">
+      <div>
+        <div class="cs-section-label">
+          <div class="cs-label-dot"></div>
+          <span class="cs-label-text">06</span>
+        </div>
+        <h2 class="cs-section-title">Establishing an<br><em>AI design workflow</em></h2>
+      </div>
+      <p class="cs-section-body">Alongside shipping features, I established a new design process that used AI tooling for research synthesis, copy iteration and rapid prototyping. Time from raw insight to validated prototype fell by roughly half, and the workflow has since been adopted as the default way of working across the wider product team.</p>
+    </div>
+    <div class="mockup-row mockup-row-2" id="carousel-06">
+      <div class="phone-placeholder"></div>
+      <div class="phone-placeholder"></div>
+    </div>
+    <div class="carousel-dots" id="dots-06"></div>
+  </section>
+
+  <!-- CTA Panel -->
+  <div class="cta-panel">
+    <div class="cta-left">
+      <p class="cta-eyebrow">Get in touch</p>
+      <h3 class="cta-heading">Let's Talk —<br>Reach out to learn<br>more about this<br><em>case study</em></h3>
+      <a href="mailto:benflynch@gmail.com" class="cta-btn">
+        Email me
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M5 12h14M13 6l6 6-6 6"/>
+        </svg>
+      </a>
+    </div>
+    <div class="cta-right">
+      <div style="width:100%;height:100%;min-height:360px;background:linear-gradient(145deg,var(--bg-raised),var(--bg-surface));"></div>
+    </div>
+  </div>
+
+  <!-- Metadata Footer -->
+  <div class="meta-footer">
+    <div class="meta-grid">
+      <div>
+        <div class="meta-col-label">Deliverables</div>
+        <div class="meta-col-value">
+          <strong>User Research</strong>
+          <strong>Information Architecture</strong>
+          <strong>Wireframes</strong>
+          <strong>Prototypes</strong>
+          <strong>UI Design</strong>
+        </div>
+      </div>
+      <div>
+        <div class="meta-col-label">Made Using</div>
+        <div class="meta-col-value">
+          <strong>Figma</strong>
+          <strong>Notion</strong>
+          <strong>Miro</strong>
+        </div>
+      </div>
+      <div>
+        <div class="meta-col-label">Role</div>
+        <div class="meta-col-value">
+          <strong>Product Designer</strong>
+        </div>
+      </div>
+      <div>
+        <div class="meta-col-label">Client</div>
+        <div class="meta-col-value">
+          <strong>Walking on Earth</strong>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- More Case Studies -->
+  <div class="more-section">
+    <p class="more-label">More case studies</p>
+    <div class="more-grid">
+      <a href="numan-weight-loss.html" class="more-card">
+        <div class="more-card-img">
+          <img src="Imagery/Thumbnails/Numan01.jpg" alt="Numan" loading="lazy" decoding="async" />
+        </div>
+        <div class="more-card-body">
+          <div class="more-card-client">Numan</div>
+          <div class="more-card-title">Weight management retention</div>
+        </div>
+      </a>
+      <a href="peloton-colleges.html" class="more-card">
+        <div class="more-card-img">
+          <img src="Imagery/Thumbnails/Peloton01.jpg" alt="Peloton" loading="lazy" decoding="async" />
+        </div>
+        <div class="more-card-body">
+          <div class="more-card-client">Peloton</div>
+          <div class="more-card-title">US College limited edition</div>
+        </div>
+      </a>
+      <a href="peloton-subscription.html" class="more-card">
+        <div class="more-card-img">
+          <img src="Imagery/Thumbnails/Peloton03.jpg" alt="Peloton" loading="lazy" decoding="async" />
+        </div>
+        <div class="more-card-body">
+          <div class="more-card-client">Peloton</div>
+          <div class="more-card-title">Global B2B subscription tiers</div>
+        </div>
+      </a>
+    </div>
+  </div>
+
+  <script>
+
+    /* Theme toggle */
+    const html        = document.documentElement;
+    const themeToggle = document.getElementById('themeToggle');
+    const labelDark   = themeToggle.querySelector('.toggle-label-dark');
+    const labelLight  = themeToggle.querySelector('.toggle-label-light');
+
+    const saved = localStorage.getItem('cs-theme');
+    if (saved) html.dataset.theme = saved;
+
+    function updateToggleLabel() {
+      const isDark = html.dataset.theme === 'dark';
+      labelDark.style.display  = isDark  ? '' : 'none';
+      labelLight.style.display = isDark  ? 'none' : '';
+    }
+
+    updateToggleLabel();
+
+    themeToggle.addEventListener('click', () => {
+      const next = html.dataset.theme === 'dark' ? 'light' : 'dark';
+      html.dataset.theme = next;
+      localStorage.setItem('cs-theme', next);
+      updateToggleLabel();
+    });
+
+    /* Carousel dots */
+    function initCarousel(rowId, dotsId) {
+      const row   = document.getElementById(rowId);
+      const dotsEl = document.getElementById(dotsId);
+      if (!row || !dotsEl) return;
+      const items = [...row.children];
+      if (items.length < 2) return;
+      items.forEach((_, i) => {
+        const btn = document.createElement('button');
+        btn.className = 'c-dot' + (i === 0 ? ' active' : '');
+        btn.setAttribute('aria-label', `Slide ${i + 1}`);
+        btn.addEventListener('click', () => {
+          items[i].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
+        });
+        dotsEl.appendChild(btn);
+      });
+      const dots = [...dotsEl.querySelectorAll('.c-dot')];
+      const obs = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting && entry.intersectionRatio >= 0.5) {
+            const idx = items.indexOf(entry.target);
+            if (idx !== -1) dots.forEach((d, i) => d.classList.toggle('active', i === idx));
+          }
+        });
+      }, { root: row, threshold: 0.5 });
+      items.forEach(item => obs.observe(item));
+    }
+
+    initCarousel('carousel-01', 'dots-01');
+    initCarousel('carousel-02', 'dots-02');
+    initCarousel('carousel-03', 'dots-03');
+    initCarousel('carousel-04', 'dots-04');
+    initCarousel('carousel-05', 'dots-05');
+    initCarousel('carousel-06', 'dots-06');
+
+    /* Magnetic CTA */
+    document.querySelectorAll('.cta-btn').forEach(btn => {
+      btn.addEventListener('mouseenter', () => {
+        btn.style.transition = 'transform 0.15s ease, gap 0.2s ease';
+      });
+      btn.addEventListener('mousemove', e => {
+        const r = btn.getBoundingClientRect();
+        const x = (e.clientX - r.left - r.width  / 2) * 0.22;
+        const y = (e.clientY - r.top  - r.height / 2) * 0.32;
+        btn.style.transform = `translate(${x}px, ${y}px)`;
+      });
+      btn.addEventListener('mouseleave', () => {
+        btn.style.transition = 'transform 0.55s cubic-bezier(0.22,1,0.36,1), gap 0.2s ease';
+        btn.style.transform = '';
+        setTimeout(() => { btn.style.transition = ''; }, 550);
+      });
+    });
+
+  </script>
+</body>
+</html>

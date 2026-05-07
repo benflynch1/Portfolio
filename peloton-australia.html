@@ -1,0 +1,1094 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Peloton — Australian Market Launch — Benjamin Lynch</title>
+
+  <style>
+
+    /* ─── Cabinet Grotesk (display) + Satoshi (body) ────────── */
+    @font-face {
+      font-family: 'Cabinet Grotesk';
+      src: url('Fonts/CabinetGrotesk_Complete/Fonts/WEB/fonts/CabinetGrotesk-Variable.woff2') format('woff2-variations'),
+           url('Fonts/CabinetGrotesk_Complete/Fonts/WEB/fonts/CabinetGrotesk-Variable.woff') format('woff-variations');
+      font-weight: 100 900;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Satoshi';
+      src: url('Fonts/Satoshi_Complete/Fonts/WEB/fonts/Satoshi-Variable.woff2') format('woff2-variations'),
+           url('Fonts/Satoshi_Complete/Fonts/WEB/fonts/Satoshi-Variable.woff') format('woff-variations');
+      font-weight: 300 900;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Satoshi';
+      src: url('Fonts/Satoshi_Complete/Fonts/WEB/fonts/Satoshi-VariableItalic.woff2') format('woff2-variations'),
+           url('Fonts/Satoshi_Complete/Fonts/WEB/fonts/Satoshi-VariableItalic.woff') format('woff-variations');
+      font-weight: 300 900;
+      font-style: italic;
+      font-display: swap;
+    }
+
+    /* ─── Reset ─────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    em, i { font-style: normal; } /* override browser default italics */
+
+    /* ─── Dark theme (default) ───────────────────────────────── */
+    :root {
+      --bg:           #181716;
+      --bg-raised:    #222120;
+      --bg-surface:   #2C2A28;
+      --ink:          #FFFFFF;
+      --ink-mid:      #B5B2AC;
+      --ink-light:    #A8A59F;
+      --rule:         rgba(255,255,255,0.08);
+      --accent:       #C8A96E;
+      --phone-bg:     #242220;
+      --phone-border: rgba(255,255,255,0.07);
+      --more-bg:      #111110;
+      --icon-bg:      #0E0D0B;
+      --icon-border:  rgba(255,255,255,0.12);
+      --serif:        'Satoshi', -apple-system, BlinkMacSystemFont, sans-serif; /* display/headlines (was Cabinet Grotesk) */
+      --sans:         'Satoshi', -apple-system, BlinkMacSystemFont, sans-serif;
+      --pad:          64px;
+    }
+
+    /* ─── Light theme override ───────────────────────────────── */
+    [data-theme="light"] {
+      --bg:           #F8F6F2;
+      --bg-raised:    #EFEDE9;
+      --bg-surface:   #E4E2DE;
+      --ink:          #0E0D0B;
+      --ink-mid:      #5C5A56;
+      --ink-light:    #6A6863;
+      --rule:         rgba(14,13,11,0.1);
+      --phone-bg:     #E0DEDB;
+      --phone-border: rgba(14,13,11,0.08);
+      --more-bg:      #EFEDE9;
+      --icon-bg:      #0E0D0B;
+      --icon-border:  rgba(14,13,11,0.12);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: var(--sans);
+      font-size: 15px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      transition: background 0.35s ease, color 0.35s ease;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    /* ─── Nav ───────────────────────────────────────────────── */
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 var(--pad);
+      height: 60px;
+      border-bottom: 1px solid var(--rule);
+      transition: background 0.35s ease, border-color 0.35s ease;
+    }
+
+    .nav-logo {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      color: var(--ink);
+      text-decoration: none;
+    }
+
+    .nav-logo-icon {
+      width: 22px;
+      height: 22px;
+      display: block;
+      flex-shrink: 0;
+      transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .nav-logo > span {
+      transition: font-weight 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .nav-logo:hover .nav-logo-icon {
+      transform: scale(1.08);
+    }
+
+    .nav-logo:hover > span {
+      font-weight: 700;
+    }
+
+    .nav-logo-ring {
+      transform-box: view-box;
+      transform-origin: 40px 40px;
+      animation-timing-function: linear;
+      animation-iteration-count: infinite;
+      animation-play-state: paused;
+    }
+
+    .nav-logo-ring--a {
+      animation-name: nav-logo-spin-cw;
+      animation-duration: 5s;
+    }
+
+    .nav-logo-ring--b {
+      animation-name: nav-logo-spin-ccw;
+      animation-duration: 14s;
+    }
+
+    .nav-logo:hover .nav-logo-ring {
+      animation-play-state: running;
+    }
+
+    @keyframes nav-logo-spin-cw {
+      from { transform: rotate(0deg); }
+      to   { transform: rotate(360deg); }
+    }
+
+    @keyframes nav-logo-spin-ccw {
+      from { transform: rotate(0deg); }
+      to   { transform: rotate(-360deg); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .nav-logo-ring { animation: none; }
+      .nav-logo:hover .nav-logo-icon { transform: none; }
+      .nav-logo:hover > span { font-weight: 600; }
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 36px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 36px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--ink-mid);
+      transition: color 0.2s;
+      position: relative;
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -2px; left: 0;
+      width: 100%; height: 1px;
+      background: var(--ink);
+      transform: scaleX(0);
+      transform-origin: right;
+      transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .nav-links a:hover { color: var(--ink); }
+    .nav-links a:hover::after { transform: scaleX(1); transform-origin: left; }
+
+
+    /* ─── Back button ────────────────────────────────────────── */
+    .project-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ink-light);
+      margin-bottom: 32px;
+      transition: color 0.2s;
+    }
+
+    .project-back:hover { color: var(--ink); }
+
+    .project-back svg {
+      width: 12px;
+      height: 12px;
+      transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .project-back:hover svg { transform: translateX(-3px); }
+
+    /* ─── Theme toggle ───────────────────────────────────────── */
+    .theme-toggle {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      background: none;
+      border: 1px solid var(--rule);
+      border-radius: 100px;
+      padding: 6px 12px 6px 8px;
+      cursor: pointer;
+      font-family: var(--sans);
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--ink-mid);
+      transition: color 0.2s, border-color 0.2s, background 0.2s;
+    }
+
+    .theme-toggle:hover {
+      color: var(--ink);
+      border-color: var(--ink-mid);
+    }
+
+    .theme-toggle svg {
+      width: 13px;
+      height: 13px;
+      flex-shrink: 0;
+    }
+
+    [data-theme="dark"]  .toggle-sun  { display: none; }
+    [data-theme="light"] .toggle-moon { display: none; }
+
+    /* ─── Project Header ─────────────────────────────────────── */
+    .project-header {
+      padding: 64px var(--pad) 56px;
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .project-icon {
+      width: 52px;
+      height: 52px;
+      background: var(--icon-bg);
+      border: 1px solid var(--icon-border);
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 0;
+      flex-shrink: 0;
+    }
+
+    .project-icon svg {
+      width: 60%;
+      height: auto;
+      color: #FFFFFF;
+    }
+
+    .project-brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 24px;
+    }
+
+    .project-title {
+      font-family: var(--sans);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--ink-light);
+    }
+
+    .project-desc {
+      font-family: var(--serif);
+      font-size: clamp(28px, 3.2vw, 48px);
+      font-weight: 500;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      color: var(--ink);
+      max-width: 980px;
+      margin-bottom: 0;
+    }
+
+    .project-header-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0 48px;
+      margin-top: 40px;
+      padding-top: 28px;
+      border-top: 1px solid var(--rule);
+    }
+
+    .header-meta-item {
+      min-width: 100px;
+    }
+
+    .header-meta-label {
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--ink-mid);
+      margin-bottom: 6px;
+    }
+
+    .header-meta-val {
+      font-size: 13px;
+      font-weight: 400;
+      line-height: 1.5;
+      color: var(--ink-mid);
+    }
+
+    .project-tags {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .ptag {
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ink-mid);
+      border: 1px solid var(--rule);
+      padding: 4px 10px;
+      border-radius: 100px;
+      transition: color 0.2s, border-color 0.2s;
+    }
+
+    .header-meta-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      padding-top: 2px;
+    }
+
+    /* ─── Hero Image ─────────────────────────────────────────── */
+    .hero-image {
+      width: 100%;
+      aspect-ratio: 16 / 7;
+      overflow: hidden;
+      position: relative;
+      background: var(--bg-surface);
+    }
+
+    .hero-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* ─── Project brief (Objective / Market / Learnings) ─────── */
+    .brief-block {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 64px;
+      padding: 80px var(--pad);
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .brief-col-label {
+      font-family: var(--sans);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--ink-mid);
+      margin-bottom: 22px;
+    }
+
+    .brief-col-text {
+      font-family: var(--sans);
+      font-size: clamp(18px, 1.5vw, 22px);
+      font-weight: 400;
+      line-height: 1.35;
+      color: var(--ink);
+      letter-spacing: -0.01em;
+    }
+
+    @media (max-width: 1080px) {
+      .brief-block { gap: 40px; padding: 64px var(--pad); }
+    }
+
+    @media (max-width: 767px) {
+      .brief-block {
+        grid-template-columns: 1fr;
+        gap: 36px;
+        padding: 48px var(--pad);
+      }
+      .brief-col-label { margin-bottom: 14px; }
+    }
+
+    /* ─── Content Sections ───────────────────────────────────── */
+    .cs-section {
+      padding: 80px var(--pad);
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .cs-section-header {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      align-items: start;
+      margin-bottom: 56px;
+    }
+
+    .cs-section-label {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .cs-label-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--accent);
+      flex-shrink: 0;
+    }
+
+    .cs-label-text {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+
+    .cs-section-title {
+      font-family: var(--serif);
+      font-weight: 400;
+      font-size: clamp(32px, 3.5vw, 52px);
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      color: var(--ink);
+    }
+
+    .cs-section-title em { font-style: normal; }
+
+    .cs-section-body {
+      font-size: 15px;
+      font-weight: 400;
+      line-height: 1.8;
+      color: var(--ink-mid);
+      padding-top: 6px;
+    }
+
+    /* ─── Device frames ──────────────────────────────────────── */
+    .mockup-row {
+      display: grid;
+      gap: 16px;
+    }
+
+    .mockup-row-4 { grid-template-columns: repeat(4, 1fr); }
+    .mockup-row-3 { grid-template-columns: repeat(3, 1fr); }
+    .mockup-row-2 { grid-template-columns: repeat(2, 1fr); }
+
+    .mockup-frame {
+      border-radius: 20px;
+      overflow: hidden;
+      background: var(--bg-surface);
+      position: relative;
+    }
+
+    .mockup-frame img { width: 100%; display: block; }
+
+    .phone-placeholder {
+      aspect-ratio: 9 / 19;
+      background: var(--phone-bg);
+      border-radius: 28px;
+      border: 1px solid var(--phone-border);
+      transition: background 0.35s ease, border-color 0.35s ease;
+    }
+
+    /* ─── Carousel dots ──────────────────────────────────────── */
+    .carousel-dots {
+      display: none;
+      justify-content: center;
+      gap: 6px;
+      margin-top: 20px;
+    }
+
+    .c-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      border: none;
+      background: var(--rule);
+      padding: 0;
+      cursor: pointer;
+      transition: background 0.25s ease, transform 0.25s ease;
+    }
+
+    .c-dot.active {
+      background: var(--ink);
+      transform: scale(1.4);
+    }
+
+    /* ─── CTA Panel ──────────────────────────────────────────── */
+    .cta-panel {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .cta-left {
+      padding: 80px var(--pad);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      border-right: 1px solid var(--rule);
+    }
+
+    .cta-eyebrow {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--ink-light);
+      margin-bottom: 20px;
+    }
+
+    .cta-heading {
+      font-family: var(--serif);
+      font-weight: 400;
+      font-size: clamp(24px, 2.8vw, 40px);
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      color: var(--ink);
+      margin-bottom: 32px;
+    }
+
+    .cta-heading em { font-style: normal; }
+
+    .cta-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--ink);
+      color: var(--bg);
+      font-family: var(--sans);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 14px 24px;
+      width: fit-content;
+      will-change: transform;
+      transition: gap 0.2s, transform 0.15s ease;
+    }
+
+    .cta-btn:hover { gap: 16px; }
+    .cta-btn svg { width: 12px; height: 12px; }
+
+    .cta-right {
+      position: relative;
+      overflow: hidden;
+      min-height: 320px;
+      background: var(--bg-raised);
+    }
+
+    /* ─── Metadata Footer ────────────────────────────────────── */
+    .meta-footer {
+      padding: 64px var(--pad);
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .meta-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 40px;
+    }
+
+    .meta-col-label {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--ink-light);
+      margin-bottom: 14px;
+    }
+
+    .meta-col-value {
+      font-size: 13px;
+      font-weight: 400;
+      line-height: 1.8;
+      color: var(--ink-mid);
+    }
+
+    .meta-col-value strong {
+      display: block;
+      font-weight: 500;
+      color: var(--ink);
+      margin-bottom: 1px;
+    }
+
+    /* ─── More Case Studies ──────────────────────────────────── */
+    .more-section {
+      padding: 64px var(--pad);
+      background: var(--more-bg);
+      transition: background 0.35s ease;
+    }
+
+    .more-label {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--ink-light);
+      margin-bottom: 32px;
+    }
+
+    .more-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+    }
+
+    .more-card {
+      background: var(--bg-raised);
+      cursor: pointer;
+      transition: background 0.35s ease;
+    }
+
+    .more-card-img {
+      aspect-ratio: 5 / 4;
+      overflow: hidden;
+      position: relative;
+      background: var(--bg-surface);
+    }
+
+    .more-card-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .more-card:hover .more-card-img img { transform: scale(1.04); }
+
+    .more-card-body {
+      padding: 18px 22px 22px;
+      border-top: 1px solid var(--rule);
+    }
+
+    .more-card-client {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ink-light);
+      margin-bottom: 6px;
+    }
+
+    .more-card-title {
+      font-family: var(--sans);
+      font-weight: 400;
+      font-size: 17px;
+      line-height: 1.35;
+      letter-spacing: -0.01em;
+      color: var(--ink);
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       RESPONSIVE
+    ══════════════════════════════════════════════════════════ */
+
+    @media (max-width: 1080px) {
+      :root { --pad: 40px; }
+      .cs-section-header { gap: 32px; }
+      .meta-grid { grid-template-columns: repeat(2, 1fr); }
+      .more-grid { grid-template-columns: repeat(2, 1fr); }
+      .mockup-row {
+        display: flex;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        gap: 12px;
+        margin-left: calc(-1 * var(--pad));
+        margin-right: calc(-1 * var(--pad));
+        padding-left: var(--pad);
+        padding-right: var(--pad);
+        padding-bottom: 4px;
+      }
+      .mockup-row::-webkit-scrollbar { display: none; }
+      .mockup-row > * { flex: 0 0 72%; max-width: 320px; scroll-snap-align: start; }
+      .carousel-dots { display: flex; }
+    }
+
+    @media (max-width: 767px) {
+      :root { --pad: 20px; }
+      nav { padding: 0 var(--pad); height: 52px; }
+      .nav-links { gap: 20px; }
+      .nav-links a { font-size: 10px; letter-spacing: 0.08em; }
+      .nav-right { gap: 16px; }
+      .project-header { padding: 40px var(--pad) 36px; }
+      .hero-image { aspect-ratio: 4 / 3; }
+      .cs-section { padding: 56px var(--pad); }
+      .cs-section-header { grid-template-columns: 1fr; gap: 14px; margin-bottom: 36px; }
+      .mockup-row > * { flex: 0 0 80%; max-width: 980px; }
+      .cta-panel { grid-template-columns: 1fr; }
+      .cta-left { padding: 56px var(--pad); border-right: none; border-bottom: 1px solid var(--rule); }
+      .cta-right { min-height: 220px; }
+      .meta-footer { padding: 48px var(--pad); }
+      .meta-grid { grid-template-columns: repeat(2, 1fr); gap: 28px; }
+      .more-section { padding: 48px var(--pad); }
+      .more-grid { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 480px) {
+      .meta-grid { grid-template-columns: 1fr; }
+      .mockup-row > * { flex: 0 0 88%; }
+    }
+
+  </style>
+</head>
+<body>
+
+  <!-- Nav -->
+  <nav>
+    <a href="index.html" class="nav-logo">
+      <svg class="nav-logo-icon" viewBox="0 0 81 80" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+        <circle cx="40" cy="40" r="37" stroke="currentColor" stroke-width="6"/>
+        <path class="nav-logo-ring nav-logo-ring--a" d="M25.7864 25.5814C33.2846 18.0833 41.7683 13.1964 49.304 11.2549C56.9155 9.29396 62.9687 10.4378 66.5238 13.9929C70.0787 17.548 71.222 23.6008 69.2611 31.212C67.3196 38.7477 62.4327 47.2314 54.9346 54.7296C47.4364 62.2277 38.9527 67.1145 31.4171 69.0561C23.8058 71.0169 17.7531 69.8737 14.1979 66.3188C10.6428 62.7637 9.49898 56.7104 11.4599 49.0989C13.4015 41.5633 18.2883 33.0796 25.7864 25.5814Z" stroke="currentColor" stroke-width="6"/>
+        <path class="nav-logo-ring nav-logo-ring--b" d="M34.4329 45.538C26.8208 37.9258 20.8808 30.2395 17.4036 24.03C15.6545 20.9064 14.6155 18.3096 14.2293 16.3768C13.8167 14.3118 14.2815 13.8027 14.2852 13.799C14.3002 13.7853 14.8204 13.3359 16.8623 13.7438C18.7951 14.13 21.3925 15.1684 24.5161 16.9175C30.7257 20.3946 38.4114 26.3354 46.0235 33.9474C53.6358 41.5597 59.577 49.2459 63.0542 55.4555C64.8033 58.5791 65.8416 61.1766 66.2278 63.1094C66.6358 65.1512 66.1863 65.6715 66.1726 65.6864C66.1689 65.6901 65.6598 66.1549 63.5948 65.7424C61.6621 65.3562 59.0652 64.3171 55.9417 62.568C49.732 59.0908 42.0452 53.1503 34.4329 45.538Z" stroke="currentColor" stroke-width="6"/>
+      </svg>
+      <span>Benjamin Lynch</span>
+    </a>
+    <div class="nav-right">
+      <ul class="nav-links">
+        <li><a href="index.html">Work</a></li>
+        <li><a href="https://linkedin.com" target="_blank">LinkedIn</a></li>
+        <li><a href="mailto:benflynch@gmail.com">Contact</a></li>
+      </ul>
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+        <svg class="toggle-moon" viewBox="0 0 16 16" fill="currentColor">
+          <path d="M6 0a6 6 0 1 0 6 6A4.54 4.54 0 0 1 6 0z"/>
+        </svg>
+        <svg class="toggle-sun" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+          <circle cx="8" cy="8" r="2.5"/>
+          <path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.05 3.05l1.42 1.42M11.53 11.53l1.42 1.42M3.05 12.95l1.42-1.42M11.53 4.47l1.42-1.42"/>
+        </svg>
+        <span class="toggle-label-dark">Light</span>
+        <span class="toggle-label-light" style="display:none">Dark</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Project Header -->
+  <div class="project-header">
+
+    <a href="index.html" class="project-back">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M19 12H5M12 19l-7-7 7-7"/>
+      </svg>
+      All work
+    </a>
+
+    <div class="project-brand">
+        <div class="project-icon">
+      <svg viewBox="35 62 80 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path fill-rule="evenodd" clip-rule="evenodd" d="M83.0694 71.0752C80.9376 71.0752 79.2412 72.6878 79.2412 74.8766C79.2412 77.0664 80.9381 78.6795 83.0694 78.6795C85.2008 78.6795 86.8962 77.0664 86.8962 74.8766C86.8962 72.6878 85.2008 71.0752 83.0694 71.0752ZM65.0611 71.1736H69.9545V72.5142H66.5832V74.2126H69.5527V75.5196H66.5832V77.2414H70.1073V78.581H65.0606V71.1736H65.0611ZM60.0729 71.1738H57.4741H57.4736V78.5812H58.9967V76.1525H60.0729C61.5739 76.1525 62.8244 75.3891 62.8244 73.6572C62.8244 71.9253 61.5844 71.1738 60.0729 71.1738ZM61.2591 73.6574C61.2591 74.4745 60.7812 74.8122 60.0306 74.8122V74.8117H58.9971V72.5146H60.0306C60.7591 72.5146 61.2591 72.8298 61.2591 73.6574ZM74.1917 71.1736H72.6691V78.581H77.5415V77.2414H74.1917V71.1736ZM85.3313 74.8773C85.3313 73.4945 84.4179 72.4375 83.0697 72.4375C81.7205 72.4375 80.8076 73.4945 80.8076 74.8773C80.8076 76.2614 81.7205 77.318 83.0697 77.318C84.4179 77.318 85.3313 76.2609 85.3313 74.8773ZM90.6474 72.5139H88.5381V71.1729H94.2797V72.5139H92.1704V78.5808H90.6474V72.5139ZM99.7381 72.4375C101.086 72.4375 102 73.4945 102 74.8773C102 76.2609 101.086 77.318 99.7381 77.318C98.3889 77.318 97.4756 76.2614 97.4756 74.8773C97.4756 73.4945 98.3889 72.4375 99.7381 72.4375ZM95.9102 74.8766C95.9102 72.6878 97.6071 71.0752 99.7389 71.0752C101.87 71.0752 103.567 72.6878 103.567 74.8766C103.567 77.0664 101.87 78.6795 99.7389 78.6795C97.6071 78.6795 95.9102 77.0664 95.9102 74.8766ZM107.336 74.1258C107.336 74.1258 107.848 74.7906 108.217 75.1388L111.948 78.6466H112.099V71.174H110.675V74.279C110.675 74.7906 110.772 75.6287 110.772 75.6287C110.772 75.6287 110.262 74.9539 109.902 74.6167L106.172 71.1084H106.021V78.5819H107.445V75.4764C107.445 74.9429 107.336 74.1258 107.336 74.1258Z" fill="currentColor"/>
+        <path d="M50.3615 69.1745L51.9468 66.4229C52.4108 65.6185 52.1358 64.5904 51.3323 64.1249C50.9464 63.902 50.4877 63.8418 50.0574 63.9574C49.627 64.073 49.2603 64.3551 49.0381 64.7413L47.4528 67.4919C44.0738 66.4253 40.2916 67.8057 38.4467 71.006C37.3192 72.9578 37.0997 75.3045 37.8456 77.4316L40.7734 72.3518C41.438 71.1908 42.5396 70.344 43.8324 70.0002C45.1229 69.6502 46.4998 69.8318 47.6554 70.5045C50.0612 71.8959 50.8883 74.9884 49.4993 77.3976C48.1104 79.8076 45.0231 80.6362 42.6178 79.2449L44.297 76.3314C44.6827 76.5545 45.1414 76.615 45.5718 76.4996C46.0021 76.3841 46.3689 76.1022 46.5912 75.716C47.0545 74.9115 46.7794 73.8839 45.9762 73.4185C45.5904 73.1955 45.1319 73.1351 44.7015 73.2505C44.2712 73.3659 43.9044 73.6478 43.682 74.0339L38.3255 83.3269C37.8618 84.1312 38.1367 85.159 38.94 85.6245C39.3257 85.8477 39.7844 85.9081 40.2149 85.7926C40.6453 85.677 41.012 85.3949 41.2341 85.0085L42.8199 82.2579C46.1984 83.3245 49.9812 81.9442 51.8261 78.7434C53.671 75.5431 52.9732 71.5716 50.361 69.174" fill="currentColor"/>
+      </svg>
+    </div>
+      </div>
+
+    <p class="project-desc">Designing the eCommerce experience for Peloton's launch into the Australian market.</p>
+
+    <div class="project-header-meta">
+      <div class="header-meta-item">
+        <div class="header-meta-label">Client</div>
+        <div class="header-meta-val">Peloton</div>
+        </div>
+        <div class="header-meta-item">
+        <div class="header-meta-label">Sector</div>
+        <div class="header-meta-val">Fitness · Retail</div>
+      </div>
+      <div class="header-meta-item">
+        <div class="header-meta-label">Tags</div>
+        <div class="header-meta-val header-meta-tags">
+          <span class="ptag">eCommerce</span> <span class="ptag">New Markets</span> <span class="ptag">Product Experiments</span>
+        </div>
+      </div>
+      <div class="header-meta-item">
+        <div class="header-meta-label">Role</div>
+        <div class="header-meta-val">Senior Product Designer</div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <!-- Hero Image -->
+  <div class="hero-image">
+    <picture>
+      <source media="(max-width: 767px)" srcset="Imagery/Hero/Desktop/PelotonAU.jpg" />
+      <img src="Imagery/Hero/Desktop/PelotonAU.jpg" alt="Peloton Australia launch hero" />
+    </picture>
+  </div>
+
+  <!-- Project Brief -->
+  <div class="brief-block">
+    <div>
+      <div class="brief-col-label">Objective</div>
+      <p class="brief-col-text">Announce Peloton's launch to Australia through a single lead-gen landing page.</p>
+    </div>
+    <div>
+      <div class="brief-col-label">Market</div>
+      <p class="brief-col-text">International prospects ahead of the full Australian market launch.</p>
+    </div>
+    <div>
+      <div class="brief-col-label">Learnings to uncover</div>
+      <p class="brief-col-text">Low brand awareness, the local competitive landscape, and how launch-strategy timings shape what the page can promise.</p>
+    </div>
+  </div>
+
+  <!-- Section 01 -->
+  <section class="cs-section">
+    <div class="cs-section-header">
+      <div>
+        <div class="cs-section-label">
+          <div class="cs-label-dot"></div>
+          <span class="cs-label-text">01</span>
+        </div>
+        <h2 class="cs-section-title">From workshop to<br><em>working design</em></h2>
+      </div>
+      <p class="cs-section-body">After rounds of wireframe and design concepting, the goal became a balance of business objectives — lead-gen capture — alongside brand awareness. We started with a basic templated experience but quickly realised we needed to dial up the interactivity of the page and let the content do the work the brand deserves.</p>
+    </div>
+    <div class="mockup-row mockup-row-3" id="carousel-01">
+      <div class="mockup-frame">
+        <img src="Imagery/PelotonAU/workshop-miro.jpg" alt="Workshop session — Miro board" loading="lazy">
+      </div>
+      <div class="mockup-frame">
+        <img src="Imagery/PelotonAU/wireframes.jpg" alt="Page wireframes" loading="lazy">
+      </div>
+      <div class="mockup-frame">
+        <img src="Imagery/PelotonAU/design.jpg" alt="Design concepts" loading="lazy">
+      </div>
+    </div>
+    <div class="carousel-dots" id="dots-01"></div>
+  </section>
+
+  <!-- Section 02 -->
+  <section class="cs-section">
+    <div class="cs-section-header">
+      <div>
+        <div class="cs-section-label">
+          <div class="cs-label-dot"></div>
+          <span class="cs-label-text">02</span>
+        </div>
+        <h2 class="cs-section-title">Hero and<br><em>product intro</em></h2>
+      </div>
+      <p class="cs-section-body">The hero set the tone for prospects encountering Peloton for the first time. Below it, a product intro module summarised the core offering without committing to availability at launch — important given supply and logistics were still being defined. The module was built to scale up or down as the product mix changed in future scenarios.</p>
+    </div>
+    <div class="mockup-row mockup-row-2" id="carousel-02">
+      <div class="mockup-frame">
+        <img src="Imagery/PelotonAU/landing-01-hero.png" alt="Landing page — hero module" loading="lazy">
+      </div>
+      <div class="mockup-frame">
+        <img src="Imagery/PelotonAU/landing-02-product.png" alt="Landing page — product intro module" loading="lazy">
+      </div>
+    </div>
+    <div class="carousel-dots" id="dots-02"></div>
+  </section>
+
+  <!-- Section 03 -->
+  <section class="cs-section">
+    <div class="cs-section-header">
+      <div>
+        <div class="cs-section-label">
+          <div class="cs-label-dot"></div>
+          <span class="cs-label-text">03</span>
+        </div>
+        <h2 class="cs-section-title">Value props and<br><em>fitness categories</em></h2>
+      </div>
+      <p class="cs-section-body">Consumer Insights research surfaced two specific concerns from Australian prospects: the timezone difference vs. live US classes, and how flexible Peloton actually was for exercising at home or anywhere. We addressed those through a pair of 50/50 modules with an offset layout. To break up the asset-led page rhythm, we used iconography to spotlight the breadth of disciplines a Peloton membership unlocks.</p>
+    </div>
+    <div class="mockup-row mockup-row-2" id="carousel-03">
+      <div class="mockup-frame">
+        <img src="Imagery/PelotonAU/landing-03-valueprops.png" alt="Landing page — value props module" loading="lazy">
+      </div>
+      <div class="mockup-frame">
+        <img src="Imagery/PelotonAU/landing-04-categories.png" alt="Landing page — fitness categories module" loading="lazy">
+      </div>
+    </div>
+    <div class="carousel-dots" id="dots-03"></div>
+  </section>
+
+  <!-- CTA Panel -->
+  <div class="cta-panel">
+    <div class="cta-left">
+      <p class="cta-eyebrow">Get in touch</p>
+      <h3 class="cta-heading">Let's Talk —<br>Reach out to learn<br>more about this<br><em>case study</em></h3>
+      <a href="mailto:benflynch@gmail.com" class="cta-btn">
+        Email me
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M5 12h14M13 6l6 6-6 6"/>
+        </svg>
+      </a>
+    </div>
+    <div class="cta-right">
+      <div style="width:100%;height:100%;min-height:360px;background:linear-gradient(145deg,var(--bg-raised),var(--bg-surface));"></div>
+    </div>
+  </div>
+
+  <!-- Metadata Footer -->
+  <div class="meta-footer">
+    <div class="meta-grid">
+      <div>
+        <div class="meta-col-label">Deliverables</div>
+        <div class="meta-col-value">
+          <strong>User Research</strong>
+          <strong>Information Architecture</strong>
+          <strong>Wireframes</strong>
+          <strong>Prototypes</strong>
+          <strong>UI Design</strong>
+        </div>
+      </div>
+      <div>
+        <div class="meta-col-label">Made Using</div>
+        <div class="meta-col-value">
+          <strong>Figma</strong>
+          <strong>Miro</strong>
+          <strong>Photoshop</strong>
+          <strong>Illustrator</strong>
+          <strong>After Effects</strong>
+          <strong>Contentful</strong>
+        </div>
+      </div>
+      <div>
+        <div class="meta-col-label">Role</div>
+        <div class="meta-col-value">
+          <strong>Product Design Lead</strong>
+        </div>
+      </div>
+      <div>
+        <div class="meta-col-label">Client</div>
+        <div class="meta-col-value">
+          <strong>Peloton</strong>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- More Case Studies -->
+  <div class="more-section">
+    <p class="more-label">More case studies</p>
+    <div class="more-grid">
+      <a href="peloton-subscription.html" class="more-card">
+        <div class="more-card-img">
+          <img src="Imagery/Thumbnails/Peloton03.jpg" alt="Peloton" loading="lazy" decoding="async" />
+        </div>
+        <div class="more-card-body">
+          <div class="more-card-client">Peloton</div>
+          <div class="more-card-title">Global B2B subscription tiers</div>
+        </div>
+      </a>
+      <a href="peloton-colleges.html" class="more-card">
+        <div class="more-card-img">
+          <img src="Imagery/Thumbnails/Peloton01.jpg" alt="Peloton" loading="lazy" decoding="async" />
+        </div>
+        <div class="more-card-body">
+          <div class="more-card-client">Peloton</div>
+          <div class="more-card-title">US College limited edition</div>
+        </div>
+      </a>
+      <a href="peloton-ar.html" class="more-card">
+        <div class="more-card-img">
+          <img src="Imagery/Thumbnails/Peloton06.jpg" alt="Peloton" loading="lazy" decoding="async" />
+        </div>
+        <div class="more-card-body">
+          <div class="more-card-client">Peloton</div>
+          <div class="more-card-title">AR home visualisation tool</div>
+        </div>
+      </a>
+    </div>
+  </div>
+
+  <script>
+
+    /* Theme toggle */
+    const html        = document.documentElement;
+    const themeToggle = document.getElementById('themeToggle');
+    const labelDark   = themeToggle.querySelector('.toggle-label-dark');
+    const labelLight  = themeToggle.querySelector('.toggle-label-light');
+
+    const saved = localStorage.getItem('cs-theme');
+    if (saved) html.dataset.theme = saved;
+
+    function updateToggleLabel() {
+      const isDark = html.dataset.theme === 'dark';
+      labelDark.style.display  = isDark  ? '' : 'none';
+      labelLight.style.display = isDark  ? 'none' : '';
+    }
+
+    updateToggleLabel();
+
+    themeToggle.addEventListener('click', () => {
+      const next = html.dataset.theme === 'dark' ? 'light' : 'dark';
+      html.dataset.theme = next;
+      localStorage.setItem('cs-theme', next);
+      updateToggleLabel();
+    });
+
+    /* Carousel dots */
+    function initCarousel(rowId, dotsId) {
+      const row   = document.getElementById(rowId);
+      const dotsEl = document.getElementById(dotsId);
+      if (!row || !dotsEl) return;
+      const items = [...row.children];
+      if (items.length < 2) return;
+      items.forEach((_, i) => {
+        const btn = document.createElement('button');
+        btn.className = 'c-dot' + (i === 0 ? ' active' : '');
+        btn.setAttribute('aria-label', `Slide ${i + 1}`);
+        btn.addEventListener('click', () => {
+          items[i].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
+        });
+        dotsEl.appendChild(btn);
+      });
+      const dots = [...dotsEl.querySelectorAll('.c-dot')];
+      const obs = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting && entry.intersectionRatio >= 0.5) {
+            const idx = items.indexOf(entry.target);
+            if (idx !== -1) dots.forEach((d, i) => d.classList.toggle('active', i === idx));
+          }
+        });
+      }, { root: row, threshold: 0.5 });
+      items.forEach(item => obs.observe(item));
+    }
+
+    initCarousel('carousel-01', 'dots-01');
+    initCarousel('carousel-02', 'dots-02');
+    initCarousel('carousel-03', 'dots-03');
+
+    /* Magnetic CTA */
+    document.querySelectorAll('.cta-btn').forEach(btn => {
+      btn.addEventListener('mouseenter', () => {
+        btn.style.transition = 'transform 0.15s ease, gap 0.2s ease';
+      });
+      btn.addEventListener('mousemove', e => {
+        const r = btn.getBoundingClientRect();
+        const x = (e.clientX - r.left - r.width  / 2) * 0.22;
+        const y = (e.clientY - r.top  - r.height / 2) * 0.32;
+        btn.style.transform = `translate(${x}px, ${y}px)`;
+      });
+      btn.addEventListener('mouseleave', () => {
+        btn.style.transition = 'transform 0.55s cubic-bezier(0.22,1,0.36,1), gap 0.2s ease';
+        btn.style.transform = '';
+        setTimeout(() => { btn.style.transition = ''; }, 550);
+      });
+    });
+
+  </script>
+</body>
+</html>
