@@ -923,11 +923,55 @@
     }
 
     .grid-recent {
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(2, 1fr);
     }
 
     .grid-more {
       grid-template-columns: repeat(4, 1fr);
+    }
+
+    /* ─── Larger hero variant for Recent work ───────────────── */
+    .grid-recent .card-img {
+      aspect-ratio: 4 / 3;
+    }
+
+    .grid-recent .card-text {
+      padding: 32px 36px 36px;
+    }
+
+    .grid-recent .card-row {
+      margin-bottom: 16px;
+    }
+
+    .grid-recent .card-client {
+      font-size: 11px;
+      letter-spacing: 0.14em;
+    }
+
+    .grid-recent .card-num {
+      font-size: 11px;
+    }
+
+    .grid-recent .card-title {
+      font-size: 26px;
+      line-height: 1.25;
+      letter-spacing: -0.015em;
+      margin-bottom: 22px;
+      max-width: 36ch;
+    }
+
+    .grid-recent .ctag {
+      font-size: 10px;
+      padding: 5px 12px;
+    }
+
+    .grid-recent .card-arrow {
+      top: 20px; right: 20px;
+      width: 44px; height: 44px;
+    }
+
+    .grid-recent .card-arrow svg {
+      width: 16px; height: 16px;
     }
 
     .card {
@@ -1417,6 +1461,20 @@
         grid-template-columns: 1fr;
       }
 
+      /* Dial down the hero size for tablet single-column */
+      .grid-recent .card-img {
+        aspect-ratio: 5 / 4;
+      }
+
+      .grid-recent .card-text {
+        padding: 24px 28px 28px;
+      }
+
+      .grid-recent .card-title {
+        font-size: 22px;
+        max-width: none;
+      }
+
       .exp-role {
         grid-template-columns: 140px 1fr;
         grid-template-areas: "dates meta" "dates body";
@@ -1493,6 +1551,15 @@
 
       .grid-more {
         grid-template-columns: 1fr;
+      }
+
+      /* Mobile hero variant — slightly bigger than 'more', not enormous */
+      .grid-recent .card-text {
+        padding: 20px 24px 24px;
+      }
+
+      .grid-recent .card-title {
+        font-size: 19px;
       }
 
       .work-section + .work-section {
@@ -2021,7 +2088,7 @@
     <div class="work-section">
       <div class="work-section-header">
         <h2 class="work-section-label">Recent work</h2>
-        <span class="work-section-count">7 case studies</span>
+        <span class="work-section-count">4 case studies</span>
       </div>
       <div class="grid grid-recent">
 
@@ -2126,6 +2193,17 @@
         </div>
       </a>
 
+      </div>
+    </div>
+
+    <!-- ═══ MORE PROJECTS ═══════════════════════════════════════ -->
+    <div class="work-section">
+      <div class="work-section-header">
+        <h2 class="work-section-label">More projects</h2>
+        <span class="work-section-count">9 projects</span>
+      </div>
+      <div class="grid grid-more">
+
       <!-- P5 -->
       <a href="peloton-subscription.html" class="card">
         <div class="card-img">
@@ -2195,16 +2273,6 @@
         </div>
       </a>
 
-      </div>
-    </div>
-
-    <!-- ═══ MORE PROJECTS ═══════════════════════════════════════ -->
-    <div class="work-section">
-      <div class="work-section-header">
-        <h2 class="work-section-label">More projects</h2>
-        <span class="work-section-count">6 projects</span>
-      </div>
-      <div class="grid grid-more">
 
       <a href="nike.html" class="card">
         <div class="card-img">
