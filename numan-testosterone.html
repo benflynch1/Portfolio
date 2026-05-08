@@ -174,27 +174,29 @@
       gap: 28px;
     }
 
-    .nav-contact {
-      font-size: 11px;
-      font-weight: 500;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
+    /* ─── Nav socials (top-right) ──────────────────── */
+    .nav-socials {
+      list-style: none;
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      padding: 0;
+      margin: 0;
+    }
+    .nav-socials a {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
       color: var(--ink-mid);
-      transition: color 0.2s;
-      position: relative;
+      transition: color 0.2s ease;
     }
-    .nav-contact::after {
-      content: '';
-      position: absolute;
-      bottom: -2px; left: 0;
-      width: 100%; height: 1px;
-      background: var(--ink);
-      transform: scaleX(0);
-      transform-origin: right;
-      transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+    .nav-socials a svg {
+      width: 18px;
+      height: 18px;
+      display: block;
+      fill: currentColor;
     }
-    .nav-contact:hover { color: var(--ink); }
-    .nav-contact:hover::after { transform: scaleX(1); transform-origin: left; }
+    .nav-socials a:hover { color: var(--ink); }
 
     /* ─── Theme toggle ─────────────────────────────── */
     .theme-toggle {
@@ -751,7 +753,22 @@
       <span>Benjamin Lynch</span>
     </a>
     <div class="nav-right">
-      <a href="#contact" class="nav-contact">Contact</a>
+      <ul class="nav-socials">
+      <li>
+        <a href="https://www.linkedin.com/in/benflynch/" target="_blank" rel="noopener" aria-label="LinkedIn">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+            <path d="M20.45 20.45h-3.55v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.36V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.72V1.72C24 .77 23.2 0 22.22 0z"/>
+          </svg>
+        </a>
+      </li>
+      <li>
+        <a href="https://x.com/benlynch" target="_blank" rel="noopener" aria-label="X">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117L17.083 19.77z"/>
+          </svg>
+        </a>
+      </li>
+    </ul>
       <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
         <svg class="toggle-moon" viewBox="0 0 16 16" fill="currentColor">
           <path d="M6 0a6 6 0 1 0 6 6A4.54 4.54 0 0 1 6 0z"/>
@@ -960,7 +977,7 @@
     <div class="cta-left">
       <p class="cta-eyebrow">Get in touch</p>
       <h3 class="cta-heading">Let's Talk —<br>Reach out to learn<br>more about this<br><em>case study</em></h3>
-      <a href="mailto:benflynch@gmail.com" class="cta-btn">
+      <a href="mailto:hello@benjaminlynch.co.uk" class="cta-btn">
         Email me
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
           <path d="M5 12h14M13 6l6 6-6 6"/>

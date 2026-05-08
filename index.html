@@ -153,28 +153,29 @@
       .nav-logo:hover > span { font-weight: 600; }
     }
 
-    /* ─── Contact link (top-right) ──────────────────── */
-    .nav-contact {
-      font-size: 11px;
-      font-weight: 500;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
+    /* ─── Nav socials (top-right) ──────────────────── */
+    .nav-socials {
+      list-style: none;
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      padding: 0;
+      margin: 0;
+    }
+    .nav-socials a {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
       color: var(--ink-mid);
-      transition: color 0.2s;
-      position: relative;
+      transition: color 0.2s ease;
     }
-    .nav-contact::after {
-      content: '';
-      position: absolute;
-      bottom: -2px; left: 0;
-      width: 100%; height: 1px;
-      background: var(--ink);
-      transform: scaleX(0);
-      transform-origin: right;
-      transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+    .nav-socials a svg {
+      width: 18px;
+      height: 18px;
+      display: block;
+      fill: currentColor;
     }
-    .nav-contact:hover { color: var(--ink); }
-    .nav-contact:hover::after { transform: scaleX(1); transform-origin: left; }
+    .nav-socials a:hover { color: var(--ink); }
 
     /* ─── Mode toggle (inline in header bar) ────────────────── */
     .bar-left {
@@ -186,9 +187,10 @@
     .inline-toggle {
       display: flex;
       align-items: center;
-      background: var(--ink);
+      background: transparent;
+      border: 1px solid var(--rule);
       border-radius: 100px;
-      padding: 3px;
+      padding: 2px;
       gap: 2px;
     }
 
@@ -197,14 +199,14 @@
       align-items: center;
       justify-content: center;
       gap: 7px;
-      height: 32px;
-      padding: 0 14px;
+      height: 28px;
+      padding: 0 16px;
       border-radius: 100px;
       border: none;
       background: transparent;
-      color: rgba(255,255,255,0.45);
+      color: var(--ink-mid);
       font-family: var(--sans);
-      font-size: 11px;
+      font-size: 12px;
       font-weight: 500;
       letter-spacing: 0.06em;
       text-transform: uppercase;
@@ -213,11 +215,15 @@
       white-space: nowrap;
     }
 
-    .toggle-btn svg { width: 13px; height: 13px; flex-shrink: 0; }
+    .toggle-btn svg { width: 14px; height: 14px; flex-shrink: 0; }
+
+    .toggle-btn:hover:not(.active) {
+      color: var(--ink);
+    }
 
     .toggle-btn.active {
-      background: var(--bg);
-      color: var(--ink);
+      background: var(--ink);
+      color: var(--bg);
     }
 
     @keyframes blink {
@@ -521,30 +527,31 @@
 
     .hero-greeting {
       font-family: var(--sans);
-      font-size: clamp(14px, 1.15vw, 17px);
-      font-weight: 400;
+      font-size: 17px;
+      font-weight: 500;
       color: var(--ink-mid);
-      letter-spacing: 0.01em;
-      line-height: 1.5;
+      letter-spacing: 0;
+      line-height: 1;
     }
 
     .hero-greeting strong {
-      font-weight: 600;
-      color: var(--ink);
+      font-weight: inherit;
+      color: inherit;
     }
 
     .hero-content-row {
       display: flex;
       align-items: flex-start;
-      gap: 48px;
+      gap: clamp(40px, 5.5vw, 88px);
     }
 
     .hero-right-col {
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
       gap: 28px;
       flex: 1;
+      min-width: 0;            /* allow flex item to shrink under viewport */
+      max-width: 960px;        /* a bit wider on large desktops */
       transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
@@ -556,10 +563,33 @@
     .hero-headline {
       font-family: var(--serif);
       font-weight: 400;
-      font-size: clamp(40px, 5.4vw, 80px);
-      line-height: 0.98;
-      letter-spacing: -0.025em;
+      font-size: clamp(34px, 3.4vw, 52px);
+      line-height: 1.08;
+      letter-spacing: -0.022em;
       color: var(--ink);
+      overflow-wrap: break-word;
+    }
+
+    /* Gradient accent for "health, fitness, and performance." */
+    .hero-headline-accent {
+      background-image: linear-gradient(110deg, #4FA579 0%, #1B5239 50%, #2E8B57 100%);
+      background-size: 220% 220%;
+      background-position: 0% 50%;
+      -webkit-background-clip: text;
+              background-clip: text;
+      -webkit-text-fill-color: transparent;
+              color: transparent;
+      animation: heroGradientDrift 14s ease-in-out infinite alternate;
+    }
+
+    @keyframes heroGradientDrift {
+      0%   { background-position:   0% 50%; }
+      100% { background-position: 100% 50%; }
+    }
+
+    /* Respect users who prefer reduced motion */
+    @media (prefers-reduced-motion: reduce) {
+      .hero-headline-accent { animation: none; }
     }
 
     .hero-headline .word {
@@ -707,17 +737,83 @@
 
     .hero-descriptor {
       font-family: var(--sans);
-      font-size: clamp(16px, 1.6vw, 21px);
-      font-weight: 300;
-      line-height: 1.6;
-      color: var(--ink-mid);
-      max-width: 26ch;
+      font-size: clamp(17px, 1.25vw, 20px);
+      font-weight: 400;
+      line-height: 1.55;
+      color: rgba(14, 13, 11, 0.82);
+      max-width: 56ch;
+      overflow-wrap: break-word;
     }
 
     .hero-descriptor strong {
       font-weight: 500;
       color: var(--ink);
     }
+
+    /* ─── Hero contact block (email + socials) ──────────────── */
+    .hero-contact {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      margin-top: 12px;
+      max-width: 56ch;
+    }
+
+    .hero-email {
+      position: relative;
+      font-family: var(--sans);
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--ink);
+      letter-spacing: -0.005em;
+      text-decoration: none;
+    }
+
+    .hero-email::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: -3px;
+      height: 1px;
+      background: var(--ink);
+      transform: scaleX(0);
+      transform-origin: left center;
+      transition: transform 0.45s cubic-bezier(0.65, 0, 0.35, 1);
+    }
+
+    .hero-email:hover::after { transform: scaleX(1); }
+
+    .hero-contact-divider {
+      width: 1px;
+      height: 14px;
+      background: var(--rule);
+    }
+
+    .hero-socials {
+      list-style: none;
+      display: flex;
+      gap: 16px;
+      padding: 0;
+      margin: 0;
+    }
+
+    .hero-socials a {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--ink-mid);
+      transition: color 0.2s ease;
+    }
+
+    .hero-socials a svg {
+      width: 20px;
+      height: 20px;
+      display: block;
+      fill: currentColor;
+    }
+
+    .hero-socials a:hover { color: var(--ink); }
 
     .hero-disciplines {
       margin-top: 20px;
@@ -740,7 +836,6 @@
       align-items: center;
       justify-content: space-between;
       padding: 28px 0;
-      border-bottom: 1px solid var(--rule);
       margin-bottom: 0;
     }
 
@@ -760,12 +855,12 @@
     }
 
     .filt {
-      font-size: 11px;
+      font-size: 12px;
       font-weight: 500;
       letter-spacing: 0.06em;
       text-transform: uppercase;
       color: var(--ink-mid);
-      padding: 7px 16px;
+      padding: 9px 18px;
       border: 1px solid var(--rule);
       border-radius: 100px;
       cursor: pointer;
@@ -975,33 +1070,48 @@
       border-radius: 100px;
     }
 
-    /* ─── Marquee strip (AKQA-style) ────────────────────────── */
+    /* ─── Marquee strip (inline, under contact) ─────────────── */
     .marquee-wrap {
       overflow: hidden;
-      border-bottom: 1px solid var(--rule);
-      padding: 4px 0;
+      padding: 0;
       margin: 0;
+      width: 100%;
+      /* Fade left/right edges so logos drift in/out cleanly */
+      mask-image: linear-gradient(
+        to right,
+        transparent 0%,
+        black 10%,
+        black 90%,
+        transparent 100%
+      );
+      -webkit-mask-image: linear-gradient(
+        to right,
+        transparent 0%,
+        black 10%,
+        black 90%,
+        transparent 100%
+      );
     }
 
     .marquee-track {
       display: inline-flex;
       align-items: center;
       gap: 0;
-      animation: marquee 60s linear infinite;
+      animation: marquee 50s linear infinite;
       will-change: transform; /* keep on its own compositor layer */
     }
 
     .marquee-item {
       display: inline-flex;
       align-items: center;
-      padding: 0 32px;
+      padding: 0 28px;
       color: var(--ink-light);
       flex-shrink: 0;
     }
 
     .marquee-item svg {
       display: block;
-      height: 117px;
+      height: 88px;
       width: auto;
     }
 
@@ -1486,10 +1596,41 @@
       to   { opacity: 1; }
     }
 
-    .hero-greeting-wrap { opacity: 0; transition: opacity 0.35s ease; }
-    .hero-headline   { opacity: 0; }
-    .hero-descriptor { animation: fadeUp 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.4s both; }
-    .marquee-wrap    { animation: fadeIn 0.9s ease 0.6s both; }
+    /* ─── Hero cascade: each element fades+rises in sequence ── */
+    @keyframes heroCascade {
+      from { opacity: 0; transform: translateY(14px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .agent-wrap,
+    .hero-greeting-wrap,
+    .hero-headline,
+    .hero-descriptor,
+    .hero-contact,
+    .marquee-wrap {
+      opacity: 0;
+      animation: heroCascade 0.4s cubic-bezier(0.65, 0, 0.35, 1) both;
+    }
+
+    .agent-wrap         { animation-delay: 0s;    }
+    .hero-greeting-wrap { animation-delay: 0.15s; }
+    .hero-headline      { animation-delay: 0.30s; }
+    .hero-descriptor    { animation-delay: 0.45s; }
+    .hero-contact       { animation-delay: 0.60s; }
+    .marquee-wrap       { animation-delay: 0.75s; }
+
+    @media (prefers-reduced-motion: reduce) {
+      .agent-wrap,
+      .hero-greeting-wrap,
+      .hero-headline,
+      .hero-descriptor,
+      .hero-contact,
+      .marquee-wrap {
+        animation: none;
+        opacity: 1;
+        transform: none;
+      }
+    }
 
     /* ─── Bottom-of-page fade overlay ──────────────────────── */
     .bottom-fade {
@@ -1614,7 +1755,22 @@
       </svg>
       <span>Benjamin Lynch</span>
     </span>
-    <a href="#contact" class="nav-contact">Contact</a>
+    <ul class="nav-socials">
+      <li>
+        <a href="https://www.linkedin.com/in/benflynch/" target="_blank" rel="noopener" aria-label="LinkedIn">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+            <path d="M20.45 20.45h-3.55v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.36V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.72V1.72C24 .77 23.2 0 22.22 0z"/>
+          </svg>
+        </a>
+      </li>
+      <li>
+        <a href="https://x.com/benlynch" target="_blank" rel="noopener" aria-label="X">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117L17.083 19.77z"/>
+          </svg>
+        </a>
+      </li>
+    </ul>
   </nav>
 
 
@@ -1638,15 +1794,21 @@
           <div class="hero-right-col">
 
             <div class="hero-greeting-wrap">
-              <p class="hero-greeting">Hi I'm <strong>Ben</strong>, a Lead Product Designer based in London</p>
+              <p class="hero-greeting">Hi I'm <strong>Ben</strong></p>
             </div>
 
             <div class="hero-text">
               <h1 class="hero-headline">
-                I design digital products<br>
-                and services for health, fitness,<br>
-                and performance.
+                A Product Design Lead in the <span class="hero-headline-accent">health, fitness, and performance</span> space.
               </h1>
+            </div>
+
+            <p class="hero-descriptor">
+              I specialise in designing digital products and services for small scale start ups up to global tech brands, with a knack for problem solving UX challenges and visual craft.
+            </p>
+
+            <div class="hero-contact">
+              <a class="hero-email" href="mailto:hello@benjaminlynch.co.uk">hello@benjaminlynch.co.uk</a>
             </div>
 
           </div>
@@ -2447,7 +2609,7 @@
         <p class="foot-tagline">Open to new product design roles and collaborations. Always happy to connect.</p>
       </div>
       <div class="foot-right">
-        <a class="foot-email" href="mailto:benflynch@gmail.com">benflynch@gmail.com</a>
+        <a class="foot-email" href="mailto:hello@benjaminlynch.co.uk">hello@benjaminlynch.co.uk</a>
         <ul class="foot-socials">
           <li>
             <a href="https://www.linkedin.com/in/benflynch/" target="_blank" rel="noopener" aria-label="LinkedIn">
@@ -2537,22 +2699,10 @@
     const sleep = ms => new Promise(r => setTimeout(r, ms));
 
     async function bootSequence() {
-      // Snap straight to final state — no AI agent loading sequence.
-      heroGreetingWrap.style.transition = 'none';
-      heroGreetingWrap.style.opacity    = '1';
-      heroGreeting.innerHTML            = greetingHTML;
+      // CSS handles entrance animation (cascade). Just restore greeting markup
+      // and activate the live indicator if present.
+      heroGreeting.innerHTML = greetingHTML;
       greetingDot?.classList.add('is-live');
-      heroRightCol.style.transition     = 'none';
-      heroRightCol.style.transform      = 'translateY(0)';
-
-      // On mobile, show the headline as static markup. On desktop, fade chars in.
-      if (window.matchMedia('(max-width: 767px)').matches) {
-        heroHeadline.style.opacity = '1';
-        return;
-      }
-
-      await sleep(150); // let layout settle, then animate the headline in
-      await fadeHeadline();
     }
 
     // ── Word-level float-in: each word rises and unblurs into place ──
@@ -2603,6 +2753,17 @@
 
     // Start immediately — boot sequence IS the page load
     bootSequence();
+
+    /* ═══════════════════════════════════════════════════════════
+       MARQUEE — relocate inline under hero contact block
+    ══════════════════════════════════════════════════════════ */
+    (function relocateMarquee() {
+      const marquee      = document.querySelector('.marquee-wrap');
+      const heroRightCol = document.querySelector('.hero-right-col');
+      if (marquee && heroRightCol) {
+        heroRightCol.appendChild(marquee);
+      }
+    })();
 
     /* ═══════════════════════════════════════════════════════════
        PORTFOLIO CARDS — play hover video on mouse enter
