@@ -153,111 +153,28 @@
       .nav-logo:hover > span { font-weight: 600; }
     }
 
-    /* ─── Menu toggle button ────────────────────────── */
-    .menu-toggle {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      background: none;
-      border: none;
-      cursor: pointer;
-      padding: 0;
-      color: var(--ink);
-    }
-
-    .menu-icon {
-      width: 22px;
-      display: flex;
-      flex-direction: column;
-      gap: 5px;
-    }
-
-    .menu-bar {
-      display: block;
-      height: 1px;
-      background: var(--ink);
-      transform-origin: center;
-      transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1), width 0.45s cubic-bezier(0.22, 1, 0.36, 1);
-    }
-
-    .menu-bar--top    { width: 100%; }
-    .menu-bar--bottom { width: 65%; }
-
-    .menu-toggle.is-open .menu-bar--top    { transform: translateY(3px) rotate(45deg); width: 100%; }
-    .menu-toggle.is-open .menu-bar--bottom { transform: translateY(-3px) rotate(-45deg); width: 100%; }
-
-    /* ─── Dropdown menu ─────────────────────────────── */
-    .nav-dropdown {
-      position: fixed;
-      top: 56px;
-      left: 0;
-      right: 0;
-      z-index: 199;
-      background: var(--bg);
-      border-bottom: 1px solid var(--rule);
-      opacity: 0;
-      transform: translateY(-6px);
-      pointer-events: none;
-      transition: opacity 0.25s ease, transform 0.25s ease;
-    }
-
-    .nav-dropdown.is-open {
-      opacity: 1;
-      transform: translateY(0);
-      pointer-events: auto;
-    }
-
-    .nav-dropdown-inner {
-      padding: 40px 64px 52px;
-      border-top: 1px solid var(--rule);
-    }
-
-    .nav-dropdown-label {
-      font-size: 9px;
-      font-weight: 700;
-      letter-spacing: 0.14em;
+    /* ─── Contact link (top-right) ──────────────────── */
+    .nav-contact {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.1em;
       text-transform: uppercase;
       color: var(--ink-mid);
-      margin-bottom: 24px;
-    }
-
-    .nav-dropdown-list {
-      list-style: none;
-    }
-
-    .nav-dropdown-list li a {
-      font-family: var(--serif);
-      font-size: clamp(30px, 3.2vw, 46px);
-      font-weight: 500;
-      line-height: 1.2;
-      letter-spacing: -0.02em;
-      color: var(--ink);
-      display: block;
-      padding: 5px 0;
       transition: color 0.2s;
+      position: relative;
     }
-
-    .nav-dropdown-list li a:hover { color: var(--ink-mid); }
-
-    /* ─── Menu backdrop (desktop only) ─────────────────────── */
-    @media (hover: hover) and (pointer: fine) {
-      .menu-backdrop {
-        position: fixed;
-        inset: 0;
-        z-index: 198;
-        background: rgba(14, 13, 11, 0.18);
-        backdrop-filter: blur(6px);
-        -webkit-backdrop-filter: blur(6px);
-        opacity: 0;
-        pointer-events: none;
-        transition: opacity 0.25s ease;
-      }
-
-      .menu-backdrop.is-visible {
-        opacity: 1;
-        pointer-events: auto;
-      }
+    .nav-contact::after {
+      content: '';
+      position: absolute;
+      bottom: -2px; left: 0;
+      width: 100%; height: 1px;
+      background: var(--ink);
+      transform: scaleX(0);
+      transform-origin: right;
+      transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
     }
+    .nav-contact:hover { color: var(--ink); }
+    .nav-contact:hover::after { transform: scaleX(1); transform-origin: left; }
 
     /* ─── Mode toggle (inline in header bar) ────────────────── */
     .bar-left {
@@ -1405,13 +1322,6 @@
         height: 52px;
       }
 
-      .nav-links { gap: 24px; }
-
-      .nav-links a {
-        font-size: 10px;
-        letter-spacing: 0.08em;
-      }
-
       /* Hero: stack columns */
       .hero-body {
         grid-template-columns: 1fr;
@@ -1593,16 +1503,14 @@
       transform: none;
     }
 
-    /* ─── Nav scroll blur ────────────────────────────────────── */
+    /* ─── Nav scroll state ───────────────────────────────────── */
+    /* Solid background on scroll — no backdrop-filter (was causing scroll lag). */
     nav {
-      transition: background 0.35s ease, backdrop-filter 0.35s ease,
-                  -webkit-backdrop-filter 0.35s ease;
+      transition: background 0.25s ease;
     }
 
     nav.is-scrolled {
-      background: rgba(248, 246, 242, 0.86);
-      backdrop-filter: blur(18px);
-      -webkit-backdrop-filter: blur(18px);
+      background: var(--bg);
     }
 
     /* ─── Custom cursor ──────────────────────────────────────── */
@@ -1691,29 +1599,9 @@
       </svg>
       <span>Benjamin Lynch</span>
     </a>
-    <button class="menu-toggle" id="menuToggle" aria-expanded="false" aria-label="Toggle menu">
-      <span class="menu-icon">
-        <span class="menu-bar menu-bar--top"></span>
-        <span class="menu-bar menu-bar--bottom"></span>
-      </span>
-    </button>
+    <a href="#contact" class="nav-contact">Contact</a>
   </nav>
 
-  <!-- Menu backdrop -->
-  <div class="menu-backdrop" id="menuBackdrop" aria-hidden="true"></div>
-
-  <!-- Dropdown menu -->
-  <div class="nav-dropdown" id="navDropdown" aria-hidden="true">
-    <div class="nav-dropdown-inner">
-      <p class="nav-dropdown-label">Navigation</p>
-      <ul class="nav-dropdown-list">
-        <li><a href="index.html#work">Work</a></li>
-        <li><a href="about.html#experience">Experience</a></li>
-        <li><a href="about.html" aria-current="page">About</a></li>
-        <li><a href="mailto:benflynch@gmail.com">Contact</a></li>
-      </ul>
-    </div>
-  </div>
 
   <!-- About page header -->
   <header class="about-header">
@@ -1976,7 +1864,7 @@
   <div class="bottom-fade" aria-hidden="true"></div>
 
   <!-- Footer -->
-  <footer>
+  <footer id="contact">
 
     <!-- Main: identity left, contact right -->
     <div class="foot-main">

@@ -153,111 +153,28 @@
       .nav-logo:hover > span { font-weight: 600; }
     }
 
-    /* ─── Menu toggle button ────────────────────────── */
-    .menu-toggle {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      background: none;
-      border: none;
-      cursor: pointer;
-      padding: 0;
-      color: var(--ink);
-    }
-
-    .menu-icon {
-      width: 22px;
-      display: flex;
-      flex-direction: column;
-      gap: 5px;
-    }
-
-    .menu-bar {
-      display: block;
-      height: 1px;
-      background: var(--ink);
-      transform-origin: center;
-      transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1), width 0.45s cubic-bezier(0.22, 1, 0.36, 1);
-    }
-
-    .menu-bar--top    { width: 100%; }
-    .menu-bar--bottom { width: 65%; }
-
-    .menu-toggle.is-open .menu-bar--top    { transform: translateY(3px) rotate(45deg); width: 100%; }
-    .menu-toggle.is-open .menu-bar--bottom { transform: translateY(-3px) rotate(-45deg); width: 100%; }
-
-    /* ─── Dropdown menu ─────────────────────────────── */
-    .nav-dropdown {
-      position: fixed;
-      top: 56px;
-      left: 0;
-      right: 0;
-      z-index: 199;
-      background: var(--bg);
-      border-bottom: 1px solid var(--rule);
-      opacity: 0;
-      transform: translateY(-6px);
-      pointer-events: none;
-      transition: opacity 0.25s ease, transform 0.25s ease;
-    }
-
-    .nav-dropdown.is-open {
-      opacity: 1;
-      transform: translateY(0);
-      pointer-events: auto;
-    }
-
-    .nav-dropdown-inner {
-      padding: 40px 64px 52px;
-      border-top: 1px solid var(--rule);
-    }
-
-    .nav-dropdown-label {
-      font-size: 9px;
-      font-weight: 700;
-      letter-spacing: 0.14em;
+    /* ─── Contact link (top-right) ──────────────────── */
+    .nav-contact {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.1em;
       text-transform: uppercase;
       color: var(--ink-mid);
-      margin-bottom: 24px;
-    }
-
-    .nav-dropdown-list {
-      list-style: none;
-    }
-
-    .nav-dropdown-list li a {
-      font-family: var(--serif);
-      font-size: clamp(30px, 3.2vw, 46px);
-      font-weight: 500;
-      line-height: 1.2;
-      letter-spacing: -0.02em;
-      color: var(--ink);
-      display: block;
-      padding: 5px 0;
       transition: color 0.2s;
+      position: relative;
     }
-
-    .nav-dropdown-list li a:hover { color: var(--ink-mid); }
-
-    /* ─── Menu backdrop (desktop only) ─────────────────────── */
-    @media (hover: hover) and (pointer: fine) {
-      .menu-backdrop {
-        position: fixed;
-        inset: 0;
-        z-index: 198;
-        background: rgba(14, 13, 11, 0.18);
-        backdrop-filter: blur(6px);
-        -webkit-backdrop-filter: blur(6px);
-        opacity: 0;
-        pointer-events: none;
-        transition: opacity 0.25s ease;
-      }
-
-      .menu-backdrop.is-visible {
-        opacity: 1;
-        pointer-events: auto;
-      }
+    .nav-contact::after {
+      content: '';
+      position: absolute;
+      bottom: -2px; left: 0;
+      width: 100%; height: 1px;
+      background: var(--ink);
+      transform: scaleX(0);
+      transform-origin: right;
+      transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
     }
+    .nav-contact:hover { color: var(--ink); }
+    .nav-contact:hover::after { transform: scaleX(1); transform-origin: left; }
 
     /* ─── Mode toggle (inline in header bar) ────────────────── */
     .bar-left {
@@ -1071,6 +988,7 @@
       align-items: center;
       gap: 0;
       animation: marquee 60s linear infinite;
+      will-change: transform; /* keep on its own compositor layer */
     }
 
     .marquee-item {
@@ -1370,16 +1288,23 @@
       .hero-left,
       .hero-right { padding: 44px 32px; }
 
-      .work       { padding: 0 32px 96px; }
+      .work       { padding: 0 0 96px; }
       .cv-section { padding: 0 32px 96px; }
       footer      { padding: 0 32px; }
 
+      /* Hide filter UI on tablet/mobile — work-bar still shows for the Work/Experience toggle */
+      .filter-btn, .work-filters { display: none; }
+      .work-bar { padding-left: 32px; padding-right: 32px; }
+
+      /* Section header text stays inset; the divider still spans full width */
+      .work-section-header { padding-left: 32px; padding-right: 32px; }
+
       .grid-recent {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: 1fr;
       }
 
       .grid-more {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: 1fr;
       }
 
       .exp-role {
@@ -1411,13 +1336,6 @@
         height: 52px;
       }
 
-      .nav-links { gap: 24px; }
-
-      .nav-links a {
-        font-size: 10px;
-        letter-spacing: 0.08em;
-      }
-
       /* Hero: stack columns */
       .hero-body {
         grid-template-columns: 1fr;
@@ -1442,29 +1360,19 @@
         font-size: 16px;
       }
 
-      /* Work section */
-      .work       { padding: 0 20px 72px; }
+      /* Work section — full-width grid, padded section headers */
+      .work       { padding: 0 0 72px; }
       .cv-section { padding: 0 20px 72px; }
 
-      .work-bar, .cv-bar {
+      .cv-bar {
         top: 52px; /* mobile nav is 52px */
         padding: 14px 0;
       }
 
-      .work-bar {
-        flex-direction: row;
-        align-items: center;
-        flex-wrap: wrap;
-        gap: 0;
-      }
+      /* Override tablet padding for section headers on mobile */
+      .work-section-header { padding-left: 20px; padding-right: 20px; }
 
-      /* Filters span full width below the toggle row */
-      .work-filters {
-        width: calc(100% + 20px);
-        padding-right: 20px;
-      }
-
-      /* Grid: single column for recent, 2 col for more */
+      /* Grid: single column for both sections, edge-to-edge */
       .grid {
         border-left: none;
       }
@@ -1474,7 +1382,7 @@
       }
 
       .grid-more {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: 1fr;
       }
 
       .work-section + .work-section {
@@ -1610,16 +1518,14 @@
       transform: none;
     }
 
-    /* ─── Nav scroll blur ────────────────────────────────────── */
+    /* ─── Nav scroll state ───────────────────────────────────── */
+    /* Solid background on scroll — no backdrop-filter (was causing scroll lag). */
     nav {
-      transition: background 0.35s ease, backdrop-filter 0.35s ease,
-                  -webkit-backdrop-filter 0.35s ease;
+      transition: background 0.25s ease;
     }
 
     nav.is-scrolled {
-      background: rgba(248, 246, 242, 0.86);
-      backdrop-filter: blur(18px);
-      -webkit-backdrop-filter: blur(18px);
+      background: var(--bg);
     }
 
     /* ─── Custom cursor ──────────────────────────────────────── */
@@ -1708,29 +1614,9 @@
       </svg>
       <span>Benjamin Lynch</span>
     </span>
-    <button class="menu-toggle" id="menuToggle" aria-expanded="false" aria-label="Toggle menu">
-      <span class="menu-icon">
-        <span class="menu-bar menu-bar--top"></span>
-        <span class="menu-bar menu-bar--bottom"></span>
-      </span>
-    </button>
+    <a href="#contact" class="nav-contact">Contact</a>
   </nav>
 
-  <!-- Menu backdrop -->
-  <div class="menu-backdrop" id="menuBackdrop" aria-hidden="true"></div>
-
-  <!-- Dropdown menu -->
-  <div class="nav-dropdown" id="navDropdown" aria-hidden="true">
-    <div class="nav-dropdown-inner">
-      <p class="nav-dropdown-label">Navigation</p>
-      <ul class="nav-dropdown-list">
-        <li><a href="#work">Work</a></li>
-        <li><a href="about.html#experience">Experience</a></li>
-        <li><a href="about.html">About</a></li>
-        <li><a href="mailto:benflynch@gmail.com">Contact</a></li>
-      </ul>
-    </div>
-  </div>
 
   <!-- Hero -->
   <header class="hero">
@@ -1942,14 +1828,17 @@
   </div>
   </div>
 
-  <!-- ═══ WORK VIEW ══════════════════════════════════════════ -->
-  <div id="view-work" class="view">
-
-  <!-- Work -->
+  <!-- ═══ WORK / EXPERIENCE ════════════════════════════════════ -->
+  <!-- Shared section wraps both views; work-bar (with toggle) stays visible. -->
   <section id="work" class="work">
 
     <div class="work-bar">
-      <div class="bar-left"></div>
+      <div class="bar-left">
+        <div class="inline-toggle" role="tablist" aria-label="View toggle">
+          <button class="toggle-btn active" data-view="work" role="tab" aria-selected="true">Work</button>
+          <button class="toggle-btn" data-view="cv" role="tab" aria-selected="false">Experience</button>
+        </div>
+      </div>
       <button class="filter-btn" id="filterBtn" aria-expanded="false" aria-label="Toggle filters">
         <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 2.5h10M3 6h6M5 9.5h2"/></svg>
         Filter
@@ -1962,6 +1851,9 @@
         <button class="filt">B2B</button>
       </div>
     </div>
+
+    <!-- Work view wraps everything below this point -->
+    <div id="view-work" class="view">
 
     <!-- ═══ RECENT WORK ═════════════════════════════════════════ -->
     <div class="work-section">
@@ -1987,7 +1879,7 @@
             <span class="card-client">Walking on Earth</span>
             <span class="card-num">01</span>
           </div>
-          <h3 class="card-title">Redesigning Walking on Earth's stress-intelligence app to incorporate a new gold standard in measuring stress</h3>
+          <h3 class="card-title">Reimagining Walking on Earth's stress intelligence platform around next-generation biometric measurement and daily behavior change.</h3>
           <div class="card-tags">
             <span class="ctag">B2B</span>
             <span class="ctag">Health</span>
@@ -2012,7 +1904,7 @@
             <span class="card-client">Numan</span>
             <span class="card-num">02</span>
           </div>
-          <h3 class="card-title">Scaling Numan's GLP-1 medication weight loss app to improve retention</h3>
+          <h3 class="card-title">Improving retention and treatment adherence within Numan's GLP-1 weight management experience.</h3>
           <div class="card-tags">
             <span class="ctag">eCommerce</span>
             <span class="ctag">Health</span>
@@ -2035,7 +1927,7 @@
             <span class="card-client">Numan</span>
             <span class="card-num">03</span>
           </div>
-          <h3 class="card-title">Launch Numan's Testosterone Deficiency programme to new and existing customers</h3>
+          <h3 class="card-title">Launching Numan's testosterone health program across acquisition, onboarding, and patient management journeys.</h3>
           <div class="card-tags">
             <span class="ctag">eCommerce</span>
             <span class="ctag">Health</span>
@@ -2062,7 +1954,7 @@
             <span class="card-client">Peloton</span>
             <span class="card-num">04</span>
           </div>
-          <h3 class="card-title">Pilot scheme to for Peloton's first ever limited edition branded hardware, partnering with University of Michigan</h3>
+          <h3 class="card-title">Exploring branded hardware partnerships through Peloton's first university collaboration with the University of Michigan.</h3>
           <div class="card-tags">
             <span class="ctag">eCommerce</span>
             <span class="ctag">B2B</span>
@@ -2085,7 +1977,7 @@
             <span class="card-client">Peloton</span>
             <span class="card-num">05</span>
           </div>
-          <h3 class="card-title">Implementing Peloton's new app subscription tiers to all global B2B clients</h3>
+          <h3 class="card-title">Rolling out Peloton's redesigned subscription architecture across global enterprise and B2B markets.</h3>
           <div class="card-tags">
             <span class="ctag">eCommerce</span>
             <span class="ctag">B2B</span>
@@ -2110,7 +2002,7 @@
             <span class="card-client">Peloton</span>
             <span class="card-num">06</span>
           </div>
-          <h3 class="card-title">Designing the eCommerce experience for Peloton's launch into the Australian market</h3>
+          <h3 class="card-title">Localizing Peloton's eCommerce experience for launch into the Australian fitness market.</h3>
           <div class="card-tags">
             <span class="ctag">eCommerce</span>
             <span class="ctag">New Markets</span>
@@ -2132,7 +2024,7 @@
             <span class="card-client">Peloton</span>
             <span class="card-num">07</span>
           </div>
-          <h3 class="card-title">Helping prospect customers see how Peloton fits into their homes with an AR Tool</h3>
+          <h3 class="card-title">Designing augmented reality tools to help customers confidently evaluate Peloton products in their homes.</h3>
           <div class="card-tags">
             <span class="ctag">eCommerce</span>
             <span class="ctag">Augmented Reality</span>
@@ -2190,7 +2082,7 @@
             <span class="card-client">Google x Freeletics</span>
             <span class="card-num">09</span>
           </div>
-          <h3 class="card-title">Launching a 14 day workout challenge, partnering with Freeletics and powered by voice through Google Assistant</h3>
+          <h3 class="card-title">Designing a voice-guided fitness challenge experience in partnership with Freeletics and Google Assistant.</h3>
           <div class="card-tags">
             <span class="ctag">Fitness</span>
             <span class="ctag">AI Coach</span>
@@ -2276,7 +2168,7 @@
             <span class="card-client">Twitter x Visit England</span>
             <span class="card-num">13</span>
           </div>
-          <h3 class="card-title">Real-time travel tips through an interactive map of Visit England local accounts</h3>
+          <h3 class="card-title">Designing a real-time travel discovery experience powered by local social content and interactive mapping.</h3>
           <div class="card-tags">
             <span class="ctag">Microsite</span>
             <span class="ctag">Brand Partnership</span>
@@ -2287,15 +2179,266 @@
       </div>
     </div>
 
-  </section>
+    </div> <!-- /view-work -->
 
-  </div> <!-- /view-work -->
+    <!-- ═══ EXPERIENCE VIEW ═══════════════════════════════════════ -->
+    <div id="view-cv" class="view hidden">
+    <section id="experience" class="cv-section">
+  
+      <div class="cv-subheader"><span class="cv-subheader-label">Experience</span></div>
+  
+      <div class="exp-list">
+  
+        <div class="exp-role">
+          <div class="exp-dates">
+            <div class="exp-date-range">
+              <span>2025</span>
+              <span>Present</span>
+            </div>
+            <span class="exp-current">Current</span>
+          </div>
+          <div class="exp-meta">
+            <div class="exp-company">Walking on Earth</div>
+            <h3 class="exp-title">Product Design Lead</h3>
+          </div>
+          <div class="exp-body">
+            <p class="exp-desc">Led product design across key areas of WONE's Stress Intelligence platform as the company's first Product Design hire.</p>
+            <ul class="exp-bullets">
+              <li>Through iterative sprints, led the redesign of the iOS and Android app to improve UX, accessibility, and engagement across both practitioner and end-user experiences</li>
+              <li>Shipped multiple new product features, including an AI coach, Biometrics integration, and Schedule Planner</li>
+              <li>Partnered closely with leadership and engineering to shape product direction, prioritisation, and scope in an AI-led environment</li>
+            </ul>
+          </div>
+        </div>
+  
+        <div class="exp-role">
+          <div class="exp-dates">
+            <div class="exp-date-range">
+              <span>2023</span>
+              <span>2025</span>
+            </div>
+          </div>
+          <div class="exp-meta">
+            <div class="exp-company">Numan</div>
+            <h3 class="exp-title">Product Design Lead</h3>
+          </div>
+          <div class="exp-body">
+            <p class="exp-desc">Led product design for Numan's iOS and Android weight-loss experience within a rapidly growing and highly competitive GLP-1 market, operating under clinical and regulatory constraints.</p>
+            <ul class="exp-bullets">
+              <li>Drove redesign of core weight-loss flows, contributing to a ~6% improvement in retention and supporting sustained growth to ~33k logged-in weekly active users</li>
+              <li>Designed and validated multiple high-impact experiments, including a self-service identity verification flow reducing Customer Care contact by ~48%, and a delivery deferral option that reduced pause rate by ~11% and increased delivery date changes by ~27%</li>
+              <li>Led design for the end-to-end launch of a new, regulated Testosterone Deficiency category, spanning post-purchase, onboarding, and treatment management experiences</li>
+            </ul>
+          </div>
+        </div>
+  
+        <div class="exp-role">
+          <div class="exp-dates">
+            <div class="exp-date-range">
+              <span>2020</span>
+              <span>2023</span>
+            </div>
+          </div>
+          <div class="exp-meta">
+            <div class="exp-company">Peloton</div>
+            <h3 class="exp-title">Senior Product Designer — Product Design Manager</h3>
+          </div>
+          <div class="exp-body">
+            <p class="exp-desc">Progressed from Senior Product Designer to Manager within Peloton's International Product Design team, supporting international expansion and feature improvements across the eCommerce and B2B side of the business.</p>
+            <ul class="exp-bullets">
+              <li>Led design for how customers discover, evaluate, and engage with Peloton products, including reviews, Q&A, and AR-based product exploration</li>
+              <li>Managed and developed a cross-functional international design team (Product Design, UX Writing, UX Research), setting direction, raising quality standards, and supporting delivery across multiple markets</li>
+              <li>Played a key role in Peloton's expansion into the UK, Germany, Austria, and Australia, alongside B2B initiatives</li>
+            </ul>
+          </div>
+        </div>
+  
+        <div class="exp-role">
+          <div class="exp-dates">
+            <div class="exp-date-range">
+              <span>2019</span>
+              <span>2020</span>
+            </div>
+          </div>
+          <div class="exp-meta">
+            <div class="exp-company">Chelsea Digital Ventures</div>
+            <h3 class="exp-title">Senior Product Designer</h3>
+            <p class="exp-contract">Contract</p>
+          </div>
+          <div class="exp-body">
+            <p class="exp-desc">Designed two zero-to-one digital products in healthcare and at-home fitness.</p>
+          </div>
+        </div>
+  
+        <div class="exp-role">
+          <div class="exp-dates">
+            <div class="exp-date-range">
+              <span>2018</span>
+              <span>2019</span>
+            </div>
+          </div>
+          <div class="exp-meta">
+            <div class="exp-company">Google Brand Studio</div>
+            <h3 class="exp-title">Senior Designer</h3>
+            <p class="exp-contract">Contract</p>
+          </div>
+          <div class="exp-body">
+            <p class="exp-desc">Designed a voice-activated fitness experience for Google Assistant, partnering with Freeletics.</p>
+          </div>
+        </div>
+  
+        <div class="exp-role">
+          <div class="exp-dates">
+            <div class="exp-date-range">
+              <span>2017</span>
+              <span>2018</span>
+            </div>
+          </div>
+          <div class="exp-meta">
+            <div class="exp-company">Eight Inc</div>
+            <h3 class="exp-title">Senior Product Designer</h3>
+            <p class="exp-contract">Contract</p>
+          </div>
+          <div class="exp-body">
+            <p class="exp-desc">Core designer for multiple design sprints exploring the future of physical retail banking for Barclays.</p>
+          </div>
+        </div>
+  
+        <div class="exp-role">
+          <div class="exp-dates">
+            <div class="exp-date-range">
+              <span>2016</span>
+              <span>2017</span>
+            </div>
+          </div>
+          <div class="exp-meta">
+            <div class="exp-company">AKQA</div>
+            <h3 class="exp-title">Product Designer</h3>
+          </div>
+          <div class="exp-body">
+            <p class="exp-desc">Part of the core design team supporting the US launch of Nike's first UK flagship store digital experience.</p>
+          </div>
+        </div>
+  
+        <div class="exp-role">
+          <div class="exp-dates">
+            <div class="exp-date-range">
+              <span>2015</span>
+              <span>2016</span>
+            </div>
+          </div>
+          <div class="exp-meta">
+            <div class="exp-company">Blippar</div>
+            <h3 class="exp-title">Digital Product Designer</h3>
+          </div>
+          <div class="exp-body">
+            <p class="exp-desc">Led AR experiences for global FMCG campaigns, including Max Factor, Pepsi World Cup, and JuiceBurst.</p>
+          </div>
+        </div>
+  
+        <div class="exp-role">
+          <div class="exp-dates">
+            <div class="exp-date-range">
+              <span>2013</span>
+              <span>2015</span>
+            </div>
+          </div>
+          <div class="exp-meta">
+            <div class="exp-company">MediaMonks</div>
+            <h3 class="exp-title">Digital Designer</h3>
+          </div>
+          <div class="exp-body">
+            <p class="exp-desc">First designer for MediaMonks' UK international office, delivering work across EMEA.</p>
+          </div>
+        </div>
+  
+      </div>
+  
+      <!-- Education -->
+      <div class="cv-subheader"><span class="cv-subheader-label">Education</span></div>
+      <div class="cv-row-list">
+  
+        <div class="cv-row">
+          <div class="cv-row-left">
+            <div class="cv-row-org">Hyper Island</div>
+            <div class="cv-row-sub">Stockholm</div>
+          </div>
+          <div class="cv-row-right">
+            <div class="cv-row-title">MA, Digital Media Management</div>
+          </div>
+        </div>
+  
+        <div class="cv-row">
+          <div class="cv-row-left">
+            <div class="cv-row-org">University of Gloucestershire</div>
+          </div>
+          <div class="cv-row-right">
+            <div class="cv-row-title">BA (Hons), Advertising</div>
+          </div>
+        </div>
+  
+        <div class="cv-row">
+          <div class="cv-row-left">
+            <div class="cv-row-org">IPAC Design School</div>
+            <div class="cv-row-sub">ERASMUS Exchange</div>
+          </div>
+          <div class="cv-row-right">
+            <div class="cv-row-title">Visual Design</div>
+          </div>
+        </div>
+  
+      </div>
+  
+      <!-- Awards -->
+      <div class="cv-subheader"><span class="cv-subheader-label">Awards</span></div>
+      <div class="awards-grid">
+  
+        <div class="award-item">
+          <div class="award-org">Awwwards</div>
+          <div class="award-name">Design Judge</div>
+          <div class="award-detail">2017–2018</div>
+        </div>
+  
+        <div class="award-item">
+          <div class="award-org">Awwwards</div>
+          <div class="award-name">Site of the Day</div>
+          <div class="award-detail">1×</div>
+        </div>
+  
+        <div class="award-item">
+          <div class="award-org">Awwwards</div>
+          <div class="award-name">Honorable Mention</div>
+          <div class="award-detail">3×</div>
+        </div>
+  
+        <div class="award-item">
+          <div class="award-org">FWA</div>
+          <div class="award-name">Site of the Day</div>
+          <div class="award-detail">1×</div>
+        </div>
+  
+        <div class="award-item">
+          <div class="award-org">MENA Awards</div>
+          <div class="award-name">Gold</div>
+        </div>
+  
+        <div class="award-item">
+          <div class="award-org">Drum Marketing Award</div>
+          <div class="award-name">Gold</div>
+        </div>
+  
+      </div>
+  
+    </section>
+    </div> <!-- /view-cv -->
+
+  </section> <!-- /#work -->
 
 
   <div class="bottom-fade" aria-hidden="true"></div>
 
   <!-- Footer -->
-  <footer>
+  <footer id="contact">
 
     <!-- Main: identity left, contact right -->
     <div class="foot-main">
@@ -2485,44 +2628,6 @@
     }, { passive: true });
 
     /* ═══════════════════════════════════════════════════════════
-       DROPDOWN MENU — toggle open/close
-    ══════════════════════════════════════════════════════════ */
-    const menuToggle  = document.getElementById('menuToggle');
-    const navDropdown = document.getElementById('navDropdown');
-    const menuBackdrop = document.getElementById('menuBackdrop');
-
-    function openMenu() {
-      navDropdown.classList.add('is-open');
-      menuToggle.classList.add('is-open');
-      menuToggle.setAttribute('aria-expanded', 'true');
-      navDropdown.setAttribute('aria-hidden', 'false');
-      menuBackdrop.classList.add('is-visible');
-    }
-
-    function closeMenu() {
-      navDropdown.classList.remove('is-open');
-      menuToggle.classList.remove('is-open');
-      menuToggle.setAttribute('aria-expanded', 'false');
-      navDropdown.setAttribute('aria-hidden', 'true');
-      menuBackdrop.classList.remove('is-visible');
-    }
-
-    menuToggle.addEventListener('click', () => {
-      navDropdown.classList.contains('is-open') ? closeMenu() : openMenu();
-    });
-
-    // Close on Escape
-    document.addEventListener('keydown', e => {
-      if (e.key === 'Escape') closeMenu();
-    });
-
-    // Close when clicking the backdrop
-    menuBackdrop.addEventListener('click', closeMenu);
-
-    // Close when a menu link is clicked
-    navDropdown.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
-
-    /* ═══════════════════════════════════════════════════════════
        SCROLL REVEALS — IntersectionObserver with stagger
     ══════════════════════════════════════════════════════════ */
     // Mark cards with column-based stagger
@@ -2584,6 +2689,7 @@
       const ring = document.getElementById('curRing');
       let mx = -100, my = -100;
       let rx = -100, ry = -100;
+      let rafId = null;
 
       // Dot: follows instantly
       document.addEventListener('mousemove', e => {
@@ -2591,17 +2697,28 @@
         my = e.clientY;
         dot.style.left = mx + 'px';
         dot.style.top  = my + 'px';
+        // Only schedule the lerp loop while there's catching-up to do
+        if (rafId === null) rafId = requestAnimationFrame(lerpRing);
       }, { passive: true });
 
-      // Ring: lerps behind the dot
+      // Ring: lerps behind the dot — runs only while the ring is catching up,
+      // then halts so the browser isn't doing 60 paints/sec when nothing's moving
       function lerpRing() {
-        rx += (mx - rx) * 0.13;
-        ry += (my - ry) * 0.13;
+        const dx = mx - rx;
+        const dy = my - ry;
+        if (Math.abs(dx) < 0.5 && Math.abs(dy) < 0.5) {
+          rx = mx; ry = my;
+          ring.style.left = rx + 'px';
+          ring.style.top  = ry + 'px';
+          rafId = null;
+          return;
+        }
+        rx += dx * 0.13;
+        ry += dy * 0.13;
         ring.style.left = rx + 'px';
         ring.style.top  = ry + 'px';
-        requestAnimationFrame(lerpRing);
+        rafId = requestAnimationFrame(lerpRing);
       }
-      lerpRing();
 
       // State changes on interactive elements
       const links = document.querySelectorAll('a, button');
@@ -2661,6 +2778,30 @@
 
       update(); // initialise
     }());
+
+  
+    /* ═══════════════════════════════════════════════════════════
+       WORK / EXPERIENCE VIEW TOGGLE
+    ══════════════════════════════════════════════════════════ */
+    (function() {
+      const toggleBtns = document.querySelectorAll('.toggle-btn[data-view]');
+      const viewWork   = document.getElementById('view-work');
+      const viewCv     = document.getElementById('view-cv');
+      if (!viewWork || !viewCv || !toggleBtns.length) return;
+
+      function setView(name) {
+        const isWork = name === 'work';
+        viewWork.classList.toggle('hidden', !isWork);
+        viewCv.classList.toggle('hidden', isWork);
+        toggleBtns.forEach(b => {
+          const active = b.dataset.view === name;
+          b.classList.toggle('active', active);
+          b.setAttribute('aria-selected', active);
+        });
+      }
+
+      toggleBtns.forEach(b => b.addEventListener('click', () => setView(b.dataset.view)));
+    })();
 
   </script>
 

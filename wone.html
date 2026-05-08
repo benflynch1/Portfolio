@@ -167,19 +167,14 @@
       .nav-logo:hover > span { font-weight: 600; }
     }
 
+    /* ─── Contact link + theme toggle (top-right) ──── */
     .nav-right {
       display: flex;
       align-items: center;
-      gap: 36px;
+      gap: 28px;
     }
 
-    .nav-links {
-      display: flex;
-      gap: 36px;
-      list-style: none;
-    }
-
-    .nav-links a {
+    .nav-contact {
       font-size: 11px;
       font-weight: 500;
       letter-spacing: 0.1em;
@@ -188,8 +183,7 @@
       transition: color 0.2s;
       position: relative;
     }
-
-    .nav-links a::after {
+    .nav-contact::after {
       content: '';
       position: absolute;
       bottom: -2px; left: 0;
@@ -199,9 +193,38 @@
       transform-origin: right;
       transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
     }
+    .nav-contact:hover { color: var(--ink); }
+    .nav-contact:hover::after { transform: scaleX(1); transform-origin: left; }
 
-    .nav-links a:hover { color: var(--ink); }
-    .nav-links a:hover::after { transform: scaleX(1); transform-origin: left; }
+    /* ─── Theme toggle ─────────────────────────────── */
+    .theme-toggle {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      background: none;
+      border: 1px solid var(--rule);
+      border-radius: 100px;
+      padding: 6px 12px 6px 8px;
+      cursor: pointer;
+      font-family: var(--sans);
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--ink-mid);
+      transition: color 0.2s, border-color 0.2s, background 0.2s;
+    }
+    .theme-toggle:hover {
+      color: var(--ink);
+      border-color: var(--ink-mid);
+    }
+    .theme-toggle svg {
+      width: 13px;
+      height: 13px;
+      flex-shrink: 0;
+    }
+    [data-theme="dark"]  .toggle-sun  { display: none; }
+    [data-theme="light"] .toggle-moon { display: none; }
 
 
     /* ─── Back button ────────────────────────────────────────── */
@@ -227,39 +250,6 @@
     }
 
     .project-back:hover svg { transform: translateX(-3px); }
-
-    /* ─── Theme toggle ───────────────────────────────────────── */
-    .theme-toggle {
-      display: flex;
-      align-items: center;
-      gap: 7px;
-      background: none;
-      border: 1px solid var(--rule);
-      border-radius: 100px;
-      padding: 6px 12px 6px 8px;
-      cursor: pointer;
-      font-family: var(--sans);
-      font-size: 10px;
-      font-weight: 600;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--ink-mid);
-      transition: color 0.2s, border-color 0.2s, background 0.2s;
-    }
-
-    .theme-toggle:hover {
-      color: var(--ink);
-      border-color: var(--ink-mid);
-    }
-
-    .theme-toggle svg {
-      width: 13px;
-      height: 13px;
-      flex-shrink: 0;
-    }
-
-    [data-theme="dark"]  .toggle-sun  { display: none; }
-    [data-theme="light"] .toggle-moon { display: none; }
 
     /* ─── Project Header ─────────────────────────────────────── */
     .project-header {
@@ -727,9 +717,6 @@
     @media (max-width: 767px) {
       :root { --pad: 20px; }
       nav { padding: 0 var(--pad); height: 52px; }
-      .nav-links { gap: 20px; }
-      .nav-links a { font-size: 10px; letter-spacing: 0.08em; }
-      .nav-right { gap: 16px; }
       .project-header { padding: 40px var(--pad) 36px; }
       .hero-image { aspect-ratio: 4 / 3; }
       .cs-section { padding: 56px var(--pad); }
@@ -764,11 +751,7 @@
       <span>Benjamin Lynch</span>
     </a>
     <div class="nav-right">
-      <ul class="nav-links">
-        <li><a href="index.html">Work</a></li>
-        <li><a href="https://linkedin.com" target="_blank">LinkedIn</a></li>
-        <li><a href="mailto:benflynch@gmail.com">Contact</a></li>
-      </ul>
+      <a href="#contact" class="nav-contact">Contact</a>
       <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
         <svg class="toggle-moon" viewBox="0 0 16 16" fill="currentColor">
           <path d="M6 0a6 6 0 1 0 6 6A4.54 4.54 0 0 1 6 0z"/>
@@ -782,6 +765,7 @@
       </button>
     </div>
   </nav>
+
 
   <!-- Project Header -->
   <div class="project-header">
@@ -804,7 +788,7 @@
     </div>
       </div>
 
-    <p class="project-desc">Redesigning Walking on Earth's stress-intelligence app to incorporate a new gold standard in measuring stress.</p>
+    <p class="project-desc">Reimagining Walking on Earth's stress intelligence platform around next-generation biometric measurement and daily behavior change.</p>
 
     <div class="project-header-meta">
       <div class="header-meta-item">
@@ -975,7 +959,7 @@
   </section>
 
   <!-- CTA Panel -->
-  <div class="cta-panel">
+  <div class="cta-panel" id="contact">
     <div class="cta-left">
       <p class="cta-eyebrow">Get in touch</p>
       <h3 class="cta-heading">Let's Talk —<br>Reach out to learn<br>more about this<br><em>case study</em></h3>
