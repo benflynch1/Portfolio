@@ -224,9 +224,19 @@
       width: 13px;
       height: 13px;
       flex-shrink: 0;
+      display: block;
+    }
+    /* Reserve consistent label width so the toggle (and adjacent
+       social icons) don't shift when the theme is swapped */
+    .theme-toggle .toggle-label {
+      display: inline-block;
+      min-width: 32px;
+      text-align: left;
     }
     [data-theme="dark"]  .toggle-sun  { display: none; }
     [data-theme="light"] .toggle-moon { display: none; }
+    [data-theme="dark"]  .toggle-label-light { display: none; }
+    [data-theme="light"] .toggle-label-dark  { display: none; }
 
 
     /* ─── Back button ────────────────────────────────────────── */
@@ -653,46 +663,129 @@
       min-height: 320px;
       background: var(--bg-raised);
     }
-
-    /* ─── Metadata Footer ────────────────────────────────────── */
-    .meta-footer {
-      padding: 64px var(--pad);
-      border-bottom: 1px solid var(--rule);
-    }
-
-    .meta-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 40px;
-    }
-
-    .meta-col-label {
-      font-size: 10px;
-      font-weight: 600;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: var(--ink-light);
-      margin-bottom: 14px;
-    }
-
-    .meta-col-value {
-      font-size: 13px;
-      font-weight: 400;
-      line-height: 1.8;
-      color: var(--ink-mid);
-    }
-
-    .meta-col-value strong {
-      display: block;
-      font-weight: 500;
-      color: var(--ink);
-      margin-bottom: 1px;
-    }
-
     /* ─── More Case Studies ──────────────────────────────────── */
+
+
+    /* ─── Footer ────────────────────────────────────────────── */
+    footer {
+      padding: 0 var(--pad) 28px;
+    }
+
+    .foot-main {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: 0;
+      padding: 28px 0 0;
+      align-items: start;
+    }
+
+    .foot-hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(300px, 0.36fr);
+      gap: 48px;
+      align-items: end;
+      margin-top: 0;
+      border-top: 1px solid var(--rule);
+      padding-top: 22px;
+    }
+
+    .foot-contact {
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+      align-items: flex-start;
+      padding-bottom: 26px;
+    }
+
+    .foot-email {
+      position: relative;
+      display: inline-block;
+      font-family: var(--sans);
+      font-size: 24px;
+      font-weight: 500;
+      line-height: 1.15;
+      letter-spacing: 0;
+      color: var(--ink);
+      overflow-wrap: anywhere;
+    }
+
+    .foot-email::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: -3px;
+      height: 1px;
+      background: currentColor;
+      transform: scaleX(0);
+      transform-origin: left center;
+      transition: transform 0.4s cubic-bezier(0.65, 0, 0.35, 1);
+    }
+
+    .foot-email:hover::after {
+      transform: scaleX(1);
+    }
+
+    .foot-links {
+      display: flex;
+      flex-direction: row;
+      gap: 18px;
+      align-items: flex-start;
+    }
+
+    .foot-links a {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 24px;
+      height: 24px;
+      color: var(--ink-mid);
+      transition: color 0.2s ease;
+    }
+
+    .foot-links svg {
+      width: 18px;
+      height: 18px;
+      display: block;
+      fill: currentColor;
+    }
+
+    .foot-links a:hover {
+      color: var(--ink);
+    }
+
+    .foot-wordmark {
+      font-family: var(--sans);
+      font-size: 118px;
+      font-weight: 500;
+      line-height: 0.82;
+      letter-spacing: 0;
+      color: var(--ink);
+      white-space: nowrap;
+    }
+
+    .foot-wordmark span {
+      display: inline;
+    }
+
+    .foot-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      margin-top: 44px;
+    }
+
+    .foot-copy {
+      font-size: 11px;
+      font-weight: 500;
+      line-height: 1.4;
+      color: var(--ink-light);
+      letter-spacing: 0;
+    }
     .more-section {
       padding: 64px var(--pad);
-      background: var(--more-bg);
+      background: transparent;
       transition: background 0.35s ease;
     }
 
@@ -708,53 +801,136 @@
     .more-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 2px;
+      border-top: 1px solid var(--rule);
+      border-left: 1px solid var(--rule);
     }
 
-    .more-card {
-      background: var(--bg-raised);
+    /* Homepage-style project cards */
+    .card {
+      display: block;
+      background: transparent;
+      color: inherit;
+      text-decoration: none;
+      border-right: 1px solid var(--rule);
+      border-bottom: 1px solid var(--rule);
       cursor: pointer;
+      position: relative;
       transition: background 0.35s ease;
     }
 
-    .more-card-img {
+    .card-img {
       aspect-ratio: 5 / 4;
       overflow: hidden;
       position: relative;
       background: var(--bg-surface);
     }
 
-    .more-card-img img {
+    .card-img img {
+      position: absolute;
+      inset: 0;
       width: 100%;
       height: 100%;
       object-fit: cover;
       display: block;
-      transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+      transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
     }
 
-    .more-card:hover .more-card-img img { transform: scale(1.04); }
-
-    .more-card-body {
-      padding: 18px 22px 22px;
-      border-top: 1px solid var(--rule);
+    .card-img-fill {
+      position: absolute;
+      inset: 0;
+      transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
     }
 
-    .more-card-client {
+    .card-img-video {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      opacity: 0;
+      transition: opacity 0.45s ease;
+      pointer-events: none;
+    }
+
+    .card:hover .card-img-video { opacity: 1; }
+    .card:hover .card-img-fill,
+    .card:hover .card-img img { transform: scale(1.06); }
+
+    /* Placeholder gradients (used by select cards e.g. Twitter x Visit England) */
+    .g7 { background: linear-gradient(145deg, #040f18 0%, #083a58 100%); }
+
+    .card-arrow {
+      position: absolute;
+      top: 16px; right: 16px;
+      width: 36px; height: 36px;
+      background: var(--bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transform: scale(0.75) rotate(-45deg);
+      transition: opacity 0.25s, transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .card-arrow svg { width: 14px; height: 14px; color: var(--ink); }
+
+    .card:hover .card-arrow {
+      opacity: 1;
+      transform: scale(1) rotate(0deg);
+    }
+
+    .card-text {
+      padding: 20px 24px 24px;
+    }
+
+    .card-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+
+    .card-client {
       font-size: 10px;
       font-weight: 600;
       letter-spacing: 0.12em;
       text-transform: uppercase;
-      color: var(--ink-light);
-      margin-bottom: 6px;
+      color: var(--ink-mid);
     }
 
-    .more-card-title {
+    .card-num {
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      color: var(--ink-light);
+    }
+
+    .card-title {
       font-family: var(--sans);
       font-weight: 400;
       font-size: 17px;
       line-height: 1.35;
       letter-spacing: -0.01em;
       color: var(--ink);
+      margin-bottom: 14px;
+    }
+
+    .card-tags {
+      display: flex;
+      gap: 4px;
+      flex-wrap: wrap;
+    }
+
+    .ctag {
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ink-mid);
+      border: 1px solid var(--rule);
+      padding: 4px 10px;
+      border-radius: 100px;
     }
 
     /* ═══════════════════════════════════════════════════════════
@@ -764,7 +940,6 @@
     @media (max-width: 1080px) {
       :root { --pad: 40px; }
       .cs-section-header { gap: 32px; }
-      .meta-grid { grid-template-columns: repeat(2, 1fr); }
       .more-grid { grid-template-columns: repeat(2, 1fr); }
       .mockup-row {
         display: flex;
@@ -791,15 +966,35 @@
       :root { --pad: 20px; }
       nav { padding: 0 var(--pad); height: 52px; }
       .project-header { padding: 40px var(--pad) 36px; }
+
+      /* Project hero metadata: stack cleanly on mobile */
+      .project-header-meta {
+        flex-direction: column;
+        flex-wrap: nowrap;
+        gap: 18px;
+        margin-top: 28px;
+        padding-top: 24px;
+      }
+      .header-meta-item { min-width: 0; width: 100%; }
+      .header-meta-tags { gap: 6px; }
+      .project-desc {
+        font-size: clamp(24px, 7vw, 30px);
+        line-height: 1.18;
+      }
+
       .hero-image { aspect-ratio: 4 / 3; }
       .cs-section { padding: 56px var(--pad); }
       .cs-section-header { grid-template-columns: 1fr; gap: 14px; margin-bottom: 36px; }
+
+      /* Body copy unified to 16px / 24px line-height on mobile */
+      .brief-col-text { font-size: 16px; line-height: 1.5; }
+      .cs-section-body,
+      .cs-section-body p { font-size: 16px; line-height: 1.5; }
       .mockup-row > * { flex: 0 0 80%; max-width: 980px; }
+      /* Get In Touch — image first on mobile */
       .cta-panel { grid-template-columns: 1fr; }
-      .cta-left { padding: 56px var(--pad); border-right: none; border-bottom: 1px solid var(--rule); }
-      .cta-right { min-height: 220px; }
-      .meta-footer { padding: 48px var(--pad); }
-      .meta-grid { grid-template-columns: repeat(2, 1fr); gap: 28px; }
+      .cta-left { padding: 56px var(--pad); border-right: none; border-bottom: none; }
+      .cta-right { order: -1; min-height: 220px; border-bottom: 1px solid var(--rule); }
       .more-section { padding: 48px var(--pad); }
       .more-grid { grid-template-columns: 1fr; }
       .bento-grid {
@@ -824,10 +1019,43 @@
         margin: 0 auto;
       }
       .experiment-stack { gap: 14px; }
+
+      footer { padding: 0 var(--pad) 24px; }
+
+      .foot-main {
+        grid-template-columns: 1fr;
+        padding: 28px 0 0;
+      }
+
+      .foot-hero {
+        grid-template-columns: 1fr;
+        gap: 24px;
+      }
+
+      .foot-contact {
+        padding-bottom: 0;
+      }
+
+      .foot-email {
+        font-size: 20px;
+      }
+
+      .foot-wordmark {
+        font-size: 42px;
+        line-height: 0.94;
+        white-space: nowrap;
+      }
+
+      .foot-bar {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+        margin-top: 32px;
+      }
+
     }
 
     @media (max-width: 480px) {
-      .meta-grid { grid-template-columns: 1fr; }
       .mockup-row > * { flex: 0 0 88%; }
     }
 
@@ -863,15 +1091,15 @@
       </li>
     </ul>
       <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
-        <svg class="toggle-moon" viewBox="0 0 16 16" fill="currentColor">
-          <path d="M6 0a6 6 0 1 0 6 6A4.54 4.54 0 0 1 6 0z"/>
+        <svg class="toggle-moon" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+          <path d="M14 8.526A6 6 0 1 1 7.474 2 4.667 4.667 0 0 0 14 8.526z"/>
         </svg>
         <svg class="toggle-sun" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
           <circle cx="8" cy="8" r="2.5"/>
           <path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.05 3.05l1.42 1.42M11.53 11.53l1.42 1.42M3.05 12.95l1.42-1.42M11.53 4.47l1.42-1.42"/>
         </svg>
-        <span class="toggle-label-dark">Light</span>
-        <span class="toggle-label-light" style="display:none">Dark</span>
+        <span class="toggle-label toggle-label-dark">Light</span>
+        <span class="toggle-label toggle-label-light">Dark</span>
       </button>
     </div>
   </nav>
@@ -1049,7 +1277,7 @@
   </section>
 
   <!-- CTA Panel -->
-  <div class="cta-panel" id="contact">
+  <div class="cta-panel">
     <div class="cta-left">
       <p class="cta-eyebrow">Get in touch</p>
       <h3 class="cta-heading">Let's Talk —<br>Reach out to learn<br>more about this<br><em>case study</em></h3>
@@ -1064,102 +1292,130 @@
       <div style="width:100%;height:100%;min-height:360px;background:linear-gradient(145deg,var(--bg-raised),var(--bg-surface));"></div>
     </div>
   </div>
-
-  <!-- Metadata Footer -->
-  <div class="meta-footer">
-    <div class="meta-grid">
-      <div>
-        <div class="meta-col-label">Deliverables</div>
-        <div class="meta-col-value">
-          <strong>User Research</strong>
-          <strong>Information Architecture</strong>
-          <strong>Wireframes</strong>
-          <strong>Prototypes</strong>
-          <strong>UI Design</strong>
-        </div>
-      </div>
-      <div>
-        <div class="meta-col-label">Made Using</div>
-        <div class="meta-col-value">
-          <strong>Figma</strong>
-          <strong>Photoshop</strong>
-          <strong>Illustrator</strong>
-          <strong>JIRA</strong>
-        </div>
-      </div>
-      <div>
-        <div class="meta-col-label">Role</div>
-        <div class="meta-col-value">
-          <strong>Product Designer</strong>
-        </div>
-      </div>
-      <div>
-        <div class="meta-col-label">Client</div>
-        <div class="meta-col-value">
-          <strong>Peloton</strong>
-        </div>
-      </div>
-    </div>
-  </div>
-
   <!-- More Case Studies -->
   <div class="more-section">
     <p class="more-label">More case studies</p>
     <div class="more-grid">
-      <a href="peloton-australia.html" class="more-card">
-        <div class="more-card-img">
-          <img src="Imagery/Thumbnails/Peloton05.jpg" alt="Peloton" loading="lazy" decoding="async" />
+
+      <a href="peloton-australia.html" class="card">
+        <div class="card-img">
+          <img src="Imagery/Thumbnails/Peloton05.jpg" alt="Peloton Australia Launch" loading="lazy" decoding="async" />
+          <video class="card-img-video" muted loop playsinline preload="none" aria-hidden="true">
+            <source src="Imagery/Thumbnails/Hover/Compressed/PelotonAU_Thumbnail.mp4" type="video/mp4">
+          </video>
+          <div class="card-arrow">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 17L17 7M7 7h10v10"/></svg>
+          </div>
         </div>
-        <div class="more-card-body">
-          <div class="more-card-client">Peloton</div>
-          <div class="more-card-title">Australian market launch</div>
-        </div>
-      </a>
-      <a href="peloton-subscription.html" class="more-card">
-        <div class="more-card-img">
-          <img src="Imagery/Thumbnails/Peloton03.jpg" alt="Peloton" loading="lazy" decoding="async" />
-        </div>
-        <div class="more-card-body">
-          <div class="more-card-client">Peloton</div>
-          <div class="more-card-title">Global B2B subscription tiers</div>
-        </div>
-      </a>
-      <a href="peloton-colleges.html" class="more-card">
-        <div class="more-card-img">
-          <img src="Imagery/Thumbnails/Peloton01.jpg" alt="Peloton" loading="lazy" decoding="async" />
-        </div>
-        <div class="more-card-body">
-          <div class="more-card-client">Peloton</div>
-          <div class="more-card-title">US College limited edition</div>
+        <div class="card-text">
+          <div class="card-row">
+            <span class="card-client">Peloton</span>
+            <span class="card-num">06</span>
+          </div>
+          <h3 class="card-title">Localizing Peloton's eCommerce experience for launch into the Australian fitness market.</h3>
+          <div class="card-tags">
+            <span class="ctag">eCommerce</span>
+            <span class="ctag">New Markets</span>
+            <span class="ctag">Product Experiments</span>
+          </div>
         </div>
       </a>
+      <a href="peloton-subscription.html" class="card">
+        <div class="card-img">
+          <img src="Imagery/Thumbnails/Peloton03.jpg" alt="Peloton Subscription Tiers" loading="lazy" decoding="async" />
+          <div class="card-arrow">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 17L17 7M7 7h10v10"/></svg>
+          </div>
+        </div>
+        <div class="card-text">
+          <div class="card-row">
+            <span class="card-client">Peloton</span>
+            <span class="card-num">05</span>
+          </div>
+          <h3 class="card-title">Rolling out Peloton's redesigned subscription architecture across global enterprise and B2B markets.</h3>
+          <div class="card-tags">
+            <span class="ctag">eCommerce</span>
+            <span class="ctag">B2B</span>
+            <span class="ctag">Subscription</span>
+          </div>
+        </div>
+      </a>
+      <a href="peloton-colleges.html" class="card">
+        <div class="card-img">
+          <img src="Imagery/Thumbnails/Peloton01.jpg" alt="Peloton US Colleges" loading="lazy" decoding="async" />
+          <video class="card-img-video" muted loop playsinline preload="none" aria-hidden="true">
+            <source src="Imagery/Thumbnails/Hover/Compressed/PelotonxMichigan_Thumbnail.mp4" type="video/mp4">
+          </video>
+          <div class="card-arrow">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 17L17 7M7 7h10v10"/></svg>
+          </div>
+        </div>
+        <div class="card-text">
+          <div class="card-row">
+            <span class="card-client">Peloton</span>
+            <span class="card-num">04</span>
+          </div>
+          <h3 class="card-title">Exploring branded hardware partnerships through Peloton's first university collaboration with the University of Michigan.</h3>
+          <div class="card-tags">
+            <span class="ctag">eCommerce</span>
+            <span class="ctag">B2B</span>
+            <span class="ctag">Pilot</span>
+            <span class="ctag">Fitness</span>
+          </div>
+        </div>
+      </a>
+      
     </div>
   </div>
+
+
+  <!-- Footer -->
+  <footer id="contact" aria-label="Say hello">
+
+    <div class="foot-main">
+      <div class="foot-hero">
+        <div class="foot-wordmark" aria-hidden="true">
+          <span>Say</span> <span>Hello</span>
+        </div>
+
+        <div class="foot-contact">
+          <a class="foot-email" href="mailto:hello@benjaminlynch.co.uk">hello@benjaminlynch.co.uk</a>
+
+          <div class="foot-links" role="navigation" aria-label="Footer navigation">
+            <a href="https://www.linkedin.com/in/benflynch/" target="_blank" rel="noopener" aria-label="LinkedIn">
+              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+                <path d="M20.45 20.45h-3.55v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.36V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.72V1.72C24 .77 23.2 0 22.22 0z"/>
+              </svg>
+            </a>
+            <a href="https://x.com/benlynch" target="_blank" rel="noopener" aria-label="X">
+              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117L17.083 19.77z"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="foot-bar">
+      <span class="foot-copy">© 2026 Benjamin Lynch</span>
+    </div>
+
+  </footer>
 
   <script>
 
     /* Theme toggle */
     const html        = document.documentElement;
     const themeToggle = document.getElementById('themeToggle');
-    const labelDark   = themeToggle.querySelector('.toggle-label-dark');
-    const labelLight  = themeToggle.querySelector('.toggle-label-light');
 
     const saved = localStorage.getItem('cs-theme');
     if (saved) html.dataset.theme = saved;
-
-    function updateToggleLabel() {
-      const isDark = html.dataset.theme === 'dark';
-      labelDark.style.display  = isDark  ? '' : 'none';
-      labelLight.style.display = isDark  ? 'none' : '';
-    }
-
-    updateToggleLabel();
 
     themeToggle.addEventListener('click', () => {
       const next = html.dataset.theme === 'dark' ? 'light' : 'dark';
       html.dataset.theme = next;
       localStorage.setItem('cs-theme', next);
-      updateToggleLabel();
     });
 
     /* Carousel dots */

@@ -47,6 +47,15 @@
       --sans:      'Satoshi', -apple-system, BlinkMacSystemFont, sans-serif;
     }
 
+    /* ─── Dark theme override ───────────────────────────────── */
+    [data-theme="dark"] {
+      --bg:        #181716;
+      --ink:       #FFFFFF;
+      --ink-mid:   #B5B2AC;
+      --ink-light: #A8A59F;
+      --rule:      rgba(255,255,255,0.08);
+    }
+
     html { scroll-behavior: smooth; }
 
     body {
@@ -56,6 +65,7 @@
       font-size: 14px;
       line-height: 1.6;
       -webkit-font-smoothing: antialiased;
+      transition: background 0.35s ease, color 0.35s ease;
     }
 
     a { color: inherit; text-decoration: none; }
@@ -77,9 +87,11 @@
       height: 56px;
       display: flex;
       align-items: center;
+      justify-content: space-between;
       padding: 0 48px;
       background: var(--bg);
       border-bottom: 1px solid var(--rule);
+      transition: background 0.35s ease, border-color 0.35s ease;
     }
 
     .nav-logo {
@@ -176,6 +188,51 @@
       fill: currentColor;
     }
     .nav-socials a:hover { color: var(--ink); }
+
+    /* ─── Nav right group (socials + theme toggle) ──────────── */
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+    }
+
+    /* ─── Theme toggle ──────────────────────────────────────── */
+    .theme-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      background: none;
+      border: 1px solid var(--rule);
+      border-radius: 100px;
+      padding: 6px 12px 6px 8px;
+      cursor: pointer;
+      font-family: var(--sans);
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--ink-mid);
+      transition: color 0.2s, border-color 0.2s, background 0.2s;
+    }
+    .theme-toggle:hover {
+      color: var(--ink);
+      border-color: var(--ink-mid);
+    }
+    .theme-toggle svg {
+      width: 13px;
+      height: 13px;
+      flex-shrink: 0;
+      display: block;
+    }
+    .theme-toggle .toggle-label {
+      display: inline-block;
+      min-width: 32px;
+      text-align: left;
+    }
+    [data-theme="dark"]  .toggle-sun  { display: none; }
+    [data-theme="dark"]  .toggle-label-light { display: none; }
+    :root:not([data-theme="dark"]) .toggle-moon { display: none; }
+    :root:not([data-theme="dark"]) .toggle-label-dark  { display: none; }
 
     /* ─── Mode toggle (inline in header bar) ────────────────── */
     .bar-left {
@@ -1134,10 +1191,50 @@
     }
 
     .foot-tagline {
-      font-size: 14px;
+      font-size: 17px;
+      font-weight: 400;
       color: var(--ink-mid);
-      line-height: 1.65;
-      max-width: 32ch;
+      line-height: 1.5;
+      letter-spacing: -0.005em;
+      text-decoration: none;
+      display: inline-block;
+      position: relative;
+      transition: color 0.2s ease;
+    }
+
+    .foot-tagline::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: -2px;
+      height: 1px;
+      background: var(--ink);
+      transform: scaleX(0);
+      transform-origin: left center;
+      transition: transform 0.4s cubic-bezier(0.65, 0, 0.35, 1);
+    }
+
+    .foot-tagline:hover { color: var(--ink); }
+    .foot-tagline:hover::after { transform: scaleX(1); }
+
+    /* "Made with Claude" badge — bottom right */
+    .foot-made {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--ink-light);
+      letter-spacing: 0.02em;
+    }
+
+    .foot-made-logo {
+      width: 13px;
+      height: 13px;
+      display: block;
+      color: #D97757;
+      flex-shrink: 0;
     }
 
     /* Right column: email + socials */
@@ -1605,22 +1702,35 @@
       </svg>
       <span>Benjamin Lynch</span>
     </a>
-    <ul class="nav-socials">
-      <li>
-        <a href="https://www.linkedin.com/in/benflynch/" target="_blank" rel="noopener" aria-label="LinkedIn">
-          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
-            <path d="M20.45 20.45h-3.55v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.36V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.72V1.72C24 .77 23.2 0 22.22 0z"/>
-          </svg>
-        </a>
-      </li>
-      <li>
-        <a href="https://x.com/benlynch" target="_blank" rel="noopener" aria-label="X">
-          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
-            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117L17.083 19.77z"/>
-          </svg>
-        </a>
-      </li>
-    </ul>
+    <div class="nav-right">
+      <ul class="nav-socials">
+        <li>
+          <a href="https://www.linkedin.com/in/benflynch/" target="_blank" rel="noopener" aria-label="LinkedIn">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+              <path d="M20.45 20.45h-3.55v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.36V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.72V1.72C24 .77 23.2 0 22.22 0z"/>
+            </svg>
+          </a>
+        </li>
+        <li>
+          <a href="https://x.com/benlynch" target="_blank" rel="noopener" aria-label="X">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+              <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117L17.083 19.77z"/>
+            </svg>
+          </a>
+        </li>
+      </ul>
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+        <svg class="toggle-moon" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+          <path d="M14 8.526A6 6 0 1 1 7.474 2 4.667 4.667 0 0 0 14 8.526z"/>
+        </svg>
+        <svg class="toggle-sun" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true">
+          <circle cx="8" cy="8" r="2.5"/>
+          <path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.05 3.05l1.42 1.42M11.53 11.53l1.42 1.42M3.05 12.95l1.42-1.42M11.53 4.47l1.42-1.42"/>
+        </svg>
+        <span class="toggle-label toggle-label-dark">Light</span>
+        <span class="toggle-label toggle-label-light">Dark</span>
+      </button>
+    </div>
   </nav>
 
 
@@ -1891,7 +2001,7 @@
     <div class="foot-main">
       <div class="foot-left">
         <span class="foot-mark">BL</span>
-        <p class="foot-tagline">Open to new product design roles and collaborations. Always happy to connect.</p>
+        <a class="foot-tagline" href="mailto:hello@benjaminlynch.co.uk">Let's chat — hello@benjaminlynch.co.uk</a>
       </div>
       <div class="foot-right">
         <a class="foot-email" href="mailto:hello@benjaminlynch.co.uk">hello@benjaminlynch.co.uk</a>
@@ -1914,19 +2024,41 @@
       </div>
     </div>
 
-    <!-- Bottom strip: copyright + nav -->
+    <!-- Bottom strip: copyright + Made with Claude -->
     <div class="foot-bar">
       <span class="foot-copy">© 2026 Benjamin Lynch. All rights reserved.</span>
-      <ul class="foot-nav">
-        <li><a href="#work">Work</a></li>
-        <li><a href="#about">Experience</a></li>
-        <li><a href="#about">About</a></li>
-      </ul>
+      <span class="foot-made">
+        Made with
+        <svg class="foot-made-logo" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M12 0C12 6.627 6.627 12 0 12C6.627 12 12 17.373 12 24C12 17.373 17.373 12 24 12C17.373 12 12 6.627 12 0Z"/>
+        </svg>
+        Claude
+      </span>
     </div>
 
   </footer>
 
   <script>
+    /* ─── Theme toggle (shared across all pages via 'cs-theme') ─ */
+    (function () {
+      const html = document.documentElement;
+      const saved = localStorage.getItem('cs-theme');
+      if (saved) html.dataset.theme = saved;
+
+      const toggle = document.getElementById('themeToggle');
+      if (!toggle) return;
+
+      toggle.addEventListener('click', () => {
+        const next = html.dataset.theme === 'dark' ? 'light' : 'dark';
+        if (next === 'dark') {
+          html.dataset.theme = 'dark';
+        } else {
+          delete html.dataset.theme;
+        }
+        localStorage.setItem('cs-theme', next);
+      });
+    })();
+
     /* Nav blur on scroll */
     const navEl = document.querySelector('nav');
     if (navEl) {
