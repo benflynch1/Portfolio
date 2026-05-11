@@ -283,6 +283,10 @@
     :root:not([data-theme="dark"]) .toggle-label-dark  { display: none; }
 
     /* ─── Project menu ──────────────────────────────────────── */
+    body.project-menu-open {
+      overflow: hidden;
+    }
+
     .project-menu-backdrop {
       position: fixed;
       inset: 0;
@@ -349,6 +353,14 @@
       padding: 0;
     }
 
+    .project-menu-secondary {
+      display: none;
+      list-style: none;
+      margin: 18px 0 0;
+      padding: 14px 0 0;
+      border-top: 1px solid var(--rule);
+    }
+
     .project-menu-link {
       display: grid;
       grid-template-columns: 34px minmax(0, 1fr);
@@ -375,6 +387,11 @@
       line-height: 1.25;
       letter-spacing: 0;
       color: var(--ink);
+    }
+
+    .project-menu-link--secondary {
+      grid-template-columns: minmax(0, 1fr);
+      border-top: none;
     }
 
     .project-menu-title::after {
@@ -1938,24 +1955,47 @@
 
       .project-menu {
         top: 64px;
-        width: calc(100vw - 20px);
-        max-height: calc(100svh - 80px);
-        border-radius: 20px;
-        padding: 16px;
+        left: 0;
+        width: 100vw;
+        height: calc(100svh - 64px);
+        max-height: none;
+        border-right: none;
+        border-bottom: none;
+        border-left: none;
+        border-radius: 0;
+        padding: 24px 26px max(28px, env(safe-area-inset-bottom));
+        transform: translateY(-8px);
       }
+      .project-menu.is-open {
+        transform: translateY(0);
+      }
+
 
       .project-menu-link {
         grid-template-columns: 30px minmax(0, 1fr);
         gap: 12px;
-        padding: 13px 0;
+        padding: 14px 0;
       }
 
       .project-menu-title {
-        font-size: 14px;
+        font-size: 17px;
+        line-height: 1.2;
+      }
+
+      .project-menu-secondary {
+        display: block;
+      }
+
+      .project-menu-link--secondary {
+        padding: 13px 0;
       }
 
       .nav-right {
         gap: 12px;
+      }
+
+      .nav-experience {
+        display: none;
       }
 
       .theme-toggle {
@@ -1970,7 +2010,7 @@
       /* Hero: stack columns and lock to viewport width */
       .hero {
         overflow-x: hidden;
-        padding: 6px 10px 16px;
+        padding: 70px 10px 16px;
       }
 
       .hero-body {
@@ -1980,7 +2020,7 @@
       }
 
       .hero-left {
-        padding: 74px 20px 40px;
+        padding: 38px 20px 40px;
         width: 100%;
         max-width: 100%;
       }
@@ -2376,6 +2416,10 @@
       <li><a class="project-menu-link" href="virgin-sport.html"><span class="project-menu-num">10</span><span class="project-menu-title">Virgin Sport</span></a></li>
       <li><a class="project-menu-link" href="twitter-visit-england.html"><span class="project-menu-num">11</span><span class="project-menu-title">Twitter x Visit England</span></a></li>
     </ul>
+    <ul class="project-menu-secondary" aria-label="Site links">
+      <li><a class="project-menu-link project-menu-link--secondary" href="index.html#experience"><span class="project-menu-title">Experience</span></a></li>
+      <li><a class="project-menu-link project-menu-link--secondary" href="#contact"><span class="project-menu-title">Contact</span></a></li>
+    </ul>
   </aside>
 
 
@@ -2390,8 +2434,8 @@
           <!-- Left: portrait card -->
           <div class="agent-wrap">
             <button class="agent-card-btn" id="agentCardBtn" aria-label="Benjamin Lynch portrait">
-              <img class="agent-card-img" id="agentCardImg" src="Imagery/Self/Portrait_Normal.jpg" alt="Benjamin Lynch portrait" />
-              <img class="agent-card-img agent-card-img-ai" src="Imagery/Self/Portrait_AI.jpg" alt="" aria-hidden="true" />
+              <img class="agent-card-img" id="agentCardImg" src="Imagery/Self/Portrait_Normal.jpg" alt="Benjamin Lynch portrait" decoding="async" />
+              <img class="agent-card-img agent-card-img-ai" src="Imagery/Self/Portrait_AI.jpg" alt="" aria-hidden="true" decoding="async" />
             </button>
           </div>
 
@@ -2609,7 +2653,7 @@
       <!-- P1 -->
       <a href="wone.html" class="card">
         <div class="card-img">
-          <img src="Imagery/Thumbnails/WONE.jpg" alt="Walking on Earth" />
+          <img src="Imagery/Thumbnails/WONE.jpg" alt="Walking on Earth" decoding="async" />
           <video class="card-img-video" muted loop playsinline preload="none" aria-hidden="true">
             <source src="Imagery/Thumbnails/Hover/Compressed/WONE_Thumbnail.mp4" type="video/mp4">
           </video>
@@ -2634,7 +2678,7 @@
       <!-- P2 -->
       <a href="numan-weight-loss.html" class="card">
         <div class="card-img">
-          <img src="Imagery/Thumbnails/Numan01.jpg" alt="Numan Weight Loss" />
+          <img src="Imagery/Thumbnails/Numan01.jpg" alt="Numan Weight Loss" decoding="async" />
           <video class="card-img-video" muted loop playsinline preload="none" aria-hidden="true">
             <source src="Imagery/Thumbnails/Hover/Compressed/NumanWL_Thumbnail.mp4" type="video/mp4">
           </video>
@@ -2660,7 +2704,7 @@
       <!-- P3 -->
       <a href="numan-testosterone.html" class="card">
         <div class="card-img">
-          <img src="Imagery/Thumbnails/Numan03.jpg" alt="Numan Testosterone Deficiency" />
+          <img src="Imagery/Thumbnails/Numan03.jpg" alt="Numan Testosterone Deficiency" decoding="async" />
           <div class="card-arrow">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 17L17 7M7 7h10v10"/></svg>
           </div>
@@ -3277,6 +3321,7 @@
         btn.setAttribute('aria-expanded', String(open));
         btn.setAttribute('aria-label', open ? 'Close project menu' : 'Open project menu');
         menu.setAttribute('aria-hidden', String(!open));
+        document.body.classList.toggle('project-menu-open', open);
       }
 
       btn.addEventListener('click', () => {

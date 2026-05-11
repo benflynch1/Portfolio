@@ -278,6 +278,10 @@
     [data-theme="light"] .toggle-moon { display: none; }
     [data-theme="dark"]  .toggle-label-light { display: none; }
     [data-theme="light"] .toggle-label-dark  { display: none; }
+    body.project-menu-open {
+      overflow: hidden;
+    }
+
 
     .project-menu-backdrop {
       position: fixed;
@@ -345,6 +349,14 @@
       padding: 0;
     }
 
+    .project-menu-secondary {
+      display: none;
+      list-style: none;
+      margin: 18px 0 0;
+      padding: 14px 0 0;
+      border-top: 1px solid var(--rule);
+    }
+
     .project-menu-link {
       display: grid;
       grid-template-columns: 34px minmax(0, 1fr);
@@ -373,6 +385,11 @@
       color: var(--ink);
     }
 
+    .project-menu-link--secondary {
+      grid-template-columns: minmax(0, 1fr);
+      border-top: none;
+    }
+
     .project-menu-title::after {
       content: '';
       position: absolute;
@@ -397,7 +414,7 @@
     }
 
     .site-nav.is-scrolled .nav-frame {
-      width: min(720px, calc(100vw - 32px));
+      width: 100%;
       background: var(--bg);
       border: 1px solid var(--rule);
       border-radius: 28px;
@@ -419,7 +436,7 @@
       }
 
       .site-nav.is-scrolled .nav-frame {
-        width: min(640px, calc(100vw - 32px));
+        width: 100%;
         border-radius: 24px;
       }
     }
@@ -436,7 +453,7 @@
       }
 
       .site-nav.is-scrolled .nav-frame {
-        width: calc(100vw - 20px);
+        width: 100%;
         border-radius: 22px;
       }
 
@@ -446,24 +463,47 @@
 
       .project-menu {
         top: 64px;
-        width: calc(100vw - 20px);
-        max-height: calc(100svh - 80px);
-        border-radius: 20px;
-        padding: 16px;
+        left: 0;
+        width: 100vw;
+        height: calc(100svh - 64px);
+        max-height: none;
+        border-right: none;
+        border-bottom: none;
+        border-left: none;
+        border-radius: 0;
+        padding: 24px 26px max(28px, env(safe-area-inset-bottom));
+        transform: translateY(-8px);
       }
+      .project-menu.is-open {
+        transform: translateY(0);
+      }
+
 
       .project-menu-link {
         grid-template-columns: 30px minmax(0, 1fr);
         gap: 12px;
-        padding: 13px 0;
+        padding: 14px 0;
       }
 
       .project-menu-title {
-        font-size: 14px;
+        font-size: 17px;
+        line-height: normal;
+      }
+
+      .project-menu-secondary {
+        display: block;
+      }
+
+      .project-menu-link--secondary {
+        padding: 13px 0;
       }
 
       .nav-right {
         gap: 12px;
+      }
+
+      .nav-experience {
+        display: none;
       }
 
       .theme-toggle {
@@ -520,7 +560,7 @@
     .case-subnav-brand {
       font-size: 11px;
       font-weight: 700;
-      line-height: 1.2;
+      line-height: normal;
       letter-spacing: 0.14em;
       text-transform: uppercase;
       color: var(--ink);
@@ -545,7 +585,7 @@
       padding: 4px 0;
       font-size: 11px;
       font-weight: 600;
-      line-height: 1.2;
+      line-height: normal;
       letter-spacing: 0.08em;
       text-transform: uppercase;
       color: var(--ink-mid);
@@ -1536,6 +1576,241 @@
       .mockup-row > * { flex: 0 0 88%; }
     }
 
+    /* ─── Connected scrolled nav/subnav ─────────────────────── */
+    .site-nav.is-scrolled {
+      inset: 0 0 auto 0;
+    }
+
+    .site-nav.is-scrolled .nav-frame {
+      width: 100%;
+      background: var(--bg);
+      border-top: none;
+      border-right: none;
+      border-bottom: 1px solid var(--rule);
+      border-left: none;
+      border-radius: 0;
+      box-shadow: none;
+    }
+
+    [data-theme="dark"] .site-nav.is-scrolled .nav-frame {
+      box-shadow: none;
+    }
+
+    .case-subnav {
+      top: 56px;
+      left: 0;
+      right: 0;
+      border-top: none;
+      border-right: none;
+      border-left: none;
+      border-radius: 0;
+      box-shadow: none;
+    }
+
+    [data-theme="light"] .case-subnav {
+      box-shadow: none;
+    }
+
+    @media (max-width: 1080px) {
+      .site-nav.is-scrolled {
+        inset: 0 0 auto 0;
+      }
+
+      .site-nav.is-scrolled .nav-frame {
+        border-radius: 0;
+      }
+    }
+
+    @media (max-width: 767px) {
+      .site-nav.is-scrolled {
+        inset: 0 0 auto 0;
+      }
+
+      .site-nav.is-scrolled .nav-frame {
+        border-radius: 0;
+      }
+
+      .case-subnav {
+        top: 52px;
+        left: 0;
+        right: 0;
+        border-radius: 0;
+      }
+    }
+
+    /* ─── Homepage-style large cards for case-study pages ───── */
+    :root {
+      --case-gutter: 24px;
+      --case-card-radius: 32px;
+    }
+
+    body {
+      background: var(--more-bg);
+    }
+
+    .case-hero-card,
+    .cs-section,
+    .cta-panel,
+    .more-section {
+      margin: 16px var(--case-gutter) 0;
+      border: 1px solid var(--rule);
+      border-radius: var(--case-card-radius);
+      background: var(--bg);
+      overflow: hidden;
+    }
+
+    .case-hero-card {
+      margin-top: 8px;
+    }
+
+    .case-hero-card .project-header,
+    .case-hero-card .hero-image,
+    .case-hero-card .brief-block {
+      margin: 0;
+      border-right: none;
+      border-left: none;
+      border-radius: 0;
+      background: transparent;
+      overflow: hidden;
+    }
+
+    .case-hero-card .project-header {
+      border-top: none;
+    }
+
+    .case-hero-card .hero-image {
+      width: 100%;
+      border-top: 1px solid var(--rule);
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .case-hero-card .brief-block {
+      border-top: none;
+      border-bottom: none;
+    }
+
+    .cs-section,
+    .cta-panel {
+      border-bottom: 1px solid var(--rule);
+      content-visibility: auto;
+      contain-intrinsic-size: auto 760px;
+    }
+
+    .more-section {
+      background: var(--bg);
+      position: relative;
+      z-index: 2;
+      margin-bottom: 128px;
+      padding: 0;
+    }
+
+    .more-section .more-label {
+      font-family: var(--sans);
+      font-size: 12px;
+      font-weight: 600;
+      line-height: normal;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--ink);
+      margin: 0;
+      padding: 28px 40px 24px;
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .more-section .more-grid {
+      width: 100%;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      border-top: none;
+      border-left: none;
+    }
+
+    .more-section .card:nth-child(3n) {
+      border-right: none;
+    }
+
+    .more-section .card:nth-last-child(-n+3) {
+      border-bottom: none;
+    }
+
+    footer {
+      position: relative;
+      z-index: 1;
+      margin-top: -32px;
+      padding: 28px 48px 18px;
+      opacity: var(--footer-reveal-opacity, 0.42);
+      transform: translateY(var(--footer-reveal-y, -96px));
+      will-change: transform, opacity;
+    }
+
+    footer .foot-main {
+      padding: 0;
+    }
+
+    footer .foot-hero {
+      border-top: none;
+      padding-top: 12px;
+    }
+
+    @media (max-width: 1080px) {
+      :root {
+        --case-gutter: 16px;
+        --case-card-radius: 28px;
+      }
+
+      footer {
+        padding: 22px 32px 18px;
+      }
+    }
+
+    @media (max-width: 767px) {
+      :root {
+        --case-gutter: 10px;
+        --case-card-radius: 22px;
+      }
+
+      .case-hero-card,
+      .cs-section,
+      .cta-panel,
+      .more-section {
+        margin-top: 10px;
+      }
+
+      .more-section {
+        margin-bottom: 112px;
+        padding: 0;
+      }
+
+      .more-section .more-label {
+        padding: 24px 20px 22px;
+      }
+
+      .more-section .more-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .more-section .card,
+      .more-section .card:nth-child(3n) {
+        border-right: none;
+      }
+
+      .more-section .card:nth-last-child(-n+3) {
+        border-bottom: 1px solid var(--rule);
+      }
+
+      .more-section .card:last-child {
+        border-bottom: none;
+      }
+
+      .case-hero-card {
+        margin-top: 6px;
+      }
+
+      footer {
+        margin-top: -24px;
+        padding: 24px 20px 18px;
+      }
+    }
+
   </style>
 </head>
 <body>
@@ -1581,6 +1856,10 @@
       <li><a class="project-menu-link" href="virgin-sport.html"><span class="project-menu-num">10</span><span class="project-menu-title">Virgin Sport</span></a></li>
       <li><a class="project-menu-link" href="twitter-visit-england.html"><span class="project-menu-num">11</span><span class="project-menu-title">Twitter x Visit England</span></a></li>
     </ul>
+    <ul class="project-menu-secondary" aria-label="Site links">
+      <li><a class="project-menu-link project-menu-link--secondary" href="index.html#experience"><span class="project-menu-title">Experience</span></a></li>
+      <li><a class="project-menu-link project-menu-link--secondary" href="#contact"><span class="project-menu-title">Contact</span></a></li>
+    </ul>
   </aside>
 
   <nav class="case-subnav" aria-label="Case study sections">
@@ -1591,6 +1870,7 @@
       <a class="case-subnav-link" href="#section-03">03 Defining the brand at scale</a>
     </div>
   </nav>
+  <div class="case-hero-card">
 
 
   <!-- Project Header -->
@@ -1614,7 +1894,7 @@
     <div class="project-header-meta">
     <div class="project-brand">
       <div class="project-icon">
-        <img src="icons/logo/virginsport/Default.svg" alt="Virgin Sport">
+        <img src="icons/logo/virginsport/Default.svg" alt="Virgin Sport" decoding="async">
       </div>
     </div>
       <div class="header-meta-item">
@@ -1642,7 +1922,7 @@
   <div class="hero-image">
     <picture>
       <source media="(max-width: 767px)" srcset="Imagery/Hero/Mobile/VirginSport.jpg" />
-      <img src="Imagery/Hero/Desktop/VirginSport.jpg" alt="Virgin Sport festival of sport hero" />
+      <img src="Imagery/Hero/Desktop/VirginSport.jpg" alt="Virgin Sport festival of sport hero" decoding="async" />
     </picture>
   </div>
 
@@ -1661,6 +1941,7 @@
       <p class="brief-col-text">Live across three flagship UK events, a registration and race-day experience that supported tens of thousands of participants.</p>
     </div>
   </div>
+  </div>
 
   <!-- Section 01 -->
   <section class="cs-section" id="section-01">
@@ -1678,7 +1959,7 @@
       </div>
     </div>
     <div class="section-feature section-feature-wide">
-      <img src="Imagery/VirginSport/Bento/website-overview.jpg" alt="Virgin Sport website — homepage and event landing pages" loading="lazy">
+      <img src="Imagery/VirginSport/Bento/website-overview.jpg" alt="Virgin Sport website — homepage and event landing pages" loading="lazy" decoding="async">
     </div>
   </section>
 
@@ -1699,16 +1980,16 @@
     </div>
     <div class="bento-grid">
       <div class="bento-tile bento-tile-1">
-        <img src="Imagery/VirginSport/Bento/modules-festivalscheduleplanner.jpg" alt="Festival schedule planner module" loading="lazy">
+        <img src="Imagery/VirginSport/Bento/modules-festivalscheduleplanner.jpg" alt="Festival schedule planner module" loading="lazy" decoding="async">
       </div>
       <div class="bento-tile bento-tile-2">
-        <img src="Imagery/VirginSport/Bento/modules-app.jpg" alt="Race app prompt module" loading="lazy">
+        <img src="Imagery/VirginSport/Bento/modules-app.jpg" alt="Race app prompt module" loading="lazy" decoding="async">
       </div>
       <div class="bento-tile bento-tile-3">
-        <img src="Imagery/VirginSport/Bento/modules-cta.jpg" alt="Call to action module" loading="lazy">
+        <img src="Imagery/VirginSport/Bento/modules-cta.jpg" alt="Call to action module" loading="lazy" decoding="async">
       </div>
       <div class="bento-tile bento-tile-4">
-        <img src="Imagery/VirginSport/Bento/modules-festivalschedule.jpg" alt="Festival schedule module" loading="lazy">
+        <img src="Imagery/VirginSport/Bento/modules-festivalschedule.jpg" alt="Festival schedule module" loading="lazy" decoding="async">
       </div>
     </div>
   </section>
@@ -1730,22 +2011,22 @@
     </div>
     <div class="mockup-row mockup-row-3" id="carousel-03">
       <div class="mockup-frame aspect-16-9">
-        <img src="Imagery/VirginSport/playbook-01.jpeg" alt="Brand playbook — visual identity 01" loading="lazy">
+        <img src="Imagery/VirginSport/playbook-01.jpeg" alt="Brand playbook — visual identity 01" loading="lazy" decoding="async">
       </div>
       <div class="mockup-frame aspect-16-9">
-        <img src="Imagery/VirginSport/playbook-03.jpeg" alt="Brand playbook — visual identity 03" loading="lazy">
+        <img src="Imagery/VirginSport/playbook-03.jpeg" alt="Brand playbook — visual identity 03" loading="lazy" decoding="async">
       </div>
       <div class="mockup-frame aspect-16-9">
-        <img src="Imagery/VirginSport/playbook-04.jpeg" alt="Brand playbook — visual identity 04" loading="lazy">
+        <img src="Imagery/VirginSport/playbook-04.jpeg" alt="Brand playbook — visual identity 04" loading="lazy" decoding="async">
       </div>
       <div class="mockup-frame aspect-16-9">
-        <img src="Imagery/VirginSport/playbook-05.jpeg" alt="Brand playbook — visual identity 05" loading="lazy">
+        <img src="Imagery/VirginSport/playbook-05.jpeg" alt="Brand playbook — visual identity 05" loading="lazy" decoding="async">
       </div>
       <div class="mockup-frame aspect-16-9">
-        <img src="Imagery/VirginSport/playbook-06.jpg" alt="Brand playbook — visual identity 06" loading="lazy">
+        <img src="Imagery/VirginSport/playbook-06.jpg" alt="Brand playbook — visual identity 06" loading="lazy" decoding="async">
       </div>
       <div class="mockup-frame aspect-16-9">
-        <img src="Imagery/VirginSport/playbook-07.jpeg" alt="Brand playbook — visual identity 07" loading="lazy">
+        <img src="Imagery/VirginSport/playbook-07.jpeg" alt="Brand playbook — visual identity 07" loading="lazy" decoding="async">
       </div>
     </div>
     <div class="carousel-dots" id="dots-03"></div>
@@ -1764,7 +2045,7 @@
       </a>
     </div>
     <div class="cta-right">
-      <img src="Imagery/VirginSport/Bento/medal.jpg" alt="Virgin Sport medal" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;">
+      <img src="Imagery/VirginSport/Bento/medal.jpg" alt="Virgin Sport medal" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;" decoding="async" loading="lazy">
     </div>
   </div>
   <!-- More Case Studies -->
@@ -1927,6 +2208,7 @@
         btn.setAttribute('aria-expanded', String(open));
         btn.setAttribute('aria-label', open ? 'Close project menu' : 'Open project menu');
         menu.setAttribute('aria-hidden', String(!open));
+        document.body.classList.toggle('project-menu-open', open);
       }
 
       btn.addEventListener('click', () => {
@@ -2031,6 +2313,43 @@
         setTimeout(() => { btn.style.transition = ''; }, 550);
       });
     });
+
+    /* ═══════════════════════════════════════════════════════════
+       FOOTER REVEAL
+    ══════════════════════════════════════════════════════════ */
+    (function () {
+      const footer = document.querySelector('footer');
+      if (!footer) return;
+
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      let rafId = null;
+      let footerOffsetTop = footer.offsetTop;
+
+      function refreshFooterPosition() {
+        footerOffsetTop = footer.offsetTop;
+        update();
+      }
+
+      function update() {
+        rafId = null;
+        const footerTop = footerOffsetTop - window.scrollY;
+        const vh = window.innerHeight;
+
+        const reveal = reduceMotion
+          ? 1
+          : Math.max(0, Math.min(1, ((vh * 1.12) - footerTop) / (vh * 0.68)));
+
+        footer.style.setProperty('--footer-reveal-y', -Math.round((1 - reveal) * 96) + 'px');
+        footer.style.setProperty('--footer-reveal-opacity', String(0.42 + reveal * 0.58));
+      }
+
+      window.addEventListener('scroll', () => {
+        if (!rafId) rafId = requestAnimationFrame(update);
+      }, { passive: true });
+      window.addEventListener('resize', refreshFooterPosition, { passive: true });
+
+      update();
+    }());
 
   </script>
 </body>
