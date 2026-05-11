@@ -112,7 +112,7 @@
       justify-content: space-between;
       padding: 0 40px;
       background: transparent;
-      border-bottom: 1px solid rgba(14,13,11,0.08);
+      border-bottom: 1px solid transparent;
       border-radius: 28px 28px 0 0;
       pointer-events: auto;
       contain: layout paint style;
@@ -126,7 +126,7 @@
     }
 
     [data-theme="dark"] .nav-frame {
-      border-bottom-color: rgba(255,255,255,0.08);
+      border-bottom-color: transparent;
     }
 
     .nav-menu-toggle {
@@ -186,7 +186,7 @@
       left: 50%;
       transform: translateX(-50%);
       font-family: var(--sans);
-      font-size: 13px;
+      font-size: 15px;
       font-weight: 600;
       letter-spacing: 0.04em;
       color: var(--ink);
@@ -305,12 +305,12 @@
     .project-menu {
       position: fixed;
       top: 72px;
-      left: 50%;
+      left: var(--project-menu-left, 8px);
       z-index: 190;
-      width: min(430px, calc(100vw - 16px));
+      width: min(var(--project-menu-width, 560px), calc(100vw - 16px));
       max-height: calc(100svh - 88px);
       overflow-y: auto;
-      padding: 18px;
+      padding: 14px;
       border: 1px solid var(--rule);
       border-radius: 24px;
       background: var(--bg);
@@ -318,7 +318,7 @@
       opacity: 0;
       visibility: hidden;
       pointer-events: none;
-      transform: translate(-50%, -8px);
+      transform: translateY(-8px);
       transition: opacity 0.25s ease, transform 0.25s ease, visibility 0s linear 0.25s;
     }
 
@@ -330,13 +330,13 @@
       opacity: 1;
       visibility: visible;
       pointer-events: auto;
-      transform: translate(-50%, 0);
+      transform: translateY(0);
       transition: opacity 0.25s ease, transform 0.25s ease, visibility 0s linear 0s;
     }
 
     .project-menu-kicker {
       display: block;
-      margin: 2px 0 14px;
+      margin: 4px 12px 10px;
       font-size: 10px;
       font-weight: 600;
       line-height: 1;
@@ -348,17 +348,19 @@
     .project-menu-list {
       display: flex;
       flex-direction: column;
+      gap: 2px;
       list-style: none;
       margin: 0;
       padding: 0;
     }
 
     .project-menu-secondary {
-      display: none;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
       list-style: none;
-      margin: 18px 0 0;
-      padding: 14px 0 0;
-      border-top: 1px solid var(--rule);
+      margin: 12px 0 0;
+      padding: 0;
     }
 
     .project-menu-link {
@@ -366,9 +368,20 @@
       grid-template-columns: 34px minmax(0, 1fr);
       gap: 14px;
       align-items: baseline;
-      padding: 14px 0;
-      border-top: 1px solid var(--rule);
+      padding: 12px;
+      border-radius: 14px;
       color: var(--ink);
+      transition: background 0.2s ease, color 0.2s ease;
+    }
+
+    .project-menu-link:hover,
+    .project-menu-link:focus-visible {
+      background: rgba(14,13,11,0.055);
+    }
+
+    [data-theme="dark"] .project-menu-link:hover,
+    [data-theme="dark"] .project-menu-link:focus-visible {
+      background: rgba(255,255,255,0.07);
     }
 
     .project-menu-num {
@@ -391,30 +404,53 @@
 
     .project-menu-link--secondary {
       grid-template-columns: minmax(0, 1fr);
-      border-top: none;
-    }
-
-    .project-menu-title::after {
-      content: '';
-      position: absolute;
-      left: 0;
-      right: 0;
-      bottom: -2px;
-      height: 1px;
-      background: currentColor;
-      transform: scaleX(0);
-      transform-origin: left center;
-      transition: transform 0.35s cubic-bezier(0.65, 0, 0.35, 1);
-    }
-
-    .project-menu-link:hover .project-menu-title::after,
-    .project-menu-link:focus-visible .project-menu-title::after {
-      transform: scaleX(1);
     }
 
     .project-menu-link:focus-visible {
       outline: 2px solid var(--ink);
-      outline-offset: 4px;
+      outline-offset: 2px;
+    }
+
+    .project-menu-socials {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin: 12px 0 0;
+      padding: 0 2px;
+    }
+
+    .project-menu-socials a {
+      width: 36px;
+      height: 36px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 999px;
+      color: var(--ink-mid);
+      transition: background 0.2s ease, color 0.2s ease;
+    }
+
+    .project-menu-socials a:hover,
+    .project-menu-socials a:focus-visible {
+      background: rgba(14,13,11,0.055);
+      color: var(--ink);
+    }
+
+    [data-theme="dark"] .project-menu-socials a:hover,
+    [data-theme="dark"] .project-menu-socials a:focus-visible {
+      background: rgba(255,255,255,0.07);
+    }
+
+    .project-menu-socials a:focus-visible {
+      outline: 2px solid var(--ink);
+      outline-offset: 2px;
+    }
+
+    .project-menu-socials svg {
+      width: 15px;
+      height: 15px;
+      display: block;
+      fill: currentColor;
     }
 
     /* ─── Mode toggle (inline in header bar) ────────────────── */
@@ -1950,7 +1986,7 @@
       }
 
       .nav-logo {
-        font-size: 12px;
+        font-size: 14px;
       }
 
       .project-menu {
@@ -1983,7 +2019,9 @@
       }
 
       .project-menu-secondary {
-        display: block;
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
       }
 
       .project-menu-link--secondary {
@@ -2384,7 +2422,6 @@
         Benjamin Lynch
       </span>
       <div class="nav-right">
-        <button class="nav-experience" type="button" id="navExperience" aria-haspopup="dialog" aria-controls="expModal" aria-expanded="false">Experience</button>
         <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
           <svg class="toggle-moon" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
             <path d="M14 8.526A6 6 0 1 1 7.474 2 4.667 4.667 0 0 0 14 8.526z"/>
@@ -2420,6 +2457,18 @@
       <li><a class="project-menu-link project-menu-link--secondary" href="index.html#experience"><span class="project-menu-title">Experience</span></a></li>
       <li><a class="project-menu-link project-menu-link--secondary" href="#contact"><span class="project-menu-title">Contact</span></a></li>
     </ul>
+    <div class="project-menu-socials" aria-label="Social links">
+      <a href="https://www.linkedin.com/in/benflynch/" target="_blank" rel="noopener" aria-label="LinkedIn">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+          <path d="M20.45 20.45h-3.55v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.36V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.72V1.72C24 .77 23.2 0 22.22 0z"/>
+        </svg>
+      </a>
+      <a href="https://x.com/benlynch" target="_blank" rel="noopener" aria-label="Twitter">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+          <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117L17.083 19.77z"/>
+        </svg>
+      </a>
+    </div>
   </aside>
 
 
@@ -3314,7 +3363,27 @@
       const backdrop = document.getElementById('projectMenuBackdrop');
       if (!btn || !menu || !backdrop) return;
 
+      const navFrame = btn.closest('.nav-frame');
+
+      function positionProjectMenu() {
+        if (window.matchMedia('(max-width: 767px)').matches) {
+          menu.style.removeProperty('--project-menu-left');
+          menu.style.removeProperty('--project-menu-width');
+          return;
+        }
+
+        const frame = navFrame ? navFrame.getBoundingClientRect() : btn.getBoundingClientRect();
+        const viewport = window.innerWidth;
+        const gutter = viewport <= 1080 ? 16 : 8;
+        const desiredWidth = Math.min(viewport <= 1080 ? 500 : 560, viewport - gutter * 2);
+        const left = Math.min(Math.max(frame.left, gutter), viewport - desiredWidth - gutter);
+
+        menu.style.setProperty('--project-menu-left', Math.round(left) + 'px');
+        menu.style.setProperty('--project-menu-width', Math.round(desiredWidth) + 'px');
+      }
+
       function setOpen(open) {
+        if (open) positionProjectMenu();
         btn.classList.toggle('is-open', open);
         menu.classList.toggle('is-open', open);
         backdrop.classList.toggle('is-open', open);
@@ -3329,6 +3398,14 @@
       });
 
       backdrop.addEventListener('click', () => setOpen(false));
+
+      window.addEventListener('resize', () => {
+        if (menu.classList.contains('is-open')) positionProjectMenu();
+      });
+
+      window.addEventListener('scroll', () => {
+        if (menu.classList.contains('is-open')) positionProjectMenu();
+      }, { passive: true });
 
       menu.querySelectorAll('a').forEach(link => {
         link.addEventListener('click', () => setOpen(false));
@@ -3664,14 +3741,14 @@
   
     /* ═══════════════════════════════════════════════════════════
        EXPERIENCE MODAL
-       Opens from the nav button, closes via the X, the ESC key,
+       Opens from #experience links, closes via the X, the ESC key,
        or any element marked with [data-exp-close].
     ══════════════════════════════════════════════════════════ */
     (function() {
       const modal      = document.getElementById('expModal');
       const openBtn    = document.getElementById('navExperience');
       const closeBtn   = modal && modal.querySelector('.exp-modal-close');
-      if (!modal || !openBtn) return;
+      if (!modal) return;
 
       let lastFocused = null;
 
@@ -3680,7 +3757,7 @@
         modal.classList.add('is-open');
         modal.setAttribute('aria-hidden', 'false');
         document.body.classList.add('exp-modal-open');
-        openBtn.setAttribute('aria-expanded', 'true');
+        if (openBtn) openBtn.setAttribute('aria-expanded', 'true');
         // Defer focus until after the transition starts so it doesn't
         // fight the transform/opacity animation
         requestAnimationFrame(() => closeBtn && closeBtn.focus());
@@ -3690,13 +3767,13 @@
         modal.classList.remove('is-open');
         modal.setAttribute('aria-hidden', 'true');
         document.body.classList.remove('exp-modal-open');
-        openBtn.setAttribute('aria-expanded', 'false');
+        if (openBtn) openBtn.setAttribute('aria-expanded', 'false');
         if (lastFocused && typeof lastFocused.focus === 'function') {
           lastFocused.focus();
         }
       }
 
-      openBtn.addEventListener('click', open);
+      if (openBtn) openBtn.addEventListener('click', open);
 
       if (window.location.hash === '#experience') {
         open();
