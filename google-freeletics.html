@@ -287,10 +287,16 @@
       position: fixed;
       inset: 0;
       z-index: 180;
-      background: transparent;
+      background: rgba(116, 134, 145, 0.32);
       opacity: 0;
       pointer-events: none;
-      transition: opacity 0.25s ease;
+      backdrop-filter: blur(14px) saturate(116%);
+      -webkit-backdrop-filter: blur(14px) saturate(116%);
+      transition: opacity 0.28s ease;
+    }
+
+    [data-theme="dark"] .project-menu-backdrop {
+      background: rgba(7, 8, 9, 0.58);
     }
 
     .project-menu-backdrop.is-open {
@@ -303,40 +309,46 @@
       top: 72px;
       left: var(--project-menu-left, 8px);
       z-index: 190;
-      width: min(var(--project-menu-width, 560px), calc(100vw - 16px));
+      width: min(var(--project-menu-width, 720px), calc(100vw - 16px));
       max-height: calc(100svh - 88px);
+      min-height: min(700px, calc(100svh - 88px));
       overflow-y: auto;
-      padding: 14px;
-      border: 1px solid var(--rule);
-      border-radius: 24px;
-      background: var(--bg);
-      box-shadow: 0 18px 56px rgba(14,13,11,0.12);
+      display: flex;
+      flex-direction: column;
+      padding: clamp(20px, 2vw, 34px);
+      border: 1px solid rgba(14,13,11,0.1);
+      border-radius: 26px;
+      background: color-mix(in srgb, var(--bg) 94%, white 6%);
+      box-shadow: 0 28px 86px rgba(14,13,11,0.18);
       opacity: 0;
       visibility: hidden;
       pointer-events: none;
-      transform: translateY(-8px);
-      transition: opacity 0.25s ease, transform 0.25s ease, visibility 0s linear 0.25s;
+      transform: translate3d(-40px, 0, 0);
+      transform-origin: top left;
+      transition: opacity 0.42s cubic-bezier(0.83, 0, 0.17, 1), transform 0.42s cubic-bezier(0.83, 0, 0.17, 1), visibility 0s linear 0.42s;
     }
 
     [data-theme="dark"] .project-menu {
-      box-shadow: 0 18px 64px rgba(0,0,0,0.36);
+      border-color: rgba(255,255,255,0.12);
+      background: color-mix(in srgb, var(--bg) 92%, white 8%);
+      box-shadow: 0 28px 92px rgba(0,0,0,0.48);
     }
 
     .project-menu.is-open {
       opacity: 1;
       visibility: visible;
       pointer-events: auto;
-      transform: translateY(0);
-      transition: opacity 0.25s ease, transform 0.25s ease, visibility 0s linear 0s;
+      transform: translate3d(0, 0, 0);
+      transition: opacity 0.42s cubic-bezier(0.83, 0, 0.17, 1), transform 0.42s cubic-bezier(0.83, 0, 0.17, 1), visibility 0s linear 0s;
     }
 
     .project-menu-kicker {
       display: block;
-      margin: 4px 12px 10px;
-      font-size: 10px;
-      font-weight: 600;
+      margin: 2px 0 clamp(14px, 1.6vw, 26px);
+      font-size: 11px;
+      font-weight: 650;
       line-height: 1;
-      letter-spacing: 0.14em;
+      letter-spacing: 0.16em;
       text-transform: uppercase;
       color: var(--ink-light);
     }
@@ -344,7 +356,7 @@
     .project-menu-list {
       display: flex;
       flex-direction: column;
-      gap: 2px;
+      gap: clamp(0px, 0.25vw, 5px);
       list-style: none;
       margin: 0;
       padding: 0;
@@ -352,38 +364,42 @@
 
     .project-menu-secondary {
       display: flex;
-      flex-direction: column;
-      gap: 2px;
+      align-items: center;
+      gap: clamp(18px, 2vw, 30px);
       list-style: none;
-      margin: 12px 0 0;
-      padding: 0;
+      margin: auto 0 0;
+      padding: clamp(14px, 2.4vw, 40px) 0 0;
     }
 
     .project-menu-link {
       display: grid;
-      grid-template-columns: 34px minmax(0, 1fr);
-      gap: 14px;
+      grid-template-columns: clamp(32px, 3.4vw, 52px) minmax(0, 1fr);
+      gap: clamp(12px, 1.3vw, 20px);
       align-items: baseline;
-      padding: 12px;
-      border-radius: 14px;
+      padding: clamp(4px, 0.46vw, 9px) 0;
+      border-radius: 0;
       color: var(--ink);
-      transition: background 0.2s ease, color 0.2s ease;
+      text-decoration: none;
+      transition: color 0.2s ease, opacity 0.2s ease, transform 0.22s ease;
     }
 
     .project-menu-link:hover,
     .project-menu-link:focus-visible {
-      background: rgba(14,13,11,0.055);
+      opacity: 0.68;
+      transform: translateX(6px);
     }
 
     [data-theme="dark"] .project-menu-link:hover,
     [data-theme="dark"] .project-menu-link:focus-visible {
-      background: rgba(255,255,255,0.07);
+      opacity: 0.72;
     }
 
     .project-menu-num {
-      font-size: 10px;
-      font-weight: 600;
-      letter-spacing: 0.14em;
+      padding-top: 0.35em;
+      font-size: clamp(10px, 0.72vw, 12px);
+      font-weight: 650;
+      line-height: 1;
+      letter-spacing: 0.16em;
       color: var(--ink-light);
     }
 
@@ -391,60 +407,79 @@
       position: relative;
       width: fit-content;
       max-width: 100%;
-      font-size: 15px;
+      font-size: clamp(24px, 2vw, 38px);
       font-weight: 500;
-      line-height: 1.25;
+      line-height: 0.98;
       letter-spacing: 0;
       color: var(--ink);
     }
 
     .project-menu-link--secondary {
       grid-template-columns: minmax(0, 1fr);
+      padding: 0;
+      color: var(--ink-mid);
+      transform: none;
+    }
+
+    .project-menu-link--secondary .project-menu-title {
+      font-size: 16px;
+      font-weight: 600;
+      line-height: 1.1;
+      color: currentColor;
+    }
+
+    .project-menu-link--secondary:hover,
+    .project-menu-link--secondary:focus-visible {
+      opacity: 1;
+      color: var(--ink);
+      transform: none;
     }
 
     .project-menu-link:focus-visible {
       outline: 2px solid var(--ink);
-      outline-offset: 2px;
+      outline-offset: 4px;
     }
 
     .project-menu-socials {
       display: flex;
       align-items: center;
-      gap: 8px;
-      margin: 12px 0 0;
-      padding: 0 2px;
+      gap: 10px;
+      margin: 8px 0 0;
+      padding: 0;
     }
 
     .project-menu-socials a {
-      width: 36px;
-      height: 36px;
+      width: 38px;
+      height: 38px;
       display: inline-flex;
       align-items: center;
       justify-content: center;
+      border: 1px solid var(--rule);
       border-radius: 999px;
       color: var(--ink-mid);
-      transition: background 0.2s ease, color 0.2s ease;
+      transition: background 0.5s cubic-bezier(0.65, 0, 0.35, 1), color 0.5s cubic-bezier(0.65, 0, 0.35, 1), border-color 0.5s cubic-bezier(0.65, 0, 0.35, 1);
     }
 
     .project-menu-socials a:hover,
     .project-menu-socials a:focus-visible {
-      background: rgba(14,13,11,0.055);
-      color: var(--ink);
+      background: var(--ink);
+      border-color: var(--ink);
+      color: var(--bg);
     }
 
     [data-theme="dark"] .project-menu-socials a:hover,
     [data-theme="dark"] .project-menu-socials a:focus-visible {
-      background: rgba(255,255,255,0.07);
+      background: var(--ink);
     }
 
     .project-menu-socials a:focus-visible {
       outline: 2px solid var(--ink);
-      outline-offset: 2px;
+      outline-offset: 3px;
     }
 
     .project-menu-socials svg {
-      width: 15px;
-      height: 15px;
+      width: 16px;
+      height: 16px;
       display: block;
       fill: currentColor;
     }
@@ -503,37 +538,47 @@
         width: 100vw;
         height: calc(100svh - 64px);
         max-height: none;
+        min-height: 0;
         border-right: none;
         border-bottom: none;
         border-left: none;
         border-radius: 0;
-        padding: 24px 26px max(28px, env(safe-area-inset-bottom));
-        transform: translateY(-8px);
+        padding: 28px 26px max(28px, env(safe-area-inset-bottom));
+        transform: translate3d(-10px, 0, 0);
       }
       .project-menu.is-open {
-        transform: translateY(0);
+        transform: translate3d(0, 0, 0);
       }
 
+      .project-menu-kicker {
+        margin-bottom: 18px;
+      }
 
       .project-menu-link {
-        grid-template-columns: 30px minmax(0, 1fr);
+        grid-template-columns: 32px minmax(0, 1fr);
         gap: 12px;
-        padding: 14px 0;
+        padding: 8px 0;
       }
 
       .project-menu-title {
-        font-size: 17px;
-        line-height: normal;
+        font-size: clamp(24px, 7vw, 34px);
+        line-height: 1.02;
       }
 
       .project-menu-secondary {
-        display: flex;
-        flex-direction: column;
-        gap: 2px;
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 10px;
+        padding-top: 26px;
       }
 
       .project-menu-link--secondary {
-        padding: 13px 0;
+        min-height: 56px;
+        padding: 14px 16px;
+      }
+
+      .project-menu-link--secondary .project-menu-title {
+        font-size: 15px;
       }
 
       .nav-right {
@@ -2306,8 +2351,6 @@
       const backdrop = document.getElementById('projectMenuBackdrop');
       if (!btn || !menu || !backdrop) return;
 
-      const navFrame = btn.closest('.nav-frame');
-
       function positionProjectMenu() {
         if (window.matchMedia('(max-width: 767px)').matches) {
           menu.style.removeProperty('--project-menu-left');
@@ -2315,11 +2358,11 @@
           return;
         }
 
-        const frame = navFrame ? navFrame.getBoundingClientRect() : btn.getBoundingClientRect();
+        const btnRect = btn.getBoundingClientRect();
         const viewport = window.innerWidth;
         const gutter = viewport <= 1080 ? 16 : 8;
-        const desiredWidth = Math.min(viewport <= 1080 ? 500 : 560, viewport - gutter * 2);
-        const left = Math.min(Math.max(frame.left, gutter), viewport - desiredWidth - gutter);
+        const desiredWidth = Math.min(viewport <= 1080 ? 560 : 720, viewport - gutter * 2);
+        const left = Math.min(Math.max(btnRect.left, gutter), viewport - desiredWidth - gutter);
 
         menu.style.setProperty('--project-menu-left', Math.round(left) + 'px');
         menu.style.setProperty('--project-menu-width', Math.round(desiredWidth) + 'px');
