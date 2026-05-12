@@ -141,7 +141,7 @@
     .nav-menu-toggle:hover,
     .nav-menu-toggle:focus-visible,
     .nav-menu-toggle.is-open {
-      border-color: var(--rule);
+      border-color: transparent;
       background: rgba(255,255,255,0.36);
     }
 
@@ -290,9 +290,10 @@
       background: rgba(116, 134, 145, 0.32);
       opacity: 0;
       pointer-events: none;
-      backdrop-filter: blur(14px) saturate(116%);
-      -webkit-backdrop-filter: blur(14px) saturate(116%);
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
       transition: opacity 0.28s ease;
+      will-change: opacity;
     }
 
     [data-theme="dark"] .project-menu-backdrop {
@@ -302,6 +303,8 @@
     .project-menu-backdrop.is-open {
       opacity: 1;
       pointer-events: auto;
+      backdrop-filter: blur(8px) saturate(108%);
+      -webkit-backdrop-filter: blur(8px) saturate(108%);
     }
 
     .project-menu {
@@ -315,8 +318,10 @@
       overflow-y: auto;
       display: flex;
       flex-direction: column;
+      contain: layout paint style;
+      will-change: opacity, transform;
       padding: clamp(20px, 2vw, 34px);
-      border: 1px solid rgba(14,13,11,0.1);
+      border: none;
       border-radius: 26px;
       background: color-mix(in srgb, var(--bg) 94%, white 6%);
       box-shadow: 0 28px 86px rgba(14,13,11,0.18);
@@ -329,7 +334,7 @@
     }
 
     [data-theme="dark"] .project-menu {
-      border-color: rgba(255,255,255,0.12);
+      border-color: transparent;
       background: color-mix(in srgb, var(--bg) 92%, white 8%);
       box-shadow: 0 28px 92px rgba(0,0,0,0.48);
     }
@@ -364,11 +369,11 @@
 
     .project-menu-secondary {
       display: flex;
-      align-items: center;
-      gap: clamp(18px, 2vw, 30px);
+      align-items: flex-start;
+      gap: clamp(22px, 2.2vw, 34px);
       list-style: none;
       margin: auto 0 0;
-      padding: clamp(14px, 2.4vw, 40px) 0 0;
+      padding: clamp(16px, 2vw, 32px) 0 0;
     }
 
     .project-menu-link {
@@ -416,23 +421,20 @@
 
     .project-menu-link--secondary {
       grid-template-columns: minmax(0, 1fr);
-      padding: 0;
+      padding: clamp(3px, 0.36vw, 6px) 0;
       color: var(--ink-mid);
-      transform: none;
     }
 
     .project-menu-link--secondary .project-menu-title {
-      font-size: 16px;
-      font-weight: 600;
-      line-height: 1.1;
+      font-size: clamp(14px, 0.86vw, 16px);
+      font-weight: 500;
+      line-height: 0.98;
       color: currentColor;
     }
 
     .project-menu-link--secondary:hover,
     .project-menu-link--secondary:focus-visible {
-      opacity: 1;
       color: var(--ink);
-      transform: none;
     }
 
     .project-menu-link:focus-visible {
@@ -444,7 +446,7 @@
       display: flex;
       align-items: center;
       gap: 10px;
-      margin: 8px 0 0;
+      margin: 14px 0 0;
       padding: 0;
     }
 
@@ -546,6 +548,11 @@
         padding: 28px 26px max(28px, env(safe-area-inset-bottom));
         transform: translate3d(-10px, 0, 0);
       }
+
+      .project-menu-backdrop.is-open {
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+      }
       .project-menu.is-open {
         transform: translate3d(0, 0, 0);
       }
@@ -561,8 +568,8 @@
       }
 
       .project-menu-title {
-        font-size: clamp(24px, 7vw, 34px);
-        line-height: 1.02;
+        font-size: clamp(22px, 6vw, 30px);
+        line-height: 1.04;
       }
 
       .project-menu-secondary {
@@ -573,8 +580,8 @@
       }
 
       .project-menu-link--secondary {
-        min-height: 56px;
-        padding: 14px 16px;
+        min-height: 0;
+        padding: 4px 0;
       }
 
       .project-menu-link--secondary .project-menu-title {
@@ -745,7 +752,6 @@
     /* ─── Project Header ─────────────────────────────────────── */
     .project-header {
       padding: 64px var(--pad) 56px;
-      border-bottom: 1px solid var(--rule);
     }
 
     .project-icon {
@@ -1022,15 +1028,22 @@
     .impact-panel {
       border-bottom: 1px solid var(--rule);
       content-visibility: auto;
-      contain-intrinsic-size: auto 520px;
+      contain-intrinsic-size: auto 660px;
     }
 
     .impact-card {
       display: flex;
       flex-direction: column;
-      gap: clamp(48px, 6vw, 80px);
+      gap: clamp(22px, 3vw, 36px);
       padding: clamp(64px, 8vw, 112px) var(--pad);
-      background: var(--bg);
+      background: transparent;
+    }
+
+    .impact-intro {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
     }
 
     .impact-eyebrow {
@@ -1041,34 +1054,162 @@
       color: var(--ink-light);
     }
 
+    .impact-controls {
+      display: flex;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+
+    .impact-control {
+      width: 44px;
+      height: 44px;
+      border: 1px solid var(--rule);
+      border-radius: 999px;
+      background: var(--bg-raised);
+      color: var(--ink);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: background 0.25s ease, border-color 0.25s ease, color 0.25s ease, opacity 0.25s ease;
+    }
+
+    .impact-control svg {
+      width: 18px;
+      height: 18px;
+      display: block;
+    }
+
+    .impact-control:hover,
+    .impact-control:focus-visible {
+      background: var(--ink);
+      border-color: var(--ink);
+      color: var(--bg);
+      outline: none;
+    }
+
+    .impact-control:disabled {
+      opacity: 0.34;
+      cursor: default;
+      pointer-events: none;
+    }
+
     .impact-grid {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: clamp(36px, 5vw, 72px);
-      padding-top: clamp(40px, 5vw, 64px);
-      border-top: 1px solid var(--rule);
+      display: flex;
+      gap: 14px;
+      overflow-x: auto;
+      overflow-y: hidden;
+      scroll-snap-type: x mandatory;
+      scrollbar-width: none;
+      overscroll-behavior-x: contain;
+    }
+
+    .impact-grid::-webkit-scrollbar {
+      display: none;
     }
 
     .impact-stat {
-      min-width: 0;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      flex: 0 0 clamp(340px, 31vw, 520px);
+      min-width: min(520px, calc(100vw - (var(--pad) * 2)));
+      min-height: clamp(380px, 34vw, 500px);
+      overflow: hidden;
+      padding: clamp(28px, 3vw, 44px);
+      border: none;
+      border-radius: var(--case-card-radius);
+      background: var(--bg);
+      color: var(--ink);
+      scroll-snap-align: start;
+      transition: background 0.25s ease;
+    }
+
+    .impact-stat-content {
+      display: flex;
+      flex-direction: column;
+      min-height: 100%;
+    }
+
+    .impact-stat-eyebrow {
+      display: block;
+      margin-bottom: 12px;
+      font-family: var(--sans);
+      font-size: 11px;
+      font-weight: 700;
+      line-height: 1;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--ink-mid);
     }
 
     .impact-number {
+      display: block;
       font-family: var(--serif);
       font-weight: 400;
-      font-size: clamp(46px, 6vw, 86px);
+      font-size: clamp(48px, 6vw, 92px);
       line-height: 0.95;
       letter-spacing: 0;
-      color: var(--ink);
+      color: currentColor;
       white-space: nowrap;
     }
 
-    .impact-copy {
-      max-width: 25ch;
-      margin-top: 18px;
-      font-size: 14px;
-      line-height: 1.55;
+    .impact-number--range {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      gap: clamp(10px, 1vw, 16px);
+      font-size: clamp(40px, 4.4vw, 68px);
+    }
+
+    .impact-number-unit {
+      font-family: var(--sans);
+      font-size: clamp(12px, 0.95vw, 15px);
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
       color: var(--ink-mid);
+    }
+
+    .impact-headline {
+      display: block;
+      max-width: 22ch;
+      margin-top: clamp(28px, 3vw, 44px);
+      padding-top: 0;
+      font-size: clamp(18px, 1.45vw, 24px);
+      line-height: 1.16;
+      font-weight: 500;
+      color: currentColor;
+    }
+
+    .impact-copy {
+      max-width: 31ch;
+      margin-top: 14px;
+      font-size: clamp(14px, 0.95vw, 16px);
+      line-height: 1.5;
+      color: var(--ink-mid);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .impact-control,
+      .impact-stat {
+        transition: none;
+      }
+    }
+
+    @media (max-width: 1080px) {
+      .impact-grid {
+        gap: 12px;
+      }
+
+      .impact-stat {
+        flex-basis: min(420px, 48vw);
+        min-height: 400px;
+      }
+
+      .impact-number--range {
+        font-size: clamp(38px, 6vw, 56px);
+      }
     }
     /* ─── More Case Studies ──────────────────────────────────── */
 
@@ -1518,11 +1659,14 @@
       .cs-section-body,
       .cs-section-body p { font-size: 16px; line-height: 1.5; }
       .mockup-row > * { flex: 0 0 80%; max-width: 980px; }
-      /* Impact card: mobile stack */
+      /* Impact carousel: mobile */
       .impact-card { gap: 32px; padding: 56px var(--pad); }
-      .impact-grid { grid-template-columns: 1fr; gap: 0; padding-top: 8px; border-top: 1px solid var(--rule); }
-      .impact-stat { padding: 28px 0; border-bottom: 1px solid var(--rule); }
-      .impact-stat:last-child { border-bottom: none; padding-bottom: 0; }
+      .impact-intro { align-items: center; flex-direction: row; gap: 16px; }
+      .impact-grid { gap: 12px; padding-top: 8px; border-top: 1px solid var(--rule); }
+      .impact-stat { flex-basis: min(86vw, 360px); min-width: min(86vw, 360px); min-height: 380px; padding: 28px; }
+      .impact-headline { margin-top: 28px; padding-top: 0; }
+      .impact-number--range { font-size: clamp(36px, 11vw, 48px); gap: 8px; }
+      .impact-number-unit { font-size: 11px; }
       .more-section { padding: 48px var(--pad); }
       .more-grid { grid-template-columns: 1fr; }
 
@@ -1654,6 +1798,23 @@
       margin-top: 8px;
     }
 
+    @media (min-width: 1081px) and (prefers-reduced-motion: no-preference) {
+      .case-hero-card {
+        --case-hero-y: 112px;
+        --case-hero-scale: 0.96;
+        --case-hero-image-scale: 1.025;
+        transform: translate3d(0, var(--case-hero-y), 0) scale(var(--case-hero-scale));
+        transform-origin: top center;
+        will-change: transform;
+      }
+
+      .case-hero-card .hero-image img {
+        transform: scale(var(--case-hero-image-scale));
+        transform-origin: center center;
+        will-change: transform;
+      }
+    }
+
     .case-hero-card .project-header,
     .case-hero-card .hero-image,
     .case-hero-card .brief-block {
@@ -1671,7 +1832,6 @@
 
     .case-hero-card .hero-image {
       width: 100%;
-      border-top: 1px solid var(--rule);
       border-bottom: 1px solid var(--rule);
     }
 
@@ -1687,6 +1847,12 @@
       contain-intrinsic-size: auto 760px;
     }
 
+    .impact-panel {
+      background: transparent;
+      border-radius: 0;
+      overflow: visible;
+    }
+
     .more-section {
       background: var(--bg);
       position: relative;
@@ -1698,12 +1864,11 @@
     .impact-card {
       gap: 0;
       padding: 0;
-      background: var(--bg);
+      background: transparent;
     }
 
     .impact-intro {
-      padding: 28px 40px 24px;
-      border-bottom: 1px solid var(--rule);
+      padding: 28px 40px 18px;
     }
 
     .impact-panel .impact-eyebrow,
@@ -1724,9 +1889,10 @@
     }
 
     .impact-panel .impact-grid {
-      gap: clamp(32px, 4vw, 56px);
-      padding: clamp(40px, 5vw, 64px) 40px clamp(48px, 5vw, 72px);
+      gap: clamp(12px, 1.2vw, 18px);
+      padding: 0 40px clamp(48px, 5vw, 72px);
       border-top: none;
+      scroll-padding-left: 40px;
     }
 
     .more-section .more-grid {
@@ -1806,8 +1972,10 @@
       }
 
       .impact-panel .impact-grid {
-        padding: 0 20px;
+        gap: 12px;
+        padding: 0 20px 28px;
         border-top: none;
+        scroll-padding-left: 20px;
       }
 
 
@@ -1874,13 +2042,14 @@
       <li><a class="project-menu-link" href="numan-weight-loss.html"><span class="project-menu-num">02</span><span class="project-menu-title">Numan Weight Loss</span></a></li>
       <li><a class="project-menu-link" href="numan-testosterone.html"><span class="project-menu-num">03</span><span class="project-menu-title">Numan Testosterone</span></a></li>
       <li><a class="project-menu-link" href="peloton-colleges.html"><span class="project-menu-num">04</span><span class="project-menu-title">Peloton x Michigan</span></a></li>
-      <li><a class="project-menu-link" href="peloton-subscription.html"><span class="project-menu-num">05</span><span class="project-menu-title">Peloton Subscription</span></a></li>
-      <li><a class="project-menu-link" href="peloton-australia.html"><span class="project-menu-num">06</span><span class="project-menu-title">Peloton Australia</span></a></li>
-      <li><a class="project-menu-link" href="peloton-ar.html"><span class="project-menu-num">07</span><span class="project-menu-title">Peloton AR</span></a></li>
-      <li><a class="project-menu-link" href="nike.html"><span class="project-menu-num">08</span><span class="project-menu-title">Nike+</span></a></li>
-      <li><a class="project-menu-link" href="google-freeletics.html"><span class="project-menu-num">09</span><span class="project-menu-title">Google x Freeletics</span></a></li>
-      <li><a class="project-menu-link" href="virgin-sport.html"><span class="project-menu-num">10</span><span class="project-menu-title">Virgin Sport</span></a></li>
-      <li><a class="project-menu-link" href="twitter-visit-england.html"><span class="project-menu-num">11</span><span class="project-menu-title">Twitter x Visit England</span></a></li>
+      <li><a class="project-menu-link" href="peloton-reviews.html"><span class="project-menu-num">05</span><span class="project-menu-title">Peloton Reviews</span></a></li>
+      <li><a class="project-menu-link" href="peloton-subscription.html"><span class="project-menu-num">06</span><span class="project-menu-title">Peloton Subscription</span></a></li>
+      <li><a class="project-menu-link" href="peloton-australia.html"><span class="project-menu-num">07</span><span class="project-menu-title">Peloton Australia</span></a></li>
+      <li><a class="project-menu-link" href="peloton-ar.html"><span class="project-menu-num">08</span><span class="project-menu-title">Peloton AR</span></a></li>
+      <li><a class="project-menu-link" href="nike.html"><span class="project-menu-num">09</span><span class="project-menu-title">Nike+</span></a></li>
+      <li><a class="project-menu-link" href="google-freeletics.html"><span class="project-menu-num">10</span><span class="project-menu-title">Google x Freeletics</span></a></li>
+      <li><a class="project-menu-link" href="virgin-sport.html"><span class="project-menu-num">11</span><span class="project-menu-title">Virgin Sport</span></a></li>
+      <li><a class="project-menu-link" href="twitter-visit-england.html"><span class="project-menu-num">12</span><span class="project-menu-title">Twitter x Visit England</span></a></li>
     </ul>
     <ul class="project-menu-secondary" aria-label="Site links">
       <li><a class="project-menu-link project-menu-link--secondary" href="index.html#experience"><span class="project-menu-title">Experience</span></a></li>
@@ -2051,20 +2220,60 @@
     <div class="impact-card">
       <div class="impact-intro">
         <p class="impact-eyebrow">Case study impact</p>
+        <div class="impact-controls" role="group" aria-label="Impact carousel controls">
+          <button class="impact-control" type="button" data-impact-prev aria-label="Previous impact stat">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M15 18l-6-6 6-6"/>
+            </svg>
+          </button>
+          <button class="impact-control" type="button" data-impact-next aria-label="Next impact stat">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M9 6l6 6-6 6"/>
+            </svg>
+          </button>
+        </div>
       </div>
-      <div class="impact-grid">
-        <div class="impact-stat">
-          <p class="impact-number">+00%</p>
-          <p class="impact-copy">Placeholder outcome showing how the work improved a key business or customer metric.</p>
-        </div>
-        <div class="impact-stat">
-          <p class="impact-number">0x</p>
-          <p class="impact-copy">Placeholder signal for an increase in adoption, engagement, conversion, or operational efficiency.</p>
-        </div>
-        <div class="impact-stat">
-          <p class="impact-number">00%</p>
-          <p class="impact-copy">Placeholder validation result summarising measurable confidence from users, teams, or stakeholders.</p>
-        </div>
+      <div class="impact-grid" id="impactCarousel" aria-label="Impact stat carousel">
+        <article class="impact-stat">
+          <div class="impact-stat-content">
+            <span class="impact-stat-eyebrow">Retention</span>
+            <span class="impact-number">-16.6%</span>
+            <span class="impact-headline">Pause rate reduced through retention experiments.</span>
+            <p class="impact-copy">Rapid testing delivered over half of the Q1 goal and an estimated c.&pound;0.5m revenue impact.</p>
+          </div>
+        </article>
+        <article class="impact-stat">
+          <div class="impact-stat-content">
+            <span class="impact-stat-eyebrow">Activation</span>
+            <span class="impact-number">+17%</span>
+            <span class="impact-headline">Weight-tracking activation increased.</span>
+            <p class="impact-copy">Redesigned onboarding helped patients complete 14% more check-ins, supporting adherence behaviour.</p>
+          </div>
+        </article>
+        <article class="impact-stat">
+          <div class="impact-stat-content">
+            <span class="impact-stat-eyebrow">Support</span>
+            <span class="impact-number">-49.4%</span>
+            <span class="impact-headline">Customer Service load reduced without hurting completion.</span>
+            <p class="impact-copy">In a 14-day test with 818 patients, self-serve IDV reduced care contacts while pass rate held steady.</p>
+          </div>
+        </article>
+        <article class="impact-stat">
+          <div class="impact-stat-content">
+            <span class="impact-stat-eyebrow">Engagement</span>
+            <span class="impact-number impact-number--range"><span>50% &rarr; 60%</span><span class="impact-number-unit">WAU</span></span>
+            <span class="impact-headline">Increased weekly engagement with health tracking.</span>
+            <p class="impact-copy">Redesigned check-ins, insights, and progress tracking to grow weekly health-tracking usage by 20% relative.</p>
+          </div>
+        </article>
+        <article class="impact-stat">
+          <div class="impact-stat-content">
+            <span class="impact-stat-eyebrow">Support</span>
+            <span class="impact-number impact-number--range"><span>40% &rarr; 13%</span></span>
+            <span class="impact-headline">Reduced avoidable support escalation.</span>
+            <p class="impact-copy">Built self-serve side-effect guidance that reduced coach escalation and helped patients get faster support for common symptoms.</p>
+          </div>
+        </article>
       </div>
     </div>
   </section>
@@ -2296,13 +2505,28 @@
 
     const navEl = document.querySelector('.site-nav');
     const caseSubnavEl = document.querySelector('.case-subnav');
+    const caseHeroImageEl = document.querySelector('.case-hero-card .hero-image') || document.querySelector('.hero-image');
+    const caseSubnavDesktopQuery = window.matchMedia('(min-width: 768px)');
+    const getCaseSubnavTrigger = () => {
+      if (!caseHeroImageEl) return Math.max(160, window.innerHeight * 0.45);
+      const rect = caseHeroImageEl.getBoundingClientRect();
+      const imageTop = rect.top + window.scrollY;
+      return imageTop + rect.height * 0.68;
+    };
     const syncNavState = () => {
       const isScrolled = window.scrollY > 8;
+      const showCaseSubnav = caseSubnavDesktopQuery.matches && window.scrollY >= getCaseSubnavTrigger();
       if (navEl) navEl.classList.toggle('is-scrolled', isScrolled);
-      if (caseSubnavEl) caseSubnavEl.classList.toggle('is-visible', isScrolled);
+      if (caseSubnavEl) caseSubnavEl.classList.toggle('is-visible', showCaseSubnav);
     };
     syncNavState();
     window.addEventListener('scroll', syncNavState, { passive: true });
+    window.addEventListener('resize', syncNavState);
+    if (caseSubnavDesktopQuery.addEventListener) {
+      caseSubnavDesktopQuery.addEventListener('change', syncNavState);
+    } else if (caseSubnavDesktopQuery.addListener) {
+      caseSubnavDesktopQuery.addListener(syncNavState);
+    }
 
     themeToggle.addEventListener('click', () => {
       const next = html.dataset.theme === 'dark' ? 'light' : 'dark';
@@ -2341,6 +2565,122 @@
     initCarousel('carousel-01', 'dots-01');
     initCarousel('carousel-02', 'dots-02');
     initCarousel('carousel-03', 'dots-03');
+
+    /* Impact carousel */
+    (function () {
+      const track = document.getElementById('impactCarousel');
+      if (!track) return;
+
+      const panel = track.closest('.impact-panel');
+      const prevBtn = panel ? panel.querySelector('[data-impact-prev]') : null;
+      const nextBtn = panel ? panel.querySelector('[data-impact-next]') : null;
+      const cards = [...track.querySelectorAll('.impact-stat')];
+      const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      let rafId = null;
+
+      function getStep() {
+        const firstCard = cards[0];
+        if (!firstCard) return track.clientWidth;
+        const styles = window.getComputedStyle(track);
+        const gap = parseFloat(styles.columnGap || styles.gap || '0') || 0;
+        return firstCard.getBoundingClientRect().width + gap;
+      }
+
+      function updateControls() {
+        rafId = null;
+        if (!prevBtn || !nextBtn) return;
+
+        const maxScroll = Math.max(0, track.scrollWidth - track.clientWidth - 1);
+        prevBtn.disabled = track.scrollLeft <= 1;
+        nextBtn.disabled = track.scrollLeft >= maxScroll;
+      }
+
+      function queueControlUpdate() {
+        if (!rafId) rafId = requestAnimationFrame(updateControls);
+      }
+
+      function scrollByStep(direction) {
+        track.scrollBy({
+          left: getStep() * direction,
+          behavior: prefersReduced ? 'auto' : 'smooth'
+        });
+      }
+
+      if (prevBtn) prevBtn.addEventListener('click', () => scrollByStep(-1));
+      if (nextBtn) nextBtn.addEventListener('click', () => scrollByStep(1));
+
+      track.addEventListener('scroll', queueControlUpdate, { passive: true });
+      window.addEventListener('resize', queueControlUpdate, { passive: true });
+      window.addEventListener('load', queueControlUpdate, { once: true });
+
+      if ('IntersectionObserver' in window) {
+        const observer = new IntersectionObserver(entries => {
+          if (entries.some(entry => entry.isIntersecting)) queueControlUpdate();
+        }, { threshold: 0.01 });
+        observer.observe(track);
+      }
+
+      updateControls();
+    }());
+
+    /* Case hero first-scroll motion */
+    (function () {
+      const heroCard = document.querySelector('.case-hero-card');
+      if (!heroCard) return;
+
+      const desktopQuery = window.matchMedia('(min-width: 1081px)');
+      const reducedQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+      let rafId = null;
+
+      function easeOutCubic(t) {
+        return 1 - Math.pow(1 - t, 3);
+      }
+
+      function reset() {
+        heroCard.style.removeProperty('--case-hero-y');
+        heroCard.style.removeProperty('--case-hero-scale');
+        heroCard.style.removeProperty('--case-hero-image-scale');
+      }
+
+      function update() {
+        rafId = null;
+
+        if (!desktopQuery.matches || reducedQuery.matches) {
+          reset();
+          return;
+        }
+
+        const scrollRange = Math.min(420, window.innerHeight * 0.48);
+        const progress = Math.max(0, Math.min(1, window.scrollY / scrollRange));
+        const eased = easeOutCubic(progress);
+        const y = Math.round((1 - eased) * 112);
+        const scale = 0.96 + eased * 0.04;
+        const imageScale = 1.025 - eased * 0.025;
+
+        heroCard.style.setProperty('--case-hero-y', `${y}px`);
+        heroCard.style.setProperty('--case-hero-scale', scale.toFixed(4));
+        heroCard.style.setProperty('--case-hero-image-scale', imageScale.toFixed(4));
+      }
+
+      function queueUpdate() {
+        if (!rafId) rafId = requestAnimationFrame(update);
+      }
+
+      function listenToQuery(query) {
+        if (query.addEventListener) {
+          query.addEventListener('change', queueUpdate);
+        } else if (query.addListener) {
+          query.addListener(queueUpdate);
+        }
+      }
+
+      window.addEventListener('scroll', queueUpdate, { passive: true });
+      window.addEventListener('resize', queueUpdate, { passive: true });
+      listenToQuery(desktopQuery);
+      listenToQuery(reducedQuery);
+
+      update();
+    }());
 
     /* ═══════════════════════════════════════════════════════════
        FOOTER REVEAL

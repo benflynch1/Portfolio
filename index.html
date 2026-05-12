@@ -52,6 +52,7 @@
       --cursor-ring-active: rgba(14,13,11,0.5);
       --serif:        'Satoshi', -apple-system, BlinkMacSystemFont, sans-serif; /* display/headlines (was Cabinet Grotesk) */
       --sans:         'Satoshi', -apple-system, BlinkMacSystemFont, sans-serif;
+      --case-card-radius: 32px;
     }
 
     /* ─── Dark theme override ───────────────────────────────── */
@@ -150,7 +151,7 @@
     .nav-menu-toggle:hover,
     .nav-menu-toggle:focus-visible,
     .nav-menu-toggle.is-open {
-      border-color: var(--rule);
+      border-color: transparent;
       background: rgba(255,255,255,0.36);
     }
 
@@ -294,9 +295,10 @@
       background: rgba(116, 134, 145, 0.32);
       opacity: 0;
       pointer-events: none;
-      backdrop-filter: blur(14px) saturate(116%);
-      -webkit-backdrop-filter: blur(14px) saturate(116%);
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
       transition: opacity 0.28s ease;
+      will-change: opacity;
     }
 
     [data-theme="dark"] .project-menu-backdrop {
@@ -306,6 +308,8 @@
     .project-menu-backdrop.is-open {
       opacity: 1;
       pointer-events: auto;
+      backdrop-filter: blur(8px) saturate(108%);
+      -webkit-backdrop-filter: blur(8px) saturate(108%);
     }
 
     .project-menu {
@@ -319,8 +323,10 @@
       overflow-y: auto;
       display: flex;
       flex-direction: column;
+      contain: layout paint style;
+      will-change: opacity, transform;
       padding: clamp(20px, 2vw, 34px);
-      border: 1px solid rgba(14,13,11,0.1);
+      border: none;
       border-radius: 26px;
       background: color-mix(in srgb, var(--bg) 94%, white 6%);
       box-shadow: 0 28px 86px rgba(14,13,11,0.18);
@@ -333,7 +339,7 @@
     }
 
     [data-theme="dark"] .project-menu {
-      border-color: rgba(255,255,255,0.12);
+      border-color: transparent;
       background: color-mix(in srgb, var(--bg) 92%, white 8%);
       box-shadow: 0 28px 92px rgba(0,0,0,0.48);
     }
@@ -368,11 +374,11 @@
 
     .project-menu-secondary {
       display: flex;
-      align-items: center;
-      gap: clamp(18px, 2vw, 30px);
+      align-items: flex-start;
+      gap: clamp(22px, 2.2vw, 34px);
       list-style: none;
       margin: auto 0 0;
-      padding: clamp(14px, 2.4vw, 40px) 0 0;
+      padding: clamp(16px, 2vw, 32px) 0 0;
     }
 
     .project-menu-link {
@@ -420,23 +426,20 @@
 
     .project-menu-link--secondary {
       grid-template-columns: minmax(0, 1fr);
-      padding: 0;
+      padding: clamp(3px, 0.36vw, 6px) 0;
       color: var(--ink-mid);
-      transform: none;
     }
 
     .project-menu-link--secondary .project-menu-title {
-      font-size: 16px;
-      font-weight: 600;
-      line-height: 1.1;
+      font-size: clamp(14px, 0.86vw, 16px);
+      font-weight: 500;
+      line-height: 0.98;
       color: currentColor;
     }
 
     .project-menu-link--secondary:hover,
     .project-menu-link--secondary:focus-visible {
-      opacity: 1;
       color: var(--ink);
-      transform: none;
     }
 
     .project-menu-link:focus-visible {
@@ -448,7 +451,7 @@
       display: flex;
       align-items: center;
       gap: 10px;
-      margin: 8px 0 0;
+      margin: 14px 0 0;
       padding: 0;
     }
 
@@ -2038,6 +2041,11 @@
         padding: 28px 26px max(28px, env(safe-area-inset-bottom));
         transform: translate3d(-10px, 0, 0);
       }
+
+      .project-menu-backdrop.is-open {
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+      }
       .project-menu.is-open {
         transform: translate3d(0, 0, 0);
       }
@@ -2053,8 +2061,8 @@
       }
 
       .project-menu-title {
-        font-size: clamp(24px, 7vw, 34px);
-        line-height: 1.02;
+        font-size: clamp(22px, 6vw, 30px);
+        line-height: 1.04;
       }
 
       .project-menu-secondary {
@@ -2065,8 +2073,8 @@
       }
 
       .project-menu-link--secondary {
-        min-height: 56px;
-        padding: 14px 16px;
+        min-height: 0;
+        padding: 4px 0;
       }
 
       .project-menu-link--secondary .project-menu-title {
@@ -2362,8 +2370,8 @@
     nav.is-scrolled .nav-frame {
       width: min(720px, calc(100vw - 32px));
       background: var(--bg);
-      border: 1px solid var(--rule);
-      border-radius: 28px;
+      border: 1px solid transparent;
+      border-radius: var(--case-card-radius);
       box-shadow: 0 14px 36px rgba(14,13,11,0.08);
     }
 
@@ -2372,16 +2380,24 @@
     }
 
     @media (max-width: 1080px) {
+      :root {
+        --case-card-radius: 28px;
+      }
+
       nav.is-scrolled .nav-frame {
         width: min(640px, calc(100vw - 32px));
-        border-radius: 24px;
+        border-radius: var(--case-card-radius);
       }
     }
 
     @media (max-width: 767px) {
+      :root {
+        --case-card-radius: 22px;
+      }
+
       nav.is-scrolled .nav-frame {
         width: calc(100vw - 20px);
-        border-radius: 22px;
+        border-radius: var(--case-card-radius);
       }
     }
 
@@ -2490,13 +2506,14 @@
       <li><a class="project-menu-link" href="numan-weight-loss.html"><span class="project-menu-num">02</span><span class="project-menu-title">Numan Weight Loss</span></a></li>
       <li><a class="project-menu-link" href="numan-testosterone.html"><span class="project-menu-num">03</span><span class="project-menu-title">Numan Testosterone</span></a></li>
       <li><a class="project-menu-link" href="peloton-colleges.html"><span class="project-menu-num">04</span><span class="project-menu-title">Peloton x Michigan</span></a></li>
-      <li><a class="project-menu-link" href="peloton-subscription.html"><span class="project-menu-num">05</span><span class="project-menu-title">Peloton Subscription</span></a></li>
-      <li><a class="project-menu-link" href="peloton-australia.html"><span class="project-menu-num">06</span><span class="project-menu-title">Peloton Australia</span></a></li>
-      <li><a class="project-menu-link" href="peloton-ar.html"><span class="project-menu-num">07</span><span class="project-menu-title">Peloton AR</span></a></li>
-      <li><a class="project-menu-link" href="nike.html"><span class="project-menu-num">08</span><span class="project-menu-title">Nike+</span></a></li>
-      <li><a class="project-menu-link" href="google-freeletics.html"><span class="project-menu-num">09</span><span class="project-menu-title">Google x Freeletics</span></a></li>
-      <li><a class="project-menu-link" href="virgin-sport.html"><span class="project-menu-num">10</span><span class="project-menu-title">Virgin Sport</span></a></li>
-      <li><a class="project-menu-link" href="twitter-visit-england.html"><span class="project-menu-num">11</span><span class="project-menu-title">Twitter x Visit England</span></a></li>
+      <li><a class="project-menu-link" href="peloton-reviews.html"><span class="project-menu-num">05</span><span class="project-menu-title">Peloton Reviews</span></a></li>
+      <li><a class="project-menu-link" href="peloton-subscription.html"><span class="project-menu-num">06</span><span class="project-menu-title">Peloton Subscription</span></a></li>
+      <li><a class="project-menu-link" href="peloton-australia.html"><span class="project-menu-num">07</span><span class="project-menu-title">Peloton Australia</span></a></li>
+      <li><a class="project-menu-link" href="peloton-ar.html"><span class="project-menu-num">08</span><span class="project-menu-title">Peloton AR</span></a></li>
+      <li><a class="project-menu-link" href="nike.html"><span class="project-menu-num">09</span><span class="project-menu-title">Nike+</span></a></li>
+      <li><a class="project-menu-link" href="google-freeletics.html"><span class="project-menu-num">10</span><span class="project-menu-title">Google x Freeletics</span></a></li>
+      <li><a class="project-menu-link" href="virgin-sport.html"><span class="project-menu-num">11</span><span class="project-menu-title">Virgin Sport</span></a></li>
+      <li><a class="project-menu-link" href="twitter-visit-england.html"><span class="project-menu-num">12</span><span class="project-menu-title">Twitter x Visit England</span></a></li>
     </ul>
     <ul class="project-menu-secondary" aria-label="Site links">
       <li><a class="project-menu-link project-menu-link--secondary" href="index.html#experience"><span class="project-menu-title">Experience</span></a></li>
@@ -2747,7 +2764,7 @@
       <!-- P1 -->
       <a href="wone.html" class="card">
         <div class="card-img">
-          <img src="Imagery/Thumbnails/WONE.jpg" alt="Walking on Earth" decoding="async" />
+          <img src="Imagery/Thumbnails/WONE.jpg" loading="lazy" alt="Walking on Earth" decoding="async" />
           <video class="card-img-video" muted loop playsinline preload="none" aria-hidden="true">
             <source src="Imagery/Thumbnails/Hover/Compressed/WONE_Thumbnail.mp4" type="video/mp4">
           </video>
@@ -2772,7 +2789,7 @@
       <!-- P2 -->
       <a href="numan-weight-loss.html" class="card">
         <div class="card-img">
-          <img src="Imagery/Thumbnails/Numan01.jpg" alt="Numan Weight Loss" decoding="async" />
+          <img src="Imagery/Thumbnails/Numan01.jpg" loading="lazy" alt="Numan Weight Loss" decoding="async" />
           <video class="card-img-video" muted loop playsinline preload="none" aria-hidden="true">
             <source src="Imagery/Thumbnails/Hover/Compressed/NumanWL_Thumbnail.mp4" type="video/mp4">
           </video>
@@ -2798,7 +2815,7 @@
       <!-- P3 -->
       <a href="numan-testosterone.html" class="card">
         <div class="card-img">
-          <img src="Imagery/Thumbnails/Numan03.jpg" alt="Numan Testosterone Deficiency" decoding="async" />
+          <img src="Imagery/Thumbnails/Numan03.jpg" loading="lazy" alt="Numan Testosterone Deficiency" decoding="async" />
           <div class="card-arrow">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 17L17 7M7 7h10v10"/></svg>
           </div>
@@ -2852,7 +2869,7 @@
     <div class="work-section">
       <div class="work-section-header">
         <h2 class="work-section-label">More projects</h2>
-        <span class="work-section-count">9 projects</span>
+        <span class="work-section-count">10 projects</span>
       </div>
       <div class="grid grid-more">
 
@@ -2925,6 +2942,27 @@
         </div>
       </a>
 
+      <!-- P8 -->
+      <a href="peloton-reviews.html" class="card">
+        <div class="card-img">
+          <img src="Imagery/PelotonReviews/cta-thumbnail.jpg" alt="Peloton Reviews" loading="lazy" decoding="async" />
+          <div class="card-arrow">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 17L17 7M7 7h10v10"/></svg>
+          </div>
+        </div>
+        <div class="card-text">
+          <div class="card-row">
+            <span class="card-client">Peloton</span>
+            <span class="card-num">08</span>
+          </div>
+          <h3 class="card-title">Improving trust in Peloton hardware through a redesign of its reviews experience.</h3>
+          <div class="card-tags">
+            <span class="ctag">eCommerce</span>
+            <span class="ctag">Product Experiments</span>
+          </div>
+        </div>
+      </a>
+
 
       <a href="nike.html" class="card">
         <div class="card-img">
@@ -2939,7 +2977,7 @@
         <div class="card-text">
           <div class="card-row">
             <span class="card-client">Nike</span>
-            <span class="card-num">08</span>
+            <span class="card-num">09</span>
           </div>
           <h3 class="card-title">Personalisation across the Nike+ ecosystem</h3>
           <div class="card-tags">
@@ -2962,7 +3000,7 @@
         <div class="card-text">
           <div class="card-row">
             <span class="card-client">Google x Freeletics</span>
-            <span class="card-num">09</span>
+            <span class="card-num">10</span>
           </div>
           <h3 class="card-title">Designing a voice-guided fitness challenge experience in partnership with Freeletics and Google Assistant.</h3>
           <div class="card-tags">
@@ -2985,7 +3023,7 @@
         <div class="card-text">
           <div class="card-row">
             <span class="card-client">Virgin Sport</span>
-            <span class="card-num">10</span>
+            <span class="card-num">11</span>
           </div>
           <h3 class="card-title">Event registration and race day experience</h3>
           <div class="card-tags">
@@ -3005,7 +3043,7 @@
         <div class="card-text">
           <div class="card-row">
             <span class="card-client">CDV / Footwork</span>
-            <span class="card-num">11</span>
+            <span class="card-num">12</span>
           </div>
           <h3 class="card-title">Athlete performance analytics platform</h3>
           <div class="card-tags">
@@ -3028,7 +3066,7 @@
         <div class="card-text">
           <div class="card-row">
             <span class="card-client">CDV / Cscore</span>
-            <span class="card-num">12</span>
+            <span class="card-num">13</span>
           </div>
           <h3 class="card-title">Credit scoring dashboard redesign</h3>
           <div class="card-tags">
@@ -3048,7 +3086,7 @@
         <div class="card-text">
           <div class="card-row">
             <span class="card-client">Twitter x Visit England</span>
-            <span class="card-num">13</span>
+            <span class="card-num">14</span>
           </div>
           <h3 class="card-title">Designing a real-time travel discovery experience powered by local social content and interactive mapping.</h3>
           <div class="card-tags">
