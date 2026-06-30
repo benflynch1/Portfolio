@@ -1787,7 +1787,61 @@
       will-change: transform;
     }
 
-  </style>
+      /* Enquiry CTA — sits above the footer */
+    .enquiry {
+      position: relative;
+      z-index: 1;
+      padding: 104px 48px 56px;
+    }
+    .enquiry-inner { max-width: 820px; }
+    .enquiry-headline {
+      margin: 0;
+      font-family: var(--serif);
+      font-size: 50px;
+      font-weight: 500;
+      line-height: 1.08;
+      letter-spacing: -0.012em;
+      color: var(--ink);
+      text-wrap: balance;
+    }
+    .enquiry-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 36px;
+      padding: 15px 28px;
+      border-radius: 999px;
+      background: #009755;
+      color: #fff;
+      font-family: var(--sans);
+      font-size: 16px;
+      font-weight: 600;
+      line-height: 1;
+      letter-spacing: 0;
+      cursor: pointer;
+      transition: background 0.3s cubic-bezier(0.65,0,0.35,1),
+                  transform 0.3s cubic-bezier(0.65,0,0.35,1);
+    }
+    .enquiry-btn svg {
+      width: 16px; height: 16px; display: block;
+      transition: transform 0.3s cubic-bezier(0.65,0,0.35,1);
+    }
+    .enquiry-btn:hover { background: #007e46; }
+    .enquiry-btn:hover svg { transform: translate(3px,-3px); }
+    .enquiry-btn:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
+    @media (prefers-reduced-motion: reduce) {
+      .enquiry-btn, .enquiry-btn svg { transition: none; }
+    }
+    @media (max-width: 1080px) {
+      .enquiry { padding: 88px 32px 48px; }
+      .enquiry-headline { font-size: 40px; }
+    }
+    @media (max-width: 767px) {
+      .enquiry { padding: 64px 20px 40px; }
+      .enquiry-headline { font-size: 32px; line-height: 1.08; }
+      .enquiry-btn { margin-top: 28px; width: 100%; justify-content: center; }
+    }
+</style>
 </head>
 <body>
 
@@ -2097,19 +2151,27 @@
 
   <div class="bottom-fade" aria-hidden="true"></div>
 
+  <!-- Enquiry CTA -->
+  <section class="enquiry" id="contact" aria-label="Get in touch">
+    <div class="enquiry-inner">
+      <h2 class="enquiry-headline">For project enquiries, collaborations, or simply just to say hello</h2>
+      <a class="enquiry-btn" href="mailto:hello@benjaminlynch.co.uk">
+        <span>Send an enquiry</span>
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M7 17L17 7"/>
+          <path d="M8 7h9v9"/>
+        </svg>
+      </a>
+    </div>
+  </section>
+
   <!-- Footer -->
-  <footer id="contact" aria-label="Say hello">
+  <footer aria-label="Footer">
 
     <div class="foot-main">
       <div class="foot-hero">
         <div class="foot-hero-left">
-          <div class="foot-wordmark" aria-hidden="true">
-            <span>Say</span> <span>Hello</span>
-          </div>
-
           <div class="foot-contact">
-            <a class="foot-email" href="mailto:hello@benjaminlynch.co.uk">hello@benjaminlynch.co.uk</a>
-
             <div class="foot-links" role="navigation" aria-label="Footer navigation">
               <a href="https://www.linkedin.com/in/benflynch/" target="_blank" rel="noopener" aria-label="LinkedIn">
                 <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">

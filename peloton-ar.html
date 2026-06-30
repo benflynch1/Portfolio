@@ -105,7 +105,8 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 0 40px;
+      /* 16px + 8px nav inset = 24px, matching the page content gutter (--case-gutter) */
+      padding: 0 16px;
       background: transparent;
       border-bottom: 1px solid transparent;
       border-radius: 28px 28px 0 0;
@@ -113,6 +114,7 @@
       contain: layout paint style;
       transition:
         width 0.42s cubic-bezier(0.16, 1, 0.3, 1),
+        padding 0.35s ease,
         background 0.35s ease,
         border-color 0.35s ease,
         border-radius 0.35s ease,
@@ -123,8 +125,8 @@
     .nav-menu-toggle {
       position: relative;
       z-index: 2;
-      width: 34px;
-      height: 34px;
+      width: 44px;
+      height: 44px;
       display: inline-flex;
       flex-direction: column;
       align-items: center;
@@ -135,7 +137,7 @@
       background: transparent;
       color: var(--ink);
       cursor: pointer;
-      transition: border-color 0.2s ease, background 0.2s ease;
+      transition: border-color 0.2s ease, background 0.35s ease, box-shadow 0.35s ease;
     }
 
     .nav-menu-toggle:hover,
@@ -172,10 +174,17 @@
       transform: translateY(-3px) rotate(-45deg);
     }
 
+    /* Positioned against the document (not the fixed nav) so the title
+       scrolls away with the page. top + height match the nav band. */
     .nav-logo {
       position: absolute;
+      top: 8px;
       left: 50%;
       transform: translateX(-50%);
+      height: 56px;
+      display: inline-flex;
+      align-items: center;
+      z-index: 200;
       font-family: var(--sans);
       font-size: 15px;
       font-weight: 600;
@@ -241,19 +250,16 @@
     .theme-toggle {
       display: inline-flex;
       align-items: center;
-      gap: 7px;
+      justify-content: center;
+      width: 44px;
+      height: 44px;
       background: none;
-      border: 1px solid var(--rule);
-      border-radius: 100px;
-      padding: 6px 12px 6px 8px;
+      border: 1px solid transparent;
+      border-radius: 999px;
+      padding: 0;
       cursor: pointer;
-      font-family: var(--sans);
-      font-size: 10px;
-      font-weight: 600;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--ink-mid);
-      transition: color 0.2s, border-color 0.2s, background 0.2s;
+      color: var(--ink);
+      transition: color 0.2s, border-color 0.2s, background 0.35s ease, box-shadow 0.35s ease;
     }
 
     .theme-toggle:hover {
@@ -262,22 +268,14 @@
     }
 
     .theme-toggle svg {
-      width: 13px;
-      height: 13px;
+      width: 15px;
+      height: 15px;
       flex-shrink: 0;
       display: block;
     }
 
-    .theme-toggle .toggle-label {
-      display: inline-block;
-      min-width: 32px;
-      text-align: left;
-    }
-
     [data-theme="dark"]  .toggle-sun  { display: none; }
     [data-theme="light"] .toggle-moon { display: none; }
-    [data-theme="dark"]  .toggle-label-light { display: none; }
-    [data-theme="light"] .toggle-label-dark  { display: none; }
     body.project-menu-open {
       overflow: hidden;
     }
@@ -532,6 +530,8 @@
 
       .nav-logo {
         font-size: 14px;
+        top: 6px;
+        height: 52px;
       }
 
       .project-menu {
@@ -596,14 +596,6 @@
         display: none;
       }
 
-      .theme-toggle {
-        padding: 6px;
-      }
-
-      .theme-toggle .toggle-label {
-        display: none;
-        min-width: 0;
-      }
     }
 
     /* ─── Case subnav ───────────────────────────────────────── */
@@ -776,6 +768,7 @@
       object-fit: contain;
       color: var(--ink);
     }
+    /* logo-size-tune */ .case-rail .project-icon svg { width: 52px; height: 52px; max-width: 52px; max-height: 52px; }
 
     .project-brand {
       display: flex;
@@ -925,10 +918,20 @@
 
     .cs-section-header {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 48px;
+      grid-template-columns: minmax(110px, 1fr) minmax(0, 5.2fr);
+      gap: clamp(28px, 3.5vw, 64px);
       align-items: start;
-      margin-bottom: 56px;
+      margin-bottom: clamp(56px, 6vw, 88px);
+    }
+
+    .cs-section-kicker {
+      padding-top: 6px;
+      font-family: var(--sans);
+      font-size: clamp(16px, 1.2vw, 18px);
+      font-weight: 700;
+      letter-spacing: 0;
+      line-height: 1.4;
+      color: var(--ink);
     }
 
     .cs-section-label {
@@ -966,11 +969,16 @@
     .cs-section-title em { font-style: normal; }
 
     .cs-section-body {
-      font-size: 15px;
+      max-width: none;
+      font-size: clamp(16px, 1.2vw, 18px);
       font-weight: 400;
-      line-height: 1.8;
-      color: var(--ink-mid);
-      padding-top: 6px;
+      line-height: 1.6;
+      letter-spacing: -0.01em;
+      color: var(--ink);
+    }
+
+    .cs-section-body p + p {
+      margin-top: clamp(18px, 1.6vw, 24px);
     }
 
     /* ─── Device frames ──────────────────────────────────────── */
@@ -1222,12 +1230,23 @@
       white-space: nowrap;
     }
 
+    .impact-number-suffix {
+      display: inline-block;
+      margin-left: 0.04em;
+      font-family: var(--sans);
+      font-size: 0.38em;
+      font-weight: 700;
+      line-height: 1;
+      letter-spacing: 0.02em;
+      vertical-align: super;
+    }
+
     .impact-number--range {
       display: flex;
       flex-wrap: wrap;
       align-items: baseline;
       gap: clamp(10px, 1vw, 16px);
-      font-size: clamp(40px, 4.4vw, 68px);
+      font-size: clamp(48px, 6vw, 92px);
     }
 
     .impact-number-unit {
@@ -1276,7 +1295,7 @@
       }
 
       .impact-number--range {
-        font-size: clamp(38px, 6vw, 56px);
+        font-size: clamp(42px, 7vw, 72px);
       }
     }
     /* ─── More Case Studies ──────────────────────────────────── */
@@ -1736,7 +1755,7 @@
       .impact-grid { gap: 12px; padding-top: 8px; border-top: 1px solid var(--rule); }
       .impact-stat { flex-basis: min(86vw, 360px); min-width: min(86vw, 360px); min-height: 380px; padding: 28px; }
       .impact-headline { margin-top: 28px; padding-top: 0; }
-      .impact-number--range { font-size: clamp(36px, 11vw, 48px); gap: 8px; }
+      .impact-number--range { font-size: clamp(44px, 13vw, 60px); gap: 8px; }
       .impact-number-unit { font-size: 11px; }
       .more-section { padding: 48px var(--pad); }
       .more-grid { grid-template-columns: 1fr; }
@@ -1822,6 +1841,39 @@
 
     [data-theme="dark"] .site-nav.is-scrolled .nav-frame {
       box-shadow: none;
+    }
+
+    /* Desktop: on scroll, keep the nav bar transparent and instead
+       give the two corner icons a solid card-style fill (no shadow). */
+    @media (min-width: 1081px) {
+      /* Keep the nav in its exact default position when scrolled.
+         The bar is transparent on desktop, so there's no need to dock
+         it full-width — holding inset + padding constant means the
+         icons never shift when scrolling begins. */
+      .site-nav.is-scrolled {
+        inset: 8px 8px auto 8px;
+      }
+
+      .site-nav.is-scrolled .nav-frame {
+        width: 100%;
+        background: transparent;
+        border-bottom-color: transparent;
+        box-shadow: none;
+        padding: 0 16px;
+      }
+
+      .site-nav.is-scrolled .nav-menu-toggle,
+      .site-nav.is-scrolled .theme-toggle {
+        background: color-mix(in srgb, var(--bg) 94%, white 6%);
+        border-color: var(--rule);
+        box-shadow: none;
+      }
+
+      [data-theme="dark"] .site-nav.is-scrolled .nav-menu-toggle,
+      [data-theme="dark"] .site-nav.is-scrolled .theme-toggle {
+        background: color-mix(in srgb, var(--bg) 92%, white 8%);
+        box-shadow: none;
+      }
     }
 
     .case-subnav {
@@ -2099,6 +2151,375 @@
       }
     }
 
+      /* Enquiry CTA — sits above the footer */
+    .enquiry {
+      position: relative;
+      z-index: 1;
+      padding: 104px 48px 56px;
+    }
+    .enquiry-inner { max-width: 820px; }
+    .enquiry-headline {
+      margin: 0;
+      font-family: var(--serif);
+      font-size: 50px;
+      font-weight: 500;
+      line-height: 1.08;
+      letter-spacing: -0.012em;
+      color: var(--ink);
+      text-wrap: balance;
+    }
+    .enquiry-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 36px;
+      padding: 15px 28px;
+      border-radius: 999px;
+      background: #009755;
+      color: #fff;
+      font-family: var(--sans);
+      font-size: 16px;
+      font-weight: 600;
+      line-height: 1;
+      letter-spacing: 0;
+      cursor: pointer;
+      transition: background 0.3s cubic-bezier(0.65,0,0.35,1),
+                  transform 0.3s cubic-bezier(0.65,0,0.35,1);
+    }
+    .enquiry-btn svg {
+      width: 16px; height: 16px; display: block;
+      transition: transform 0.3s cubic-bezier(0.65,0,0.35,1);
+    }
+    .enquiry-btn:hover { background: #007e46; }
+    .enquiry-btn:hover svg { transform: translate(3px,-3px); }
+    .enquiry-btn:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
+    @media (prefers-reduced-motion: reduce) {
+      .enquiry-btn, .enquiry-btn svg { transition: none; }
+    }
+    @media (max-width: 1080px) {
+      .enquiry { padding: 88px 32px 48px; }
+      .enquiry-headline { font-size: 40px; }
+    }
+    @media (max-width: 767px) {
+      .enquiry { padding: 64px 20px 40px; }
+      .enquiry-headline { font-size: 32px; line-height: 1.08; }
+      .enquiry-btn { margin-top: 28px; width: 100%; justify-content: center; }
+    }
+</style>
+
+<style id="case-ux-rollout">
+/* ===== Case study UX rollout ===== */
+:root { --case-card-radius: 12px; }
+.case-hero-card, .cs-section, .impact-panel, .more-section { border-radius: 12px; }
+.bento-tile, .feature-pair-tile, .section-feature { border-radius: 12px; }
+
+@media (min-width: 1081px) {
+  .case-hero-card { transform: none !important; }
+}
+.case-hero-card .hero-image { border-bottom: none; }
+@media (min-width: 768px) { .hero-image { aspect-ratio: 16 / 8; } }
+
+.case-topbar { padding: 4px var(--case-gutter) 18px; }
+.case-topbar .project-back { margin-bottom: 0; }
+
+/* Case opening statement (centered, above hero) */
+.case-intro {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: clamp(24px, 5vw, 64px) var(--case-gutter) clamp(28px, 4.5vw, 56px);
+}
+.case-intro-eyebrow {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-mid);
+  margin-bottom: clamp(14px, 1.6vw, 20px);
+}
+.case-intro-desc {
+  max-width: 820px;
+  margin: 0;
+  font-family: var(--serif);
+  font-size: clamp(24px, 3.2vw, 38px);
+  font-weight: 500;
+  line-height: 1.28;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+  color: var(--ink);
+}
+@media (max-width: 767px) {
+  .case-intro { padding: 20px var(--case-gutter) 24px; }
+  .case-intro-desc { font-size: 22px; line-height: 1.34; }
+}
+
+/* Entrance reveal — text + hero animate in on load (pure CSS, no JS dependency) */
+@media (prefers-reduced-motion: no-preference) {
+  .case-intro[data-hero-reveal] .case-intro-eyebrow {
+    opacity: 0;
+    animation: heroRise 0.75s cubic-bezier(0.16,1,0.3,1) 0.05s forwards;
+  }
+  .case-intro[data-hero-reveal] .case-intro-desc {
+    opacity: 0;
+    animation: heroRise 0.75s cubic-bezier(0.16,1,0.3,1) 0.16s forwards;
+  }
+  .case-hero-card[data-hero-reveal] {
+    opacity: 0;
+    animation: heroFade 0.95s cubic-bezier(0.16,1,0.3,1) 0.28s forwards;
+  }
+}
+@media (min-width: 1081px) {
+  .case-hero-card { transform: none !important; }
+}
+.case-subnav { display: none !important; }
+@keyframes heroRise {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes heroFade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .case-hero-card[data-hero-reveal] .hero-image img {
+    transform: translateY(10px) scale(1.07);
+    animation: heroIn 1.4s cubic-bezier(0.85, 0, 0.15, 1) 0.2s forwards;
+  }
+}
+@keyframes heroIn {
+  from { transform: translateY(10px) scale(1.07); }
+  to   { transform: translateY(0) scale(1); }
+}
+
+.case-body { display: flex; align-items: flex-start; gap: clamp(28px,3.5vw,56px); padding: 0 var(--case-gutter); margin-top: 120px; margin-bottom: 120px; }
+.case-rail { position: fixed; left: 50%; bottom: 28px; top: auto; z-index: 120; width: auto; max-width: calc(100vw - 32px); padding: 6px; border-radius: 999px; background: var(--bg-raised); border: none; box-shadow: 0 8px 22px rgba(0,0,0,0.15); display: flex; flex-direction: row; align-items: center; opacity: 0; transform: translateX(-50%) translateY(18px); transition: opacity 0.9s cubic-bezier(0.16,1,0.3,1) 0.08s, transform 1s cubic-bezier(0.16,1,0.3,1) 0.08s; pointer-events: none; }
+.case-rail.is-revealed { opacity: 1; transform: translateX(-50%) translateY(0); pointer-events: auto; }
+.case-rail.is-handed-off { opacity: 0; transform: translateX(-50%) translateY(14px) scale(0.96); pointer-events: none; }
+.case-rail::-webkit-scrollbar { display: none; }
+.case-rail-nav { display: flex; flex-direction: row; align-items: center; gap: 2px; }
+.case-rail-back { margin-bottom: 24px; font-size: 10px; letter-spacing: 0.14em; gap: 8px; color: var(--ink-light); }
+.case-rail-back:hover { color: var(--ink); }
+.case-rail-back .project-back-icon { width: 12px; height: 12px; }
+.case-rail-brand { margin-bottom: 22px; }
+
+/* Permanent project info in rail */
+.case-rail-desc { font-family: var(--serif); font-size: 18px; font-weight: 500; line-height: 1.4; letter-spacing: -0.01em; color: var(--ink); margin-bottom: 24px; }
+.case-rail-meta { display: flex; flex-direction: column; gap: 16px; margin-bottom: 24px; padding-bottom: 24px; border-bottom: 1px solid var(--rule); }
+.case-rail-meta-label { font-size: 9px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-mid); margin-bottom: 7px; }
+.case-rail-meta-text { font-size: 13px; font-weight: 400; line-height: 1.5; color: var(--ink-mid); }
+.case-rail-tags { display: flex; flex-wrap: wrap; gap: 5px; }
+.case-rail-foot { margin-top: auto; padding-top: 26px; border-top: 1px solid var(--rule); display: flex; flex-direction: column; gap: 16px; }
+.case-rail-foot-item { display: flex; flex-direction: column; gap: 2px; }
+.case-rail-foot-label { font-size: 15px; font-weight: 500; line-height: 1.3; letter-spacing: -0.01em; color: var(--ink-light); }
+.case-rail-foot-value { font-size: 15px; font-weight: 500; line-height: 1.3; letter-spacing: -0.01em; color: var(--ink); }
+.case-rail-nav-label { font-size: 9px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-mid); margin-bottom: 8px; }
+
+.case-rail-link { display: inline-flex; align-items: center; padding: 8px 14px; border-radius: 999px; font-size: 14px; font-weight: 500; line-height: 1; letter-spacing: -0.01em; white-space: nowrap; color: var(--ink-light); transition: color .25s ease; }
+.case-rail-link:hover, .case-rail-link:focus-visible { color: var(--ink); }
+.case-rail-link.is-active { color: var(--ink); font-weight: 600; }
+.case-sections { flex: 1 1 auto; min-width: 0; }
+
+/* Mobile-only project intro (rail holds this on desktop) */
+.case-mobile-intro { display: none; }
+.overview-cards--context { grid-template-columns: repeat(2, minmax(0,1fr)); max-width: 760px; }
+@media (min-width: 1081px) {
+  #overview .overview-cards.overview-cards--context { margin-top: 0; padding-top: 0; border-top: none; }
+  .case-topbar { display: none; }
+}
+.case-body .cs-section { margin: 120px 0 0; padding: 0; border-bottom: none; background: transparent; border-radius: 0; }
+.case-body .cs-section:first-child { margin-top: 0; }
+    .case-body .impact-panel { margin: 120px 0 0; }
+.case-body .pull-quote { padding: 56px clamp(40px,5vw,64px) 0; }
+
+.project-icon { width: 62px; height: 62px; border-radius: 12px; }
+.project-icon svg, .project-icon img { width: 40px; height: 40px; max-width: 40px; max-height: 40px; }
+
+#overview .project-desc { max-width: 900px; margin-bottom: 0; }
+#overview .overview-cards { margin-top: clamp(36px,3.6vw,48px); padding-top: clamp(36px,3.6vw,48px); border-top: 1px solid var(--rule); }
+.overview-cards { display: grid; grid-template-columns: minmax(0,1.25fr) minmax(0,1.5fr) minmax(0,1fr) minmax(0,1fr); gap: clamp(24px,2.6vw,48px); }
+.overview-card-label { font-family: var(--sans); font-size: 11px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-mid); margin-bottom: 20px; }
+.overview-card-text { font-family: var(--sans); font-size: clamp(16px,1.25vw,19px); font-weight: 400; line-height: 1.4; color: var(--ink); letter-spacing: -0.01em; }
+.overview-card-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+
+/* -- Overview - editorial statement layout -- */
+.overview-statement-block { position: relative; margin-bottom: clamp(48px, 5.5vw, 96px); }
+.overview-tag { position: absolute; top: 14px; left: 0; font-family: var(--sans); font-size: 14px; font-weight: 600; letter-spacing: 0.01em; color: var(--ink); }
+.overview-statement { margin: 0; font-family: var(--serif); font-weight: 500; font-size: clamp(28px, 4vw, 60px); line-height: 1.14; letter-spacing: -0.02em; color: var(--ink); text-indent: clamp(140px, 14vw, 280px); text-wrap: pretty; }
+.overview-detail { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.5fr); gap: clamp(40px, 6vw, 120px); align-items: start; }
+.overview-detail-body { margin: 0; padding-top: 18px; max-width: 46ch; font-family: var(--sans); font-size: clamp(15px, 1.05vw, 16px); line-height: 1.6; color: var(--ink-light); }
+.overview-detail-list { list-style: none; margin: 0; padding: 0; }
+.overview-detail-list li { padding: 18px 0; border-top: 1px solid var(--rule); font-family: var(--sans); font-size: clamp(15px, 1.05vw, 16px); color: var(--ink); }
+@media (max-width: 768px) {
+  .overview-tag { position: static; margin-bottom: 22px; }
+  .overview-statement { text-indent: 0; }
+  .overview-detail { grid-template-columns: 1fr; gap: 28px; }
+  .overview-detail-body { padding-top: 0; }
+}
+
+
+@media (max-width: 1080px) {
+  .case-body { display: block; padding: 0; margin-top: 24px; }
+  .case-rail { position: fixed; top: 60px; left: 0; right: 0; width: auto; flex: none; max-height: none; overflow: visible; padding: 11px var(--pad); background: var(--bg); border: none; border-bottom: 1px solid var(--rule); border-radius: 0; box-shadow: none; z-index: 150; opacity: 0; pointer-events: none; transition: opacity .4s ease; }
+  .case-rail.is-revealed { opacity: 1; pointer-events: auto; transform: none; }
+  .case-rail-nav { flex-direction: row; align-items: center; gap: 22px; overflow-x: auto; scrollbar-width: none; }
+  .case-rail-nav::-webkit-scrollbar { display: none; }
+  .case-rail-back,
+  .case-rail-brand,
+  .case-rail-desc,
+  .case-rail-meta,
+  .case-rail-foot,
+  .case-rail-nav-label { display: none; }
+  .case-mobile-intro { display: none; }
+  .case-topbar { display: none; }
+  .case-mobile-intro .project-desc { margin-bottom: 28px; }
+  .case-mobile-meta { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; padding-top: 28px; border-top: 1px solid var(--rule); }
+  .overview-cards--context { grid-template-columns: 1fr; }
+  .case-rail-link { flex: 0 0 auto; padding: 4px 0; font-size: 14px; white-space: nowrap; }
+  .case-body .cs-section { margin: 16px var(--case-gutter) 0; padding: 64px var(--pad); }
+  .case-body .impact-panel { margin: 16px var(--case-gutter) 0; }
+  .case-body .pull-quote { padding: 64px var(--pad) 0; }
+  .overview-cards { grid-template-columns: 1fr; gap: 32px; }
+}
+</style>
+<style id="impact-grid-align">.impact-panel .impact-grid{padding-left:0;scroll-padding-left:0;}</style>
+<style id="impact-shot-css">
+  /* ─── Impact (image-backed, click-to-detail) ─────────────── */
+  .impact-panel.impact-shot{
+    position:relative; overflow:hidden; border-bottom:none;
+    display:flex; flex-direction:column; justify-content:flex-end;
+    min-height:clamp(520px,64vh,720px);
+    contain-intrinsic-size:auto 680px;
+  }
+  .impact-shot__media{
+    position:absolute; inset:0; z-index:0;
+    background-size:cover; background-position:center;
+    transform:scale(1.001);
+  }
+  .impact-shot__media::after{
+    content:""; position:absolute; inset:0;
+    background:linear-gradient(180deg, rgba(10,9,8,.45) 0%, rgba(10,9,8,.28) 40%, rgba(10,9,8,.82) 100%);
+  }
+  .impact-shot__inner{ position:relative; z-index:1; }
+  .impact-shot__head{ padding:clamp(36px,5vw,64px) clamp(28px,4vw,56px) 0; }
+  .impact-shot__eyebrow{ font-size:11px; font-weight:700; letter-spacing:.16em; text-transform:uppercase; color:rgba(255,255,255,.82); }
+  .impact-shot__stats{ display:flex; align-items:flex-end; gap:0; padding:clamp(28px,4vw,52px) clamp(28px,4vw,56px); }
+  .istat{
+    flex:1 1 0; min-width:0; text-align:left;
+    background:none; border:0; border-left:1px solid rgba(255,255,255,.18);
+    padding:6px clamp(16px,1.6vw,28px);
+    color:#fff; font-family:inherit; cursor:pointer;
+    display:flex; flex-direction:column;
+    transition:opacity .2s ease;
+  }
+  .istat:first-child{ border-left:none; padding-left:0; }
+  .istat:hover .istat__more, .istat:focus-visible .istat__more{ opacity:1; transform:translateY(0); }
+  .istat:focus-visible{ outline:2px solid rgba(255,255,255,.65); outline-offset:4px; border-radius:4px; }
+  .istat__num{ font-size:clamp(34px,3.3vw,60px); font-weight:400; line-height:.92; letter-spacing:-.01em; white-space:nowrap; }
+  .istat__num.impact-number--range{ font-size:clamp(22px,2.1vw,36px); letter-spacing:0; }
+  .istat__num .impact-number-suffix{ font-size:.42em; font-weight:700; vertical-align:super; margin-left:.04em; }
+  .istat__label{ margin-top:clamp(10px,1vw,16px); font-size:clamp(10px,.78vw,12px); font-weight:700; line-height:1.3; letter-spacing:.1em; text-transform:uppercase; color:rgba(255,255,255,.78); }
+  .istat__more{ margin-top:12px; font-size:10px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:rgba(255,255,255,.62); display:inline-flex; align-items:center; gap:5px; opacity:0; transform:translateY(4px); transition:opacity .2s ease, transform .2s ease; }
+  .istat__more svg{ width:12px; height:12px; }
+  .istat__detail{ display:none; }
+
+  /* slide-in detail drawer */
+  .impact-drawer{ position:fixed; inset:0; z-index:200; visibility:hidden; }
+  .impact-drawer.is-open{ visibility:visible; }
+  .impact-drawer__scrim{ position:absolute; inset:0; background:rgba(8,7,6,.55); opacity:0; transition:opacity .35s ease; }
+  .impact-drawer.is-open .impact-drawer__scrim{ opacity:1; }
+  .impact-drawer__panel{
+    position:absolute; top:0; right:0; height:100%; width:min(460px,92vw);
+    background:var(--bg-raised); color:var(--ink);
+    padding:clamp(36px,5vw,60px) clamp(30px,4vw,52px);
+    display:flex; flex-direction:column;
+    transform:translateX(100%); transition:transform .42s cubic-bezier(.4,0,.1,1);
+    overflow-y:auto; box-shadow:-30px 0 80px rgba(0,0,0,.4);
+  }
+  .impact-drawer.is-open .impact-drawer__panel{ transform:translateX(0); }
+  .impact-drawer__close{ align-self:flex-end; width:44px; height:44px; border-radius:999px; border:1px solid var(--rule); background:transparent; color:var(--ink); font-size:20px; line-height:1; cursor:pointer; transition:background .25s ease, color .25s ease; }
+  .impact-drawer__close:hover, .impact-drawer__close:focus-visible{ background:var(--ink); color:var(--bg); outline:none; }
+  .impact-drawer__eyebrow{ margin-top:22px; font-size:11px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-light); }
+  .impact-drawer__num{ margin-top:14px; font-size:clamp(54px,8vw,86px); font-weight:400; line-height:.9; white-space:nowrap; }
+  .impact-drawer__num .impact-number-suffix{ font-size:.4em; font-weight:700; vertical-align:super; margin-left:.04em; }
+  .impact-drawer__head{ margin-top:26px; font-size:clamp(20px,1.6vw,26px); font-weight:500; line-height:1.22; }
+  .impact-drawer__copy{ margin-top:16px; font-size:15px; line-height:1.6; color:var(--ink-mid); }
+  @media (prefers-reduced-motion: reduce){ .impact-drawer__panel,.impact-drawer__scrim{ transition:none; } }
+
+  @media (max-width:1080px){
+    .impact-shot__stats{ flex-wrap:wrap; gap:30px 0; }
+    .istat{ flex:1 1 33%; min-width:33%; }
+    .istat:nth-child(3n+1){ border-left:none; padding-left:0; }
+    .istat__more{ opacity:1; transform:none; }
+  }
+  @media (max-width:640px){
+    .istat{ flex:1 1 50%; min-width:50%; border-left:1px solid rgba(255,255,255,.18); padding-left:clamp(16px,4vw,22px); }
+    .istat:nth-child(odd){ border-left:none; padding-left:0; }
+  }
+</style>
+  <style id="next-case-fab-styles">
+    /* ─── Next-case floating button (X timeline style) ─── */
+    .next-fab {
+      position: fixed;
+      left: 50%;
+      bottom: 28px;
+      transform: translateX(-50%) translateY(16px) scale(0.96);
+      z-index: 240;
+      display: inline-flex;
+      align-items: center;
+      gap: 13px;
+      padding: 6px 18px 6px 6px;
+      background: var(--bg-raised);
+      border: none;
+      border-radius: 999px;
+      box-shadow: 0 8px 22px rgba(0,0,0,0.15);
+      cursor: pointer;
+      opacity: 0;
+      pointer-events: none;
+      transition: transform 0.5s cubic-bezier(0.16,1,0.3,1), opacity 0.45s ease, box-shadow 0.3s ease;
+    }
+    .next-fab.is-visible {
+      transform: translateX(-50%) translateY(0) scale(1);
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .next-fab:hover {
+      transform: translateX(-50%) translateY(-4px);
+      box-shadow: 0 11px 26px rgba(0,0,0,0.19);
+    }
+    .next-fab:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
+    .next-fab-arrow {
+      width: 18px; height: 18px;
+      flex-shrink: 0;
+      color: var(--ink);
+      animation: nextFabBounce 1.9s ease-in-out infinite;
+    }
+    @keyframes nextFabBounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(3px); }
+    }
+    .next-fab-avatars { display: inline-flex; align-items: center; }
+    .next-fab-avatars img {
+      width: 30px; height: 30px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid var(--bg-raised);
+      margin-left: -11px;
+      background: var(--bg-surface);
+    }
+    .next-fab-avatars img:first-child { margin-left: 0; }
+    .next-fab-label {
+      color: var(--ink);
+      font-family: var(--sans);
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: 0.005em;
+      white-space: nowrap;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .next-fab { transition: opacity 0.2s ease; }
+      .next-fab-arrow { animation: none; }
+    }
   </style>
 </head>
 <body>
@@ -2106,11 +2527,9 @@
   <!-- Nav -->
   <nav class="site-nav">
     <div class="nav-frame">
-      <button class="nav-menu-toggle" type="button" id="projectMenuToggle" aria-label="Open project menu" aria-haspopup="true" aria-controls="projectMenu" aria-expanded="false">
-        <span class="nav-menu-line" aria-hidden="true"></span>
-        <span class="nav-menu-line" aria-hidden="true"></span>
-      </button>
-      <a href="index.html" class="nav-logo">Benjamin Lynch</a>
+      <a class="nav-menu-toggle nav-back" href="index.html" aria-label="Back to homepage">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      </a>
       <div class="nav-right">
         <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
           <svg class="toggle-moon" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
@@ -2120,12 +2539,13 @@
             <circle cx="8" cy="8" r="2.5"/>
             <path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.05 3.05l1.42 1.42M11.53 11.53l1.42 1.42M3.05 12.95l1.42-1.42M11.53 4.47l1.42-1.42"/>
           </svg>
-          <span class="toggle-label toggle-label-dark">Light</span>
-          <span class="toggle-label toggle-label-light">Dark</span>
         </button>
       </div>
     </div>
   </nav>
+
+  <!-- Title sits outside the fixed nav so it scrolls with the page -->
+  <a href="index.html" class="nav-logo">Benjamin Lynch</a>
 
   <div class="project-menu-backdrop" id="projectMenuBackdrop" aria-hidden="true"></div>
   <aside class="project-menu" id="projectMenu" aria-label="Portfolio projects" aria-hidden="true">
@@ -2162,20 +2582,8 @@
     </div>
   </aside>
 
-  <nav class="case-subnav" aria-label="Case study sections">
-    <div class="case-subnav-brand">Peloton</div>
-    <div class="case-subnav-links">
-      <a class="case-subnav-link" href="#section-01">01 The problem</a>
-      <a class="case-subnav-link" href="#section-02">02 Experiment 01: AR landing page</a>
-      <a class="case-subnav-link" href="#section-03">03 Experiment 02: Making the tool visible</a>
-    </div>
-  </nav>
-  <div class="case-hero-card">
-
-
-  <!-- Project Header -->
-  <div class="project-header">
-
+    <!-- Back to all work -->
+  <div class="case-topbar">
     <a href="index.html" class="project-back">
       <span class="project-back-icon" aria-hidden="true">
         <svg class="project-back-arrow project-back-arrow--default" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
@@ -2187,74 +2595,61 @@
       </span>
       All work
     </a>
-
-
-    <p class="project-desc">Designing augmented reality tools to help customers confidently evaluate Peloton products in their homes.</p>
-
-    <div class="project-header-meta">
-    <div class="project-brand">
-        <div class="project-icon">
-      <svg viewBox="35 62 80 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path fill-rule="evenodd" clip-rule="evenodd" d="M83.0694 71.0752C80.9376 71.0752 79.2412 72.6878 79.2412 74.8766C79.2412 77.0664 80.9381 78.6795 83.0694 78.6795C85.2008 78.6795 86.8962 77.0664 86.8962 74.8766C86.8962 72.6878 85.2008 71.0752 83.0694 71.0752ZM65.0611 71.1736H69.9545V72.5142H66.5832V74.2126H69.5527V75.5196H66.5832V77.2414H70.1073V78.581H65.0606V71.1736H65.0611ZM60.0729 71.1738H57.4741H57.4736V78.5812H58.9967V76.1525H60.0729C61.5739 76.1525 62.8244 75.3891 62.8244 73.6572C62.8244 71.9253 61.5844 71.1738 60.0729 71.1738ZM61.2591 73.6574C61.2591 74.4745 60.7812 74.8122 60.0306 74.8122V74.8117H58.9971V72.5146H60.0306C60.7591 72.5146 61.2591 72.8298 61.2591 73.6574ZM74.1917 71.1736H72.6691V78.581H77.5415V77.2414H74.1917V71.1736ZM85.3313 74.8773C85.3313 73.4945 84.4179 72.4375 83.0697 72.4375C81.7205 72.4375 80.8076 73.4945 80.8076 74.8773C80.8076 76.2614 81.7205 77.318 83.0697 77.318C84.4179 77.318 85.3313 76.2609 85.3313 74.8773ZM90.6474 72.5139H88.5381V71.1729H94.2797V72.5139H92.1704V78.5808H90.6474V72.5139ZM99.7381 72.4375C101.086 72.4375 102 73.4945 102 74.8773C102 76.2609 101.086 77.318 99.7381 77.318C98.3889 77.318 97.4756 76.2614 97.4756 74.8773C97.4756 73.4945 98.3889 72.4375 99.7381 72.4375ZM95.9102 74.8766C95.9102 72.6878 97.6071 71.0752 99.7389 71.0752C101.87 71.0752 103.567 72.6878 103.567 74.8766C103.567 77.0664 101.87 78.6795 99.7389 78.6795C97.6071 78.6795 95.9102 77.0664 95.9102 74.8766ZM107.336 74.1258C107.336 74.1258 107.848 74.7906 108.217 75.1388L111.948 78.6466H112.099V71.174H110.675V74.279C110.675 74.7906 110.772 75.6287 110.772 75.6287C110.772 75.6287 110.262 74.9539 109.902 74.6167L106.172 71.1084H106.021V78.5819H107.445V75.4764C107.445 74.9429 107.336 74.1258 107.336 74.1258Z" fill="currentColor"/>
-        <path d="M50.3615 69.1745L51.9468 66.4229C52.4108 65.6185 52.1358 64.5904 51.3323 64.1249C50.9464 63.902 50.4877 63.8418 50.0574 63.9574C49.627 64.073 49.2603 64.3551 49.0381 64.7413L47.4528 67.4919C44.0738 66.4253 40.2916 67.8057 38.4467 71.006C37.3192 72.9578 37.0997 75.3045 37.8456 77.4316L40.7734 72.3518C41.438 71.1908 42.5396 70.344 43.8324 70.0002C45.1229 69.6502 46.4998 69.8318 47.6554 70.5045C50.0612 71.8959 50.8883 74.9884 49.4993 77.3976C48.1104 79.8076 45.0231 80.6362 42.6178 79.2449L44.297 76.3314C44.6827 76.5545 45.1414 76.615 45.5718 76.4996C46.0021 76.3841 46.3689 76.1022 46.5912 75.716C47.0545 74.9115 46.7794 73.8839 45.9762 73.4185C45.5904 73.1955 45.1319 73.1351 44.7015 73.2505C44.2712 73.3659 43.9044 73.6478 43.682 74.0339L38.3255 83.3269C37.8618 84.1312 38.1367 85.159 38.94 85.6245C39.3257 85.8477 39.7844 85.9081 40.2149 85.7926C40.6453 85.677 41.012 85.3949 41.2341 85.0085L42.8199 82.2579C46.1984 83.3245 49.9812 81.9442 51.8261 78.7434C53.671 75.5431 52.9732 71.5716 50.361 69.174" fill="currentColor"/>
-      </svg>
-    </div>
-      </div>
-      <div class="header-meta-item">
-        <div class="header-meta-label">Client</div>
-        <div class="header-meta-val">Peloton</div>
-        </div>
-        <div class="header-meta-item">
-        <div class="header-meta-label">Sector</div>
-        <div class="header-meta-val">Fitness · Retail</div>
-      </div>
-      <div class="header-meta-item">
-        <div class="header-meta-label">Tags</div>
-        <div class="header-meta-val header-meta-tags">
-          <span class="ptag">eCommerce</span> <span class="ptag">Augmented Reality</span> <span class="ptag">Product Experiments</span>
-        </div>
-      </div>
-      <div class="header-meta-item">
-        <div class="header-meta-label">Role</div>
-        <div class="header-meta-val">Senior Product Designer</div>
-      </div>
-    </div>
   </div>
 
-  <!-- Hero Image -->
+  <div class="case-hero-card" data-hero-reveal>
   <div class="hero-image">
     <picture>
       <source media="(max-width: 767px)" srcset="Imagery/Hero/Mobile/PelotonAR.jpg" />
       <img src="Imagery/Hero/Desktop/PelotonAR.png" alt="Peloton AR tool hero" decoding="async" />
     </picture>
   </div>
+  </div>
 
-  <!-- Project Brief -->
-  <div class="brief-block">
-    <div>
-      <div class="brief-col-label">Customer Problem</div>
-      <p class="brief-col-text">40% of prospects see space as a main barrier to purchasing Peloton hardware in their home.</p>
+  <!-- Case body: left rail + content -->
+  <div class="case-body">
+  <aside class="case-rail">
+    <nav class="case-rail-nav" aria-label="Case study sections">
+      <a class="case-rail-link" href="#overview">Overview</a>
+      <a class="case-rail-link" href="#section-01">The problem</a>
+      <a class="case-rail-link" href="#section-02">Experiment 01: AR landing page</a>
+      <a class="case-rail-link" href="#section-03">Experiment 02: Making the tool visible</a>
+      <a class="case-rail-link" href="#impact">Impact</a>
+    </nav>
+  </aside>
+  <div class="case-sections">
+
+  <!-- Overview -->
+  <section class="cs-section" id="overview">
+    <div class="overview-statement-block">
+      <span class="overview-tag">(Overview)</span>
+      <h2 class="overview-statement">Designing augmented reality tools to help customers confidently evaluate Peloton products in their homes.</h2>
     </div>
-    <div>
-      <div class="brief-col-label">Objective</div>
-      <p class="brief-col-text">Customers are 3x more likely to convert if they interact with the (legacy) AR tool.</p>
+
+    <div class="overview-detail">
+      <p class="overview-detail-body">[Placeholder] A short overview of the project context — the brief, your role, and what the work set out to achieve. Replace with a tailored summary for this case study.</p>
+      <ul class="overview-detail-list">
+        <li>Product strategy and direction</li>
+        <li>End-to-end experience design</li>
+        <li>Prototyping and validation</li>
+        <li>Cross-functional collaboration</li>
+        <li>Measurable business impact</li>
+      </ul>
     </div>
-    <div>
-      <div class="brief-col-label">Challenges to unpack</div>
-      <p class="brief-col-text">Will making the products feel more accessible convert into sales?</p>
+
+
+    <!-- Mobile-only project intro (shown in the side rail on desktop) -->
+    <div class="case-mobile-intro">
+      <p class="project-desc">Designing augmented reality tools to help customers confidently evaluate Peloton products in their homes.</p>
     </div>
-  </div>
-  </div>
+  </section>
+
 
   <!-- Section 01 -->
   <section class="cs-section" id="section-01">
     <div class="cs-section-header">
       <div>
-        <div class="cs-section-label">
-          <div class="cs-label-dot"></div>
-          <span class="cs-label-text">01</span>
-        </div>
-        <h2 class="cs-section-title">The<br><em>problem</em></h2>
+        <p class="cs-section-kicker">The problem</p>
       </div>
       <div class="cs-section-body">
         <p>40% of prospects cite space as a main barrier to purchasing Peloton hardware. However, customers are 3× more likely to convert when they interact with the AR tool — making the core challenge clear: <em>will making the products feel more accessible convert into sales?</em></p>
@@ -2280,11 +2675,7 @@
   <section class="cs-section" id="section-02">
     <div class="cs-section-header">
       <div>
-        <div class="cs-section-label">
-          <div class="cs-label-dot"></div>
-          <span class="cs-label-text">02</span>
-        </div>
-        <h2 class="cs-section-title">Experiment 01:<br><em>AR landing page</em></h2>
+        <p class="cs-section-kicker">Experiment 01: AR landing page</p>
       </div>
       <div class="cs-section-body">
         <p>We used the UK market to test this pilot as a low-risk option. The main design and content challenges were: creating a concise, actionable page narrative, and designing for a custom page build without disrupting pre-existing CMS modules.</p>
@@ -2331,11 +2722,7 @@
   <section class="cs-section" id="section-03">
     <div class="cs-section-header">
       <div>
-        <div class="cs-section-label">
-          <div class="cs-label-dot"></div>
-          <span class="cs-label-text">03</span>
-        </div>
-        <h2 class="cs-section-title">Experiment 02:<br><em>Making the tool visible</em></h2>
+        <p class="cs-section-kicker">Experiment 02: Making the tool visible</p>
       </div>
       <div class="cs-section-body">
         <p>Taking into account the strong conversion rate of the tool, our squad ran a series of experiments across product landing pages to make it more prominent. Alongside this, we partnered with a third-party agency to:</p>
@@ -2349,136 +2736,110 @@
     <div class="carousel-dots" id="dots-03"></div>
   </section>
 
-  <!-- Impact Card -->
-  <section class="impact-panel" aria-label="Case study impact">
-    <div class="impact-card">
-      <div class="impact-intro">
-        <p class="impact-eyebrow">Case study impact</p>
-        <div class="impact-controls" role="group" aria-label="Impact carousel controls">
-          <button class="impact-control" type="button" data-impact-prev aria-label="Previous impact stat">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <path d="M15 18l-6-6 6-6"/>
-            </svg>
-          </button>
-          <button class="impact-control" type="button" data-impact-next aria-label="Next impact stat">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <path d="M9 6l6 6-6 6"/>
-            </svg>
-          </button>
-        </div>
-      </div>
-      <div class="impact-grid" id="impactCarousel" aria-label="Impact stat carousel">
-        <article class="impact-stat">
-          <div class="impact-stat-content">
-            <span class="impact-number">+00%</span>
-            <p class="impact-copy">Placeholder outcome showing how the work improved a key business or customer metric.</p>
-          </div>
-        </article>
-        <article class="impact-stat">
-          <div class="impact-stat-content">
-            <span class="impact-number">0x</span>
-            <p class="impact-copy">Placeholder signal for an increase in adoption, engagement, conversion, or operational efficiency.</p>
-          </div>
-        </article>
-        <article class="impact-stat">
-          <div class="impact-stat-content">
-            <span class="impact-number">00%</span>
-            <p class="impact-copy">Placeholder validation result summarising measurable confidence from users, teams, or stakeholders.</p>
-          </div>
-        </article>
+  
+  <!-- Impact (image-backed, click-to-detail) -->
+  <section class="impact-panel impact-shot" id="impact" aria-label="Case study impact">
+    <div class="impact-shot__media" style="background-image:url('Imagery/Hero/Desktop/PelotonAR.png')"></div>
+    <div class="impact-shot__inner">
+      <div class="impact-shot__head"><span class="impact-shot__eyebrow">Case study impact</span></div>
+      <div class="impact-shot__stats" role="list">
+        <button class="istat" type="button" aria-haspopup="dialog">
+          <span class="istat__num">+00<span class="impact-number-suffix">%</span></span>
+          <span class="istat__label"></span>
+          <span class="istat__more">Detail <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></span>
+          <span class="istat__detail"><span class="d-eyebrow"></span><span class="d-num">+00<span class="impact-number-suffix">%</span></span><span class="d-head"></span><span class="d-copy">Placeholder outcome showing how the work improved a key business or customer metric.</span></span>
+        </button>
+        <button class="istat" type="button" aria-haspopup="dialog">
+          <span class="istat__num">0<span class="impact-number-suffix">x</span></span>
+          <span class="istat__label"></span>
+          <span class="istat__more">Detail <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></span>
+          <span class="istat__detail"><span class="d-eyebrow"></span><span class="d-num">0<span class="impact-number-suffix">x</span></span><span class="d-head"></span><span class="d-copy">Placeholder signal for an increase in adoption, engagement, conversion, or operational efficiency.</span></span>
+        </button>
+        <button class="istat" type="button" aria-haspopup="dialog">
+          <span class="istat__num">00<span class="impact-number-suffix">%</span></span>
+          <span class="istat__label"></span>
+          <span class="istat__more">Detail <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></span>
+          <span class="istat__detail"><span class="d-eyebrow"></span><span class="d-num">00<span class="impact-number-suffix">%</span></span><span class="d-head"></span><span class="d-copy">Placeholder validation result summarising measurable confidence from users, teams, or stakeholders.</span></span>
+        </button>
       </div>
     </div>
   </section>
-  <!-- More Case Studies -->
-  <div class="more-section">
-    <p class="more-label">More case studies</p>
-    <div class="more-grid">
 
-      <a href="peloton-australia.html" class="card">
-        <div class="card-img">
-          <img src="Imagery/Thumbnails/Peloton05.jpg" alt="Peloton Australia Launch" loading="lazy" decoding="async" />
-          <video class="card-img-video" muted loop playsinline preload="none" aria-hidden="true">
-            <source src="Imagery/Thumbnails/Hover/Compressed/PelotonAU_Thumbnail.mp4" type="video/mp4">
-          </video>
-          <div class="card-arrow">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 17L17 7M7 7h10v10"/></svg>
-          </div>
-        </div>
-        <div class="card-text">
-          <div class="card-row">
-            <span class="card-client">Peloton</span>
-            <span class="card-num">06</span>
-          </div>
-          <h3 class="card-title">Localizing Peloton's eCommerce experience for launch into the Australian fitness market.</h3>
-          <div class="card-tags">
-            <span class="ctag">eCommerce</span>
-            <span class="ctag">New Markets</span>
-            <span class="ctag">Product Experiments</span>
-          </div>
-        </div>
-      </a>
-      <a href="peloton-subscription.html" class="card">
-        <div class="card-img">
-          <img src="Imagery/Thumbnails/Peloton03.jpg" alt="Peloton Subscription Tiers" loading="lazy" decoding="async" />
-          <div class="card-arrow">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 17L17 7M7 7h10v10"/></svg>
-          </div>
-        </div>
-        <div class="card-text">
-          <div class="card-row">
-            <span class="card-client">Peloton</span>
-            <span class="card-num">05</span>
-          </div>
-          <h3 class="card-title">Rolling out Peloton's redesigned subscription architecture across global enterprise and B2B markets.</h3>
-          <div class="card-tags">
-            <span class="ctag">eCommerce</span>
-            <span class="ctag">B2B</span>
-            <span class="ctag">Subscription</span>
-          </div>
-        </div>
-      </a>
-      <a href="peloton-colleges.html" class="card">
-        <div class="card-img">
-          <img src="Imagery/Thumbnails/Peloton01.jpg" alt="Peloton US Colleges" loading="lazy" decoding="async" />
-          <video class="card-img-video" muted loop playsinline preload="none" aria-hidden="true">
-            <source src="Imagery/Thumbnails/Hover/Compressed/PelotonxMichigan_Thumbnail.mp4" type="video/mp4">
-          </video>
-          <div class="card-arrow">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 17L17 7M7 7h10v10"/></svg>
-          </div>
-        </div>
-        <div class="card-text">
-          <div class="card-row">
-            <span class="card-client">Peloton</span>
-            <span class="card-num">04</span>
-          </div>
-          <h3 class="card-title">Exploring branded hardware partnerships through Peloton's first university collaboration with the University of Michigan.</h3>
-          <div class="card-tags">
-            <span class="ctag">eCommerce</span>
-            <span class="ctag">B2B</span>
-            <span class="ctag">Pilot</span>
-            <span class="ctag">Fitness</span>
-          </div>
-        </div>
-      </a>
-      
-    </div>
+  <!-- Impact detail drawer -->
+  <div class="impact-drawer" id="impactDrawer" aria-hidden="true">
+    <div class="impact-drawer__scrim" data-impact-close></div>
+    <aside class="impact-drawer__panel" role="dialog" aria-modal="true" aria-labelledby="impactDrawerHead" tabindex="-1">
+      <button class="impact-drawer__close" type="button" data-impact-close aria-label="Close detail">&times;</button>
+      <span class="impact-drawer__eyebrow" id="impactDrawerEyebrow"></span>
+      <span class="impact-drawer__num" id="impactDrawerNum"></span>
+      <h3 class="impact-drawer__head" id="impactDrawerHead"></h3>
+      <p class="impact-drawer__copy" id="impactDrawerCopy"></p>
+    </aside>
   </div>
+  <script>
+  (function(){
+    var drawer = document.getElementById('impactDrawer');
+    if (!drawer) return;
+    var panel  = drawer.querySelector('.impact-drawer__panel');
+    var elEye  = document.getElementById('impactDrawerEyebrow');
+    var elNum  = document.getElementById('impactDrawerNum');
+    var elHead = document.getElementById('impactDrawerHead');
+    var elCopy = document.getElementById('impactDrawerCopy');
+    var lastFocus = null;
+    function open(stat){
+      var d = stat.querySelector('.istat__detail');
+      if (!d) return;
+      elEye.textContent  = d.querySelector('.d-eyebrow').textContent;
+      elNum.innerHTML    = d.querySelector('.d-num').innerHTML;
+      elHead.textContent = d.querySelector('.d-head').textContent;
+      elCopy.textContent = d.querySelector('.d-copy').textContent;
+      lastFocus = stat;
+      drawer.classList.add('is-open');
+      drawer.setAttribute('aria-hidden','false');
+      document.body.style.overflow = 'hidden';
+      panel.focus();
+    }
+    function close(){
+      drawer.classList.remove('is-open');
+      drawer.setAttribute('aria-hidden','true');
+      document.body.style.overflow = '';
+      if (lastFocus) lastFocus.focus();
+    }
+    document.querySelectorAll('.impact-shot__stats .istat').forEach(function(stat){
+      stat.addEventListener('click', function(){ open(stat); });
+    });
+    drawer.querySelectorAll('[data-impact-close]').forEach(function(el){
+      el.addEventListener('click', close);
+    });
+    document.addEventListener('keydown', function(e){
+      if (e.key === 'Escape' && drawer.classList.contains('is-open')) close();
+    });
+  }());
+  </script>
 
+  </div><!-- /.case-sections -->
+  </div><!-- /.case-body -->
+  <!-- Enquiry CTA -->
+  <section class="enquiry" id="contact" aria-label="Get in touch">
+    <div class="enquiry-inner">
+      <h2 class="enquiry-headline">For project enquiries, collaborations, or simply just to say hello</h2>
+      <a class="enquiry-btn" href="mailto:hello@benjaminlynch.co.uk">
+        <span>Send an enquiry</span>
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M7 17L17 7"/>
+          <path d="M8 7h9v9"/>
+        </svg>
+      </a>
+    </div>
+  </section>
 
   <!-- Footer -->
-  <footer id="contact" aria-label="Say hello">
+  <footer aria-label="Footer">
 
     <div class="foot-main">
       <div class="foot-hero">
         <div class="foot-hero-left">
-          <div class="foot-wordmark" aria-hidden="true">
-            <span>Say</span> <span>Hello</span>
-          </div>
-
           <div class="foot-contact">
-            <a class="foot-email" href="mailto:hello@benjaminlynch.co.uk">hello@benjaminlynch.co.uk</a>
-
             <div class="foot-links" role="navigation" aria-label="Footer navigation">
               <a href="https://www.linkedin.com/in/benflynch/" target="_blank" rel="noopener" aria-label="LinkedIn">
                 <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
@@ -2832,5 +3193,64 @@
     }());
 
   </script>
+
+<script>
+(function(){
+  var railLinks = [].slice.call(document.querySelectorAll('.case-rail-link'));
+  if (railLinks.length) {
+    var linkFor = {}, sections = [];
+    railLinks.forEach(function(l){ var id=(l.getAttribute('href')||'').replace('#',''); var s=id&&document.getElementById(id); if(s){ linkFor[id]=l; sections.push(s);} });
+    if (sections.length) {
+      var setActive=function(id){ railLinks.forEach(function(l){ l.classList.toggle('is-active', l===linkFor[id]); }); };
+      if ('IntersectionObserver' in window) {
+        var obs=new IntersectionObserver(function(es){ var v=es.filter(function(e){return e.isIntersecting;}).sort(function(a,b){return b.intersectionRatio-a.intersectionRatio;})[0]; if(v) setActive(v.target.id); }, { rootMargin:'-45% 0px -45% 0px', threshold:0 });
+        sections.forEach(function(s){ obs.observe(s); });
+      }
+      setActive(sections[0].id);
+    }
+  }
+  var rail=document.querySelector('.case-rail');
+  if (rail) {
+    var onScroll=function(){ rail.classList.toggle('is-revealed', window.scrollY>40); };
+    onScroll(); window.addEventListener('scroll', onScroll, { passive:true });
+  }
+})();
+</script>
+  <!-- Next case study floating button -->
+  <button class="next-fab" id="nextCaseFab" type="button" aria-label="Go to next case study: Nike+">
+    <svg class="next-fab-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M12 5v14M19 12l-7 7-7-7"/>
+    </svg>
+    <span class="next-fab-avatars" aria-hidden="true">
+      <img src="Imagery/Hero/Desktop/Nike%20Desktop.jpg" alt="" decoding="async" />
+      <img src="Imagery/Hero/Desktop/GoogleFreeletics.jpg" alt="" decoding="async" />
+      <img src="Imagery/Hero/Desktop/VirginSport.jpg" alt="" decoding="async" />
+    </span>
+    <span class="next-fab-label">Next case</span>
+  </button>
+
+  <script>
+    /* Next-case floating button */
+    (function () {
+      var fab = document.getElementById('nextCaseFab');
+      if (!fab) return;
+      var NEXT_URL = 'nike.html';
+      var rail = document.querySelector('.case-rail');
+      var endEl = document.getElementById('contact');
+      if (endEl && 'IntersectionObserver' in window) {
+        var io = new IntersectionObserver(function (entries) {
+          entries.forEach(function (e) {
+            fab.classList.toggle('is-visible', e.isIntersecting);
+            if (rail) rail.classList.toggle('is-handed-off', e.isIntersecting);
+          });
+        }, { threshold: 0.12 });
+        io.observe(endEl);
+      } else {
+        fab.classList.add('is-visible');
+      }
+      fab.addEventListener('click', function () { window.location.href = NEXT_URL; });
+    })();
+  </script>
+
 </body>
 </html>

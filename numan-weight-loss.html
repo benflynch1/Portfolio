@@ -105,7 +105,8 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 0 40px;
+      /* 16px + 8px nav inset = 24px, matching the page content gutter (--case-gutter) */
+      padding: 0 16px;
       background: transparent;
       border-bottom: 1px solid transparent;
       border-radius: 28px 28px 0 0;
@@ -113,6 +114,7 @@
       contain: layout paint style;
       transition:
         width 0.42s cubic-bezier(0.16, 1, 0.3, 1),
+        padding 0.35s ease,
         background 0.35s ease,
         border-color 0.35s ease,
         border-radius 0.35s ease,
@@ -123,8 +125,8 @@
     .nav-menu-toggle {
       position: relative;
       z-index: 2;
-      width: 34px;
-      height: 34px;
+      width: 44px;
+      height: 44px;
       display: inline-flex;
       flex-direction: column;
       align-items: center;
@@ -135,7 +137,7 @@
       background: transparent;
       color: var(--ink);
       cursor: pointer;
-      transition: border-color 0.2s ease, background 0.2s ease;
+      transition: border-color 0.2s ease, background 0.35s ease, box-shadow 0.35s ease;
     }
 
     .nav-menu-toggle:hover,
@@ -172,10 +174,17 @@
       transform: translateY(-3px) rotate(-45deg);
     }
 
+    /* Positioned against the document (not the fixed nav) so the title
+       scrolls away with the page. top + height match the nav band. */
     .nav-logo {
       position: absolute;
+      top: 8px;
       left: 50%;
       transform: translateX(-50%);
+      height: 56px;
+      display: inline-flex;
+      align-items: center;
+      z-index: 200;
       font-family: var(--sans);
       font-size: 15px;
       font-weight: 600;
@@ -241,19 +250,16 @@
     .theme-toggle {
       display: inline-flex;
       align-items: center;
-      gap: 7px;
+      justify-content: center;
+      width: 44px;
+      height: 44px;
       background: none;
-      border: 1px solid var(--rule);
-      border-radius: 100px;
-      padding: 6px 12px 6px 8px;
+      border: 1px solid transparent;
+      border-radius: 999px;
+      padding: 0;
       cursor: pointer;
-      font-family: var(--sans);
-      font-size: 10px;
-      font-weight: 600;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--ink-mid);
-      transition: color 0.2s, border-color 0.2s, background 0.2s;
+      color: var(--ink);
+      transition: color 0.2s, border-color 0.2s, background 0.35s ease, box-shadow 0.35s ease;
     }
 
     .theme-toggle:hover {
@@ -262,22 +268,14 @@
     }
 
     .theme-toggle svg {
-      width: 13px;
-      height: 13px;
+      width: 15px;
+      height: 15px;
       flex-shrink: 0;
       display: block;
     }
 
-    .theme-toggle .toggle-label {
-      display: inline-block;
-      min-width: 32px;
-      text-align: left;
-    }
-
     [data-theme="dark"]  .toggle-sun  { display: none; }
     [data-theme="light"] .toggle-moon { display: none; }
-    [data-theme="dark"]  .toggle-label-light { display: none; }
-    [data-theme="light"] .toggle-label-dark  { display: none; }
     body.project-menu-open {
       overflow: hidden;
     }
@@ -532,6 +530,8 @@
 
       .nav-logo {
         font-size: 14px;
+        top: 6px;
+        height: 52px;
       }
 
       .project-menu {
@@ -596,14 +596,6 @@
         display: none;
       }
 
-      .theme-toggle {
-        padding: 6px;
-      }
-
-      .theme-toggle .toggle-label {
-        display: none;
-        min-width: 0;
-      }
     }
 
     /* ─── Case subnav ───────────────────────────────────────── */
@@ -776,6 +768,7 @@
       object-fit: contain;
       color: var(--ink);
     }
+    /* logo-size-tune */ .case-rail .project-icon svg { width: 52px; height: 52px; max-width: 52px; max-height: 52px; }
 
     .project-brand {
       display: flex;
@@ -925,10 +918,20 @@
 
     .cs-section-header {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 48px;
+      grid-template-columns: minmax(110px, 1fr) minmax(0, 5.2fr);
+      gap: clamp(28px, 3.5vw, 64px);
       align-items: start;
-      margin-bottom: 56px;
+      margin-bottom: clamp(56px, 6vw, 88px);
+    }
+
+    .cs-section-kicker {
+      padding-top: 6px;
+      font-family: var(--sans);
+      font-size: clamp(16px, 1.2vw, 18px);
+      font-weight: 700;
+      letter-spacing: 0;
+      line-height: 1.4;
+      color: var(--ink);
     }
 
     .cs-section-label {
@@ -966,11 +969,16 @@
     .cs-section-title em { font-style: normal; }
 
     .cs-section-body {
-      font-size: 15px;
+      max-width: none;
+      font-size: clamp(16px, 1.2vw, 18px);
       font-weight: 400;
-      line-height: 1.8;
-      color: var(--ink-mid);
-      padding-top: 6px;
+      line-height: 1.6;
+      letter-spacing: -0.01em;
+      color: var(--ink);
+    }
+
+    .cs-section-body p + p {
+      margin-top: clamp(18px, 1.6vw, 24px);
     }
 
     /* ─── Device frames ──────────────────────────────────────── */
@@ -1154,12 +1162,23 @@
       white-space: nowrap;
     }
 
+    .impact-number-suffix {
+      display: inline-block;
+      margin-left: 0.04em;
+      font-family: var(--sans);
+      font-size: 0.38em;
+      font-weight: 700;
+      line-height: 1;
+      letter-spacing: 0.02em;
+      vertical-align: super;
+    }
+
     .impact-number--range {
       display: flex;
       flex-wrap: wrap;
       align-items: baseline;
       gap: clamp(10px, 1vw, 16px);
-      font-size: clamp(40px, 4.4vw, 68px);
+      font-size: clamp(48px, 6vw, 92px);
     }
 
     .impact-number-unit {
@@ -1208,7 +1227,7 @@
       }
 
       .impact-number--range {
-        font-size: clamp(38px, 6vw, 56px);
+        font-size: clamp(42px, 7vw, 72px);
       }
     }
     /* ─── More Case Studies ──────────────────────────────────── */
@@ -1665,7 +1684,7 @@
       .impact-grid { gap: 12px; padding-top: 8px; border-top: 1px solid var(--rule); }
       .impact-stat { flex-basis: min(86vw, 360px); min-width: min(86vw, 360px); min-height: 380px; padding: 28px; }
       .impact-headline { margin-top: 28px; padding-top: 0; }
-      .impact-number--range { font-size: clamp(36px, 11vw, 48px); gap: 8px; }
+      .impact-number--range { font-size: clamp(44px, 13vw, 60px); gap: 8px; }
       .impact-number-unit { font-size: 11px; }
       .more-section { padding: 48px var(--pad); }
       .more-grid { grid-template-columns: 1fr; }
@@ -1729,6 +1748,39 @@
 
     [data-theme="dark"] .site-nav.is-scrolled .nav-frame {
       box-shadow: none;
+    }
+
+    /* Desktop: on scroll, keep the nav bar transparent and instead
+       give the two corner icons a solid card-style fill (no shadow). */
+    @media (min-width: 1081px) {
+      /* Keep the nav in its exact default position when scrolled.
+         The bar is transparent on desktop, so there's no need to dock
+         it full-width — holding inset + padding constant means the
+         icons never shift when scrolling begins. */
+      .site-nav.is-scrolled {
+        inset: 8px 8px auto 8px;
+      }
+
+      .site-nav.is-scrolled .nav-frame {
+        width: 100%;
+        background: transparent;
+        border-bottom-color: transparent;
+        box-shadow: none;
+        padding: 0 16px;
+      }
+
+      .site-nav.is-scrolled .nav-menu-toggle,
+      .site-nav.is-scrolled .theme-toggle {
+        background: color-mix(in srgb, var(--bg) 94%, white 6%);
+        border-color: var(--rule);
+        box-shadow: none;
+      }
+
+      [data-theme="dark"] .site-nav.is-scrolled .nav-menu-toggle,
+      [data-theme="dark"] .site-nav.is-scrolled .theme-toggle {
+        background: color-mix(in srgb, var(--bg) 92%, white 8%);
+        box-shadow: none;
+      }
     }
 
     .case-subnav {
@@ -2006,6 +2058,375 @@
       }
     }
 
+      /* Enquiry CTA — sits above the footer */
+    .enquiry {
+      position: relative;
+      z-index: 1;
+      padding: 104px 48px 56px;
+    }
+    .enquiry-inner { max-width: 820px; }
+    .enquiry-headline {
+      margin: 0;
+      font-family: var(--serif);
+      font-size: 50px;
+      font-weight: 500;
+      line-height: 1.08;
+      letter-spacing: -0.012em;
+      color: var(--ink);
+      text-wrap: balance;
+    }
+    .enquiry-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 36px;
+      padding: 15px 28px;
+      border-radius: 999px;
+      background: #009755;
+      color: #fff;
+      font-family: var(--sans);
+      font-size: 16px;
+      font-weight: 600;
+      line-height: 1;
+      letter-spacing: 0;
+      cursor: pointer;
+      transition: background 0.3s cubic-bezier(0.65,0,0.35,1),
+                  transform 0.3s cubic-bezier(0.65,0,0.35,1);
+    }
+    .enquiry-btn svg {
+      width: 16px; height: 16px; display: block;
+      transition: transform 0.3s cubic-bezier(0.65,0,0.35,1);
+    }
+    .enquiry-btn:hover { background: #007e46; }
+    .enquiry-btn:hover svg { transform: translate(3px,-3px); }
+    .enquiry-btn:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
+    @media (prefers-reduced-motion: reduce) {
+      .enquiry-btn, .enquiry-btn svg { transition: none; }
+    }
+    @media (max-width: 1080px) {
+      .enquiry { padding: 88px 32px 48px; }
+      .enquiry-headline { font-size: 40px; }
+    }
+    @media (max-width: 767px) {
+      .enquiry { padding: 64px 20px 40px; }
+      .enquiry-headline { font-size: 32px; line-height: 1.08; }
+      .enquiry-btn { margin-top: 28px; width: 100%; justify-content: center; }
+    }
+</style>
+
+<style id="case-ux-rollout">
+/* ===== Case study UX rollout ===== */
+:root { --case-card-radius: 12px; }
+.case-hero-card, .cs-section, .impact-panel, .more-section { border-radius: 12px; }
+.bento-tile, .feature-pair-tile, .section-feature { border-radius: 12px; }
+
+@media (min-width: 1081px) {
+  .case-hero-card { transform: none !important; }
+}
+.case-hero-card .hero-image { border-bottom: none; }
+@media (min-width: 768px) { .hero-image { aspect-ratio: 16 / 8; } }
+
+.case-topbar { padding: 4px var(--case-gutter) 18px; }
+.case-topbar .project-back { margin-bottom: 0; }
+
+/* Case opening statement (centered, above hero) */
+.case-intro {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: clamp(24px, 5vw, 64px) var(--case-gutter) clamp(28px, 4.5vw, 56px);
+}
+.case-intro-eyebrow {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-mid);
+  margin-bottom: clamp(14px, 1.6vw, 20px);
+}
+.case-intro-desc {
+  max-width: 820px;
+  margin: 0;
+  font-family: var(--serif);
+  font-size: clamp(24px, 3.2vw, 38px);
+  font-weight: 500;
+  line-height: 1.28;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+  color: var(--ink);
+}
+@media (max-width: 767px) {
+  .case-intro { padding: 20px var(--case-gutter) 24px; }
+  .case-intro-desc { font-size: 22px; line-height: 1.34; }
+}
+
+/* Entrance reveal — text + hero animate in on load (pure CSS, no JS dependency) */
+@media (prefers-reduced-motion: no-preference) {
+  .case-intro[data-hero-reveal] .case-intro-eyebrow {
+    opacity: 0;
+    animation: heroRise 0.75s cubic-bezier(0.16,1,0.3,1) 0.05s forwards;
+  }
+  .case-intro[data-hero-reveal] .case-intro-desc {
+    opacity: 0;
+    animation: heroRise 0.75s cubic-bezier(0.16,1,0.3,1) 0.16s forwards;
+  }
+  .case-hero-card[data-hero-reveal] {
+    opacity: 0;
+    animation: heroFade 0.95s cubic-bezier(0.16,1,0.3,1) 0.28s forwards;
+  }
+}
+@media (min-width: 1081px) {
+  .case-hero-card { transform: none !important; }
+}
+.case-subnav { display: none !important; }
+@keyframes heroRise {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes heroFade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .case-hero-card[data-hero-reveal] .hero-image img {
+    transform: translateY(10px) scale(1.07);
+    animation: heroIn 1.4s cubic-bezier(0.85, 0, 0.15, 1) 0.2s forwards;
+  }
+}
+@keyframes heroIn {
+  from { transform: translateY(10px) scale(1.07); }
+  to   { transform: translateY(0) scale(1); }
+}
+
+.case-body { display: flex; align-items: flex-start; gap: clamp(28px,3.5vw,56px); padding: 0 var(--case-gutter); margin-top: 120px; margin-bottom: 120px; }
+.case-rail { position: fixed; left: 50%; bottom: 28px; top: auto; z-index: 120; width: auto; max-width: calc(100vw - 32px); padding: 6px; border-radius: 999px; background: var(--bg-raised); border: none; box-shadow: 0 8px 22px rgba(0,0,0,0.15); display: flex; flex-direction: row; align-items: center; opacity: 0; transform: translateX(-50%) translateY(18px); transition: opacity 0.9s cubic-bezier(0.16,1,0.3,1) 0.08s, transform 1s cubic-bezier(0.16,1,0.3,1) 0.08s; pointer-events: none; }
+.case-rail.is-revealed { opacity: 1; transform: translateX(-50%) translateY(0); pointer-events: auto; }
+.case-rail.is-handed-off { opacity: 0; transform: translateX(-50%) translateY(14px) scale(0.96); pointer-events: none; }
+.case-rail::-webkit-scrollbar { display: none; }
+.case-rail-nav { display: flex; flex-direction: row; align-items: center; gap: 2px; }
+.case-rail-back { margin-bottom: 24px; font-size: 10px; letter-spacing: 0.14em; gap: 8px; color: var(--ink-light); }
+.case-rail-back:hover { color: var(--ink); }
+.case-rail-back .project-back-icon { width: 12px; height: 12px; }
+.case-rail-brand { margin-bottom: 22px; }
+
+/* Permanent project info in rail */
+.case-rail-desc { font-family: var(--serif); font-size: 18px; font-weight: 500; line-height: 1.4; letter-spacing: -0.01em; color: var(--ink); margin-bottom: 24px; }
+.case-rail-meta { display: flex; flex-direction: column; gap: 16px; margin-bottom: 24px; padding-bottom: 24px; border-bottom: 1px solid var(--rule); }
+.case-rail-meta-label { font-size: 9px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-mid); margin-bottom: 7px; }
+.case-rail-meta-text { font-size: 13px; font-weight: 400; line-height: 1.5; color: var(--ink-mid); }
+.case-rail-tags { display: flex; flex-wrap: wrap; gap: 5px; }
+.case-rail-foot { margin-top: auto; padding-top: 26px; border-top: 1px solid var(--rule); display: flex; flex-direction: column; gap: 16px; }
+.case-rail-foot-item { display: flex; flex-direction: column; gap: 2px; }
+.case-rail-foot-label { font-size: 15px; font-weight: 500; line-height: 1.3; letter-spacing: -0.01em; color: var(--ink-light); }
+.case-rail-foot-value { font-size: 15px; font-weight: 500; line-height: 1.3; letter-spacing: -0.01em; color: var(--ink); }
+.case-rail-nav-label { font-size: 9px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-mid); margin-bottom: 8px; }
+
+.case-rail-link { display: inline-flex; align-items: center; padding: 8px 14px; border-radius: 999px; font-size: 14px; font-weight: 500; line-height: 1; letter-spacing: -0.01em; white-space: nowrap; color: var(--ink-light); transition: color .25s ease; }
+.case-rail-link:hover, .case-rail-link:focus-visible { color: var(--ink); }
+.case-rail-link.is-active { color: var(--ink); font-weight: 600; }
+.case-sections { flex: 1 1 auto; min-width: 0; }
+
+/* Mobile-only project intro (rail holds this on desktop) */
+.case-mobile-intro { display: none; }
+.overview-cards--context { grid-template-columns: repeat(2, minmax(0,1fr)); max-width: 760px; }
+@media (min-width: 1081px) {
+  #overview .overview-cards.overview-cards--context { margin-top: 0; padding-top: 0; border-top: none; }
+  .case-topbar { display: none; }
+}
+.case-body .cs-section { margin: 120px 0 0; padding: 0; border-bottom: none; background: transparent; border-radius: 0; }
+.case-body .cs-section:first-child { margin-top: 0; }
+    .case-body .impact-panel { margin: 120px 0 0; }
+.case-body .pull-quote { padding: 56px clamp(40px,5vw,64px) 0; }
+
+.project-icon { width: 62px; height: 62px; border-radius: 12px; }
+.project-icon svg, .project-icon img { width: 40px; height: 40px; max-width: 40px; max-height: 40px; }
+
+#overview .project-desc { max-width: 900px; margin-bottom: 0; }
+#overview .overview-cards { margin-top: clamp(36px,3.6vw,48px); padding-top: clamp(36px,3.6vw,48px); border-top: 1px solid var(--rule); }
+.overview-cards { display: grid; grid-template-columns: minmax(0,1.25fr) minmax(0,1.5fr) minmax(0,1fr) minmax(0,1fr); gap: clamp(24px,2.6vw,48px); }
+.overview-card-label { font-family: var(--sans); font-size: 11px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-mid); margin-bottom: 20px; }
+.overview-card-text { font-family: var(--sans); font-size: clamp(16px,1.25vw,19px); font-weight: 400; line-height: 1.4; color: var(--ink); letter-spacing: -0.01em; }
+.overview-card-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+
+/* -- Overview - editorial statement layout -- */
+.overview-statement-block { position: relative; margin-bottom: clamp(48px, 5.5vw, 96px); }
+.overview-tag { position: absolute; top: 14px; left: 0; font-family: var(--sans); font-size: 14px; font-weight: 600; letter-spacing: 0.01em; color: var(--ink); }
+.overview-statement { margin: 0; font-family: var(--serif); font-weight: 500; font-size: clamp(28px, 4vw, 60px); line-height: 1.14; letter-spacing: -0.02em; color: var(--ink); text-indent: clamp(140px, 14vw, 280px); text-wrap: pretty; }
+.overview-detail { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.5fr); gap: clamp(40px, 6vw, 120px); align-items: start; }
+.overview-detail-body { margin: 0; padding-top: 18px; max-width: 46ch; font-family: var(--sans); font-size: clamp(15px, 1.05vw, 16px); line-height: 1.6; color: var(--ink-light); }
+.overview-detail-list { list-style: none; margin: 0; padding: 0; }
+.overview-detail-list li { padding: 18px 0; border-top: 1px solid var(--rule); font-family: var(--sans); font-size: clamp(15px, 1.05vw, 16px); color: var(--ink); }
+@media (max-width: 768px) {
+  .overview-tag { position: static; margin-bottom: 22px; }
+  .overview-statement { text-indent: 0; }
+  .overview-detail { grid-template-columns: 1fr; gap: 28px; }
+  .overview-detail-body { padding-top: 0; }
+}
+
+
+@media (max-width: 1080px) {
+  .case-body { display: block; padding: 0; margin-top: 24px; }
+  .case-rail { position: fixed; top: 60px; left: 0; right: 0; width: auto; flex: none; max-height: none; overflow: visible; padding: 11px var(--pad); background: var(--bg); border: none; border-bottom: 1px solid var(--rule); border-radius: 0; box-shadow: none; z-index: 150; opacity: 0; pointer-events: none; transition: opacity .4s ease; }
+  .case-rail.is-revealed { opacity: 1; pointer-events: auto; transform: none; }
+  .case-rail-nav { flex-direction: row; align-items: center; gap: 22px; overflow-x: auto; scrollbar-width: none; }
+  .case-rail-nav::-webkit-scrollbar { display: none; }
+  .case-rail-back,
+  .case-rail-brand,
+  .case-rail-desc,
+  .case-rail-meta,
+  .case-rail-foot,
+  .case-rail-nav-label { display: none; }
+  .case-mobile-intro { display: none; }
+  .case-topbar { display: none; }
+  .case-mobile-intro .project-desc { margin-bottom: 28px; }
+  .case-mobile-meta { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; padding-top: 28px; border-top: 1px solid var(--rule); }
+  .overview-cards--context { grid-template-columns: 1fr; }
+  .case-rail-link { flex: 0 0 auto; padding: 4px 0; font-size: 14px; white-space: nowrap; }
+  .case-body .cs-section { margin: 16px var(--case-gutter) 0; padding: 64px var(--pad); }
+  .case-body .impact-panel { margin: 16px var(--case-gutter) 0; }
+  .case-body .pull-quote { padding: 64px var(--pad) 0; }
+  .overview-cards { grid-template-columns: 1fr; gap: 32px; }
+}
+</style>
+<style id="impact-grid-align">.impact-panel .impact-grid{padding-left:0;scroll-padding-left:0;}</style>
+<style id="impact-shot-css">
+  /* ─── Impact (image-backed, click-to-detail) ─────────────── */
+  .impact-panel.impact-shot{
+    position:relative; overflow:hidden; border-bottom:none;
+    display:flex; flex-direction:column; justify-content:flex-end;
+    min-height:clamp(520px,64vh,720px);
+    contain-intrinsic-size:auto 680px;
+  }
+  .impact-shot__media{
+    position:absolute; inset:0; z-index:0;
+    background-size:cover; background-position:center;
+    transform:scale(1.001);
+  }
+  .impact-shot__media::after{
+    content:""; position:absolute; inset:0;
+    background:linear-gradient(180deg, rgba(10,9,8,.45) 0%, rgba(10,9,8,.28) 40%, rgba(10,9,8,.82) 100%);
+  }
+  .impact-shot__inner{ position:relative; z-index:1; }
+  .impact-shot__head{ padding:clamp(36px,5vw,64px) clamp(28px,4vw,56px) 0; }
+  .impact-shot__eyebrow{ font-size:11px; font-weight:700; letter-spacing:.16em; text-transform:uppercase; color:rgba(255,255,255,.82); }
+  .impact-shot__stats{ display:flex; align-items:flex-end; gap:0; padding:clamp(28px,4vw,52px) clamp(28px,4vw,56px); }
+  .istat{
+    flex:1 1 0; min-width:0; text-align:left;
+    background:none; border:0; border-left:1px solid rgba(255,255,255,.18);
+    padding:6px clamp(16px,1.6vw,28px);
+    color:#fff; font-family:inherit; cursor:pointer;
+    display:flex; flex-direction:column;
+    transition:opacity .2s ease;
+  }
+  .istat:first-child{ border-left:none; padding-left:0; }
+  .istat:hover .istat__more, .istat:focus-visible .istat__more{ opacity:1; transform:translateY(0); }
+  .istat:focus-visible{ outline:2px solid rgba(255,255,255,.65); outline-offset:4px; border-radius:4px; }
+  .istat__num{ font-size:clamp(34px,3.3vw,60px); font-weight:400; line-height:.92; letter-spacing:-.01em; white-space:nowrap; }
+  .istat__num.impact-number--range{ font-size:clamp(22px,2.1vw,36px); letter-spacing:0; }
+  .istat__num .impact-number-suffix{ font-size:.42em; font-weight:700; vertical-align:super; margin-left:.04em; }
+  .istat__label{ margin-top:clamp(10px,1vw,16px); font-size:clamp(10px,.78vw,12px); font-weight:700; line-height:1.3; letter-spacing:.1em; text-transform:uppercase; color:rgba(255,255,255,.78); }
+  .istat__more{ margin-top:12px; font-size:10px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:rgba(255,255,255,.62); display:inline-flex; align-items:center; gap:5px; opacity:0; transform:translateY(4px); transition:opacity .2s ease, transform .2s ease; }
+  .istat__more svg{ width:12px; height:12px; }
+  .istat__detail{ display:none; }
+
+  /* slide-in detail drawer */
+  .impact-drawer{ position:fixed; inset:0; z-index:200; visibility:hidden; }
+  .impact-drawer.is-open{ visibility:visible; }
+  .impact-drawer__scrim{ position:absolute; inset:0; background:rgba(8,7,6,.55); opacity:0; transition:opacity .35s ease; }
+  .impact-drawer.is-open .impact-drawer__scrim{ opacity:1; }
+  .impact-drawer__panel{
+    position:absolute; top:0; right:0; height:100%; width:min(460px,92vw);
+    background:var(--bg-raised); color:var(--ink);
+    padding:clamp(36px,5vw,60px) clamp(30px,4vw,52px);
+    display:flex; flex-direction:column;
+    transform:translateX(100%); transition:transform .42s cubic-bezier(.4,0,.1,1);
+    overflow-y:auto; box-shadow:-30px 0 80px rgba(0,0,0,.4);
+  }
+  .impact-drawer.is-open .impact-drawer__panel{ transform:translateX(0); }
+  .impact-drawer__close{ align-self:flex-end; width:44px; height:44px; border-radius:999px; border:1px solid var(--rule); background:transparent; color:var(--ink); font-size:20px; line-height:1; cursor:pointer; transition:background .25s ease, color .25s ease; }
+  .impact-drawer__close:hover, .impact-drawer__close:focus-visible{ background:var(--ink); color:var(--bg); outline:none; }
+  .impact-drawer__eyebrow{ margin-top:22px; font-size:11px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-light); }
+  .impact-drawer__num{ margin-top:14px; font-size:clamp(54px,8vw,86px); font-weight:400; line-height:.9; white-space:nowrap; }
+  .impact-drawer__num .impact-number-suffix{ font-size:.4em; font-weight:700; vertical-align:super; margin-left:.04em; }
+  .impact-drawer__head{ margin-top:26px; font-size:clamp(20px,1.6vw,26px); font-weight:500; line-height:1.22; }
+  .impact-drawer__copy{ margin-top:16px; font-size:15px; line-height:1.6; color:var(--ink-mid); }
+  @media (prefers-reduced-motion: reduce){ .impact-drawer__panel,.impact-drawer__scrim{ transition:none; } }
+
+  @media (max-width:1080px){
+    .impact-shot__stats{ flex-wrap:wrap; gap:30px 0; }
+    .istat{ flex:1 1 33%; min-width:33%; }
+    .istat:nth-child(3n+1){ border-left:none; padding-left:0; }
+    .istat__more{ opacity:1; transform:none; }
+  }
+  @media (max-width:640px){
+    .istat{ flex:1 1 50%; min-width:50%; border-left:1px solid rgba(255,255,255,.18); padding-left:clamp(16px,4vw,22px); }
+    .istat:nth-child(odd){ border-left:none; padding-left:0; }
+  }
+</style>
+  <style id="next-case-fab-styles">
+    /* ─── Next-case floating button (X timeline style) ─── */
+    .next-fab {
+      position: fixed;
+      left: 50%;
+      bottom: 28px;
+      transform: translateX(-50%) translateY(16px) scale(0.96);
+      z-index: 240;
+      display: inline-flex;
+      align-items: center;
+      gap: 13px;
+      padding: 6px 18px 6px 6px;
+      background: var(--bg-raised);
+      border: none;
+      border-radius: 999px;
+      box-shadow: 0 8px 22px rgba(0,0,0,0.15);
+      cursor: pointer;
+      opacity: 0;
+      pointer-events: none;
+      transition: transform 0.5s cubic-bezier(0.16,1,0.3,1), opacity 0.45s ease, box-shadow 0.3s ease;
+    }
+    .next-fab.is-visible {
+      transform: translateX(-50%) translateY(0) scale(1);
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .next-fab:hover {
+      transform: translateX(-50%) translateY(-4px);
+      box-shadow: 0 11px 26px rgba(0,0,0,0.19);
+    }
+    .next-fab:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
+    .next-fab-arrow {
+      width: 18px; height: 18px;
+      flex-shrink: 0;
+      color: var(--ink);
+      animation: nextFabBounce 1.9s ease-in-out infinite;
+    }
+    @keyframes nextFabBounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(3px); }
+    }
+    .next-fab-avatars { display: inline-flex; align-items: center; }
+    .next-fab-avatars img {
+      width: 30px; height: 30px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid var(--bg-raised);
+      margin-left: -11px;
+      background: var(--bg-surface);
+    }
+    .next-fab-avatars img:first-child { margin-left: 0; }
+    .next-fab-label {
+      color: var(--ink);
+      font-family: var(--sans);
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: 0.005em;
+      white-space: nowrap;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .next-fab { transition: opacity 0.2s ease; }
+      .next-fab-arrow { animation: none; }
+    }
   </style>
 </head>
 <body>
@@ -2013,11 +2434,9 @@
   <!-- Nav -->
   <nav class="site-nav">
     <div class="nav-frame">
-      <button class="nav-menu-toggle" type="button" id="projectMenuToggle" aria-label="Open project menu" aria-haspopup="true" aria-controls="projectMenu" aria-expanded="false">
-        <span class="nav-menu-line" aria-hidden="true"></span>
-        <span class="nav-menu-line" aria-hidden="true"></span>
-      </button>
-      <a href="index.html" class="nav-logo">Benjamin Lynch</a>
+      <a class="nav-menu-toggle nav-back" href="index.html" aria-label="Back to homepage">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      </a>
       <div class="nav-right">
         <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
           <svg class="toggle-moon" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
@@ -2027,12 +2446,13 @@
             <circle cx="8" cy="8" r="2.5"/>
             <path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.05 3.05l1.42 1.42M11.53 11.53l1.42 1.42M3.05 12.95l1.42-1.42M11.53 4.47l1.42-1.42"/>
           </svg>
-          <span class="toggle-label toggle-label-dark">Light</span>
-          <span class="toggle-label toggle-label-light">Dark</span>
         </button>
       </div>
     </div>
   </nav>
+
+  <!-- Title sits outside the fixed nav so it scrolls with the page -->
+  <a href="index.html" class="nav-logo">Benjamin Lynch</a>
 
   <div class="project-menu-backdrop" id="projectMenuBackdrop" aria-hidden="true"></div>
   <aside class="project-menu" id="projectMenu" aria-label="Portfolio projects" aria-hidden="true">
@@ -2069,20 +2489,8 @@
     </div>
   </aside>
 
-  <nav class="case-subnav" aria-label="Case study sections">
-    <div class="case-subnav-brand">Numan</div>
-    <div class="case-subnav-links">
-      <a class="case-subnav-link" href="#section-01">01 About the project</a>
-      <a class="case-subnav-link" href="#section-02">02 The Challenge</a>
-      <a class="case-subnav-link" href="#section-03">03 Design Outcomes</a>
-    </div>
-  </nav>
-  <div class="case-hero-card">
-
-
-  <!-- Project Header -->
-  <div class="project-header">
-
+    <!-- Back to all work -->
+  <div class="case-topbar">
     <a href="index.html" class="project-back">
       <span class="project-back-icon" aria-hidden="true">
         <svg class="project-back-arrow project-back-arrow--default" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
@@ -2094,78 +2502,63 @@
       </span>
       All work
     </a>
-
-
-    <p class="project-desc">Improving retention and treatment adherence within Numan's GLP-1 weight management experience.</p>
-
-    <div class="project-header-meta">
-    <div class="project-brand">
-        <div class="project-icon">
-      <svg viewBox="43 67 62 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M56.8484 76.1525C57.6325 76.1525 58.0721 75.5586 58.0721 74.6885V68.6435H61.7926V74.6066C61.7926 77.6917 60.0164 79.7985 56.8484 79.7985C53.6803 79.7985 51.9041 77.6929 51.9041 74.6066V73.555C51.9041 72.6849 51.4645 72.091 50.6804 72.091C49.8962 72.091 49.4566 72.6849 49.4566 73.555V79.5993H45.7361V73.6363C45.7361 70.5512 47.5123 68.4443 50.6798 68.4443C53.8472 68.4443 55.6246 70.5512 55.6246 73.6369V74.6885C55.6246 75.5586 56.0642 76.1525 56.8484 76.1525Z" fill="currentColor"/>
-        <path d="M74.7298 68.4443C73.4098 68.4443 72.3845 69.1476 71.7115 69.81C71.0871 68.9937 70.1349 68.4443 68.8434 68.4443C67.723 68.4443 66.9448 69.0364 66.4417 69.6456V68.6435H62.7211V79.5999H66.4417V73.5599C66.4417 72.5621 66.946 72.0904 67.6654 72.0904C68.3848 72.0904 68.8891 72.4435 68.8891 73.5599V79.5999H72.6097V73.5599C72.6097 72.5621 73.1134 72.0904 73.8334 72.0904C74.5534 72.0904 75.0571 72.4435 75.0571 73.5599V79.5999H78.7777V72.6659C78.7777 70.5554 77.2658 68.4456 74.731 68.4456H74.7298V68.4443Z" fill="currentColor"/>
-        <path fill-rule="evenodd" clip-rule="evenodd" d="M84.5102 68.4443C85.7203 68.4443 86.625 68.9387 87.3005 69.6261V68.6435H91.021V79.5987H87.3005V78.6174C86.6256 79.3048 85.7203 79.7985 84.5102 79.7985C80.7552 79.7985 79.4394 76.6071 79.4394 74.1214C79.4394 71.6357 80.7552 68.4443 84.5102 68.4443ZM83.1522 74.122C83.1522 75.3184 83.8336 76.3456 85.2534 76.3456C86.6731 76.3456 87.3545 75.3184 87.3545 74.122C87.3545 72.9256 86.6731 71.8985 85.2534 71.8985C83.8336 71.8985 83.1522 72.9256 83.1522 74.122Z" fill="currentColor"/>
-        <path d="M95.6724 69.642C96.3193 68.9851 97.1853 68.4444 98.2878 68.4443C101.096 68.4445 102.507 70.7816 102.507 73.1193V79.5999H98.7864V73.9607C98.7864 72.5401 98.1449 72.091 97.2294 72.091C96.314 72.091 95.6724 72.6916 95.6724 73.9607V79.5999H91.9519V68.6435H95.6724V69.642Z" fill="currentColor"/>
-      </svg>
-    </div>
-      </div>
-      <div class="header-meta-item">
-        <div class="header-meta-label">Client</div>
-        <div class="header-meta-val">Numan</div>
-        </div>
-      <div class="header-meta-item">
-        <div class="header-meta-label">Sector</div>
-        <div class="header-meta-val">Men's Health</div>
-      </div>
-      <div class="header-meta-item">
-        <div class="header-meta-label">Tags</div>
-        <div class="header-meta-val header-meta-tags">
-          <span class="ptag">eCommerce</span> <span class="ptag">Health</span> <span class="ptag">Mobile App</span> <span class="ptag">Product Experiments</span>
-        </div>
-      </div>
-      <div class="header-meta-item">
-        <div class="header-meta-label">Role</div>
-        <div class="header-meta-val">Lead Product Designer</div>
-      </div>
-    </div>
   </div>
 
-  <!-- Hero Image -->
+  <div class="case-hero-card" data-hero-reveal>
   <div class="hero-image">
     <picture>
       <source media="(max-width: 767px)" srcset="Imagery/Hero/Mobile/Numan%20WL%20Mobile.jpg" />
       <img src="Imagery/Hero/Desktop/Numan%20WL%20Desktop.jpg" alt="Numan weight management hero" decoding="async" />
     </picture>
   </div>
+  </div>
 
-  <!-- Project Brief -->
-  <div class="brief-block">
-    <div>
-      <div class="brief-col-label">Objective</div>
-      <p class="brief-col-text">Define the core objective and primary outcome the project was designed to achieve.</p>
+  <!-- Case body: left rail + content -->
+  <div class="case-body">
+  <aside class="case-rail">
+    <nav class="case-rail-nav" aria-label="Case study sections">
+      <a class="case-rail-link" href="#overview">Overview</a>
+      <a class="case-rail-link" href="#section-01">Reducing Churn</a>
+      <a class="case-rail-link" href="#section-02">Building engagement</a>
+      <a class="case-rail-link" href="#section-03">Customer Support</a>
+      <a class="case-rail-link" href="#impact">Impact</a>
+    </nav>
+  </aside>
+  <div class="case-sections">
+
+  <!-- Overview -->
+  <section class="cs-section" id="overview">
+    <div class="overview-statement-block">
+      <span class="overview-tag">(Overview)</span>
+      <h2 class="overview-statement">Improving retention and treatment adherence within Numan's GLP-1 weight management experience.</h2>
     </div>
-    <div>
-      <div class="brief-col-label">Market</div>
-      <p class="brief-col-text">Describe the target market or audience the work was designed for.</p>
+
+    <div class="overview-detail">
+      <p class="overview-detail-body">[Placeholder] A short overview of the project context — the brief, your role, and what the work set out to achieve. Replace with a tailored summary for this case study.</p>
+      <ul class="overview-detail-list">
+        <li>Product strategy and direction</li>
+        <li>End-to-end experience design</li>
+        <li>Prototyping and validation</li>
+        <li>Cross-functional collaboration</li>
+        <li>Measurable business impact</li>
+      </ul>
     </div>
-    <div>
-      <div class="brief-col-label">Learnings to uncover</div>
-      <p class="brief-col-text">Outline the key questions and unknowns that needed to be answered through the work.</p>
+
+
+    <!-- Mobile-only project intro (shown in the side rail on desktop) -->
+    <div class="case-mobile-intro">
+      <p class="project-desc">Improving retention and treatment adherence within Numan's GLP-1 weight management experience.</p>
     </div>
-  </div>
-  </div>
+  </section>
+
 
   <!-- Section 01 -->
   <section class="cs-section" id="section-01">
     <div class="cs-section-header">
       <div>
-        <div class="cs-section-label">
-          <div class="cs-label-dot"></div>
-          <span class="cs-label-text">01</span>
-        </div>
-        <h2 class="cs-section-title">About<br><em>the project</em></h2>
+        <p class="cs-section-kicker">Reducing Churn</p>
       </div>
-      <p class="cs-section-body">Numan is a men's health platform offering clinically-backed treatments. The weight management programme pairs GLP-1 medication with coaching, delivered via a mobile app. The project focused on understanding where users were dropping off and redesigning the experience to improve programme retention.</p>
+      <p class="cs-section-body">[Placeholder] Outline the churn-reduction work here &mdash; where users were dropping off, the changes you made, and the impact on retention.</p>
     </div>
     <div class="mockup-row mockup-row-3" id="carousel-01">
       <div class="phone-placeholder"></div>
@@ -2179,16 +2572,11 @@
   <section class="cs-section" id="section-02">
     <div class="cs-section-header">
       <div>
-        <div class="cs-section-label">
-          <div class="cs-label-dot"></div>
-          <span class="cs-label-text">02</span>
-        </div>
-        <h2 class="cs-section-title">The<br><em>Challenge</em></h2>
+        <p class="cs-section-kicker">Building engagement</p>
       </div>
-      <p class="cs-section-body">Retention in long-term health programmes is notoriously difficult. Users on a multi-month treatment journey need to feel consistently supported, motivated, and informed. The coach-led app had to deliver that at scale — without the cost of 1-to-1 human coaching for every interaction.</p>
+      <p class="cs-section-body">[Placeholder] Describe how you drove ongoing engagement &mdash; the behaviours you wanted to encourage, the design decisions, and the results.</p>
     </div>
-    <div class="mockup-row mockup-row-4" id="carousel-02">
-      <div class="phone-placeholder"></div>
+    <div class="mockup-row mockup-row-3" id="carousel-02">
       <div class="phone-placeholder"></div>
       <div class="phone-placeholder"></div>
       <div class="phone-placeholder"></div>
@@ -2200,171 +2588,133 @@
   <section class="cs-section" id="section-03">
     <div class="cs-section-header">
       <div>
-        <div class="cs-section-label">
-          <div class="cs-label-dot"></div>
-          <span class="cs-label-text">03</span>
-        </div>
-        <h2 class="cs-section-title">Design<br><em>Outcomes</em></h2>
+        <p class="cs-section-kicker">Customer Support</p>
       </div>
-      <p class="cs-section-body">Through data analysis, user interviews, and rapid experimentation, we identified and addressed the key drop-off points — check-in fatigue, unclear progress signalling, and weak coach communication patterns. A/B tested improvements drove measurable gains in 30 and 60-day retention rates.</p>
+      <p class="cs-section-body">[Placeholder] Cover the customer support experience here &mdash; the problem, your approach, and how it improved outcomes for users and the team.</p>
     </div>
-    <div class="mockup-row mockup-row-2" id="carousel-03">
+    <div class="mockup-row mockup-row-3" id="carousel-03">
+      <div class="phone-placeholder"></div>
       <div class="phone-placeholder"></div>
       <div class="phone-placeholder"></div>
     </div>
     <div class="carousel-dots" id="dots-03"></div>
   </section>
 
-  <!-- Impact Card -->
-  <section class="impact-panel" aria-label="Case study impact">
-    <div class="impact-card">
-      <div class="impact-intro">
-        <p class="impact-eyebrow">Case study impact</p>
-        <div class="impact-controls" role="group" aria-label="Impact carousel controls">
-          <button class="impact-control" type="button" data-impact-prev aria-label="Previous impact stat">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <path d="M15 18l-6-6 6-6"/>
-            </svg>
-          </button>
-          <button class="impact-control" type="button" data-impact-next aria-label="Next impact stat">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <path d="M9 6l6 6-6 6"/>
-            </svg>
-          </button>
-        </div>
-      </div>
-      <div class="impact-grid" id="impactCarousel" aria-label="Impact stat carousel">
-        <article class="impact-stat">
-          <div class="impact-stat-content">
-            <span class="impact-stat-eyebrow">Retention</span>
-            <span class="impact-number">-16.6%</span>
-            <span class="impact-headline">Pause rate reduced through retention experiments.</span>
-            <p class="impact-copy">Rapid testing delivered over half of the Q1 goal and an estimated c.&pound;0.5m revenue impact.</p>
-          </div>
-        </article>
-        <article class="impact-stat">
-          <div class="impact-stat-content">
-            <span class="impact-stat-eyebrow">Activation</span>
-            <span class="impact-number">+17%</span>
-            <span class="impact-headline">Weight-tracking activation increased.</span>
-            <p class="impact-copy">Redesigned onboarding helped patients complete 14% more check-ins, supporting adherence behaviour.</p>
-          </div>
-        </article>
-        <article class="impact-stat">
-          <div class="impact-stat-content">
-            <span class="impact-stat-eyebrow">Support</span>
-            <span class="impact-number">-49.4%</span>
-            <span class="impact-headline">Customer Service load reduced without hurting completion.</span>
-            <p class="impact-copy">In a 14-day test with 818 patients, self-serve IDV reduced care contacts while pass rate held steady.</p>
-          </div>
-        </article>
-        <article class="impact-stat">
-          <div class="impact-stat-content">
-            <span class="impact-stat-eyebrow">Engagement</span>
-            <span class="impact-number impact-number--range"><span>50% &rarr; 60%</span><span class="impact-number-unit">WAU</span></span>
-            <span class="impact-headline">Increased weekly engagement with health tracking.</span>
-            <p class="impact-copy">Redesigned check-ins, insights, and progress tracking to grow weekly health-tracking usage by 20% relative.</p>
-          </div>
-        </article>
-        <article class="impact-stat">
-          <div class="impact-stat-content">
-            <span class="impact-stat-eyebrow">Support</span>
-            <span class="impact-number impact-number--range"><span>40% &rarr; 13%</span></span>
-            <span class="impact-headline">Reduced avoidable support escalation.</span>
-            <p class="impact-copy">Built self-serve side-effect guidance that reduced coach escalation and helped patients get faster support for common symptoms.</p>
-          </div>
-        </article>
+  <!-- Impact (image-backed, click-to-detail) -->
+  <section class="impact-panel impact-shot" id="impact" aria-label="Case study impact">
+    <div class="impact-shot__media" style="background-image:url('Imagery/Hero/Desktop/Numan%20WL%20Desktop.jpg')"></div>
+    <div class="impact-shot__inner">
+      <div class="impact-shot__head"><span class="impact-shot__eyebrow">Case study impact</span></div>
+      <div class="impact-shot__stats" role="list">
+        <button class="istat" type="button" aria-haspopup="dialog">
+          <span class="istat__num">-16.6<span class="impact-number-suffix">%</span></span>
+          <span class="istat__label">Retention</span>
+          <span class="istat__more">Detail <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></span>
+          <span class="istat__detail"><span class="d-eyebrow">Retention</span><span class="d-num">-16.6<span class="impact-number-suffix">%</span></span><span class="d-head">Pause rate reduced through retention experiments.</span><span class="d-copy">Rapid testing delivered over half of the Q1 goal and an estimated c.£0.5m revenue impact.</span></span>
+        </button>
+        <button class="istat" type="button" aria-haspopup="dialog">
+          <span class="istat__num">+17<span class="impact-number-suffix">%</span></span>
+          <span class="istat__label">Activation</span>
+          <span class="istat__more">Detail <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></span>
+          <span class="istat__detail"><span class="d-eyebrow">Activation</span><span class="d-num">+17<span class="impact-number-suffix">%</span></span><span class="d-head">Weight-tracking activation increased.</span><span class="d-copy">Redesigned onboarding helped patients complete 14% more check-ins, supporting adherence behaviour.</span></span>
+        </button>
+        <button class="istat" type="button" aria-haspopup="dialog">
+          <span class="istat__num">-49.4<span class="impact-number-suffix">%</span></span>
+          <span class="istat__label">Support</span>
+          <span class="istat__more">Detail <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></span>
+          <span class="istat__detail"><span class="d-eyebrow">Support</span><span class="d-num">-49.4<span class="impact-number-suffix">%</span></span><span class="d-head">Customer Service load reduced without hurting completion.</span><span class="d-copy">In a 14-day test with 818 patients, self-serve IDV reduced care contacts while pass rate held steady.</span></span>
+        </button>
+        <button class="istat" type="button" aria-haspopup="dialog">
+          <span class="istat__num impact-number--range">50<span class="impact-number-suffix">%</span> → 60<span class="impact-number-suffix">%</span></span>
+          <span class="istat__label">Engagement</span>
+          <span class="istat__more">Detail <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></span>
+          <span class="istat__detail"><span class="d-eyebrow">Engagement</span><span class="d-num">50<span class="impact-number-suffix">%</span> → 60<span class="impact-number-suffix">%</span></span><span class="d-head">Increased weekly engagement with health tracking.</span><span class="d-copy">Redesigned check-ins, insights, and progress tracking to grow weekly health-tracking usage by 20% relative.</span></span>
+        </button>
+        <button class="istat" type="button" aria-haspopup="dialog">
+          <span class="istat__num impact-number--range">40<span class="impact-number-suffix">%</span> → 13<span class="impact-number-suffix">%</span></span>
+          <span class="istat__label">Support</span>
+          <span class="istat__more">Detail <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></span>
+          <span class="istat__detail"><span class="d-eyebrow">Support</span><span class="d-num">40<span class="impact-number-suffix">%</span> → 13<span class="impact-number-suffix">%</span></span><span class="d-head">Reduced avoidable support escalation.</span><span class="d-copy">Built self-serve side-effect guidance that reduced coach escalation and helped patients get faster support for common symptoms.</span></span>
+        </button>
       </div>
     </div>
   </section>
-  <!-- More Case Studies -->
-  <div class="more-section">
-    <p class="more-label">More case studies</p>
-    <div class="more-grid">
 
-      <a href="wone.html" class="card">
-        <div class="card-img">
-          <img src="Imagery/Thumbnails/WONE.jpg" alt="Walking on Earth" loading="lazy" decoding="async" />
-          <video class="card-img-video" muted loop playsinline preload="none" aria-hidden="true">
-            <source src="Imagery/Thumbnails/Hover/Compressed/WONE_Thumbnail.mp4" type="video/mp4">
-          </video>
-          <div class="card-arrow">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 17L17 7M7 7h10v10"/></svg>
-          </div>
-        </div>
-        <div class="card-text">
-          <div class="card-row">
-            <span class="card-client">Walking on Earth</span>
-            <span class="card-num">01</span>
-          </div>
-          <h3 class="card-title">Reimagining Walking on Earth's stress intelligence platform around next-generation biometric measurement and daily behavior change.</h3>
-          <div class="card-tags">
-            <span class="ctag">B2B</span>
-            <span class="ctag">Health</span>
-            <span class="ctag">Mobile App</span>
-          </div>
-        </div>
-      </a>
-      <a href="numan-testosterone.html" class="card">
-        <div class="card-img">
-          <img src="Imagery/Thumbnails/Numan03.jpg" alt="Numan Testosterone Deficiency" loading="lazy" decoding="async" />
-          <div class="card-arrow">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 17L17 7M7 7h10v10"/></svg>
-          </div>
-        </div>
-        <div class="card-text">
-          <div class="card-row">
-            <span class="card-client">Numan</span>
-            <span class="card-num">03</span>
-          </div>
-          <h3 class="card-title">Launching Numan's testosterone health program across acquisition, onboarding, and patient management journeys.</h3>
-          <div class="card-tags">
-            <span class="ctag">eCommerce</span>
-            <span class="ctag">Health</span>
-            <span class="ctag">Diagnostics</span>
-            <span class="ctag">Dashboard</span>
-            <span class="ctag">Product Experiments</span>
-          </div>
-        </div>
-      </a>
-      <a href="peloton-subscription.html" class="card">
-        <div class="card-img">
-          <img src="Imagery/Thumbnails/Peloton03.jpg" alt="Peloton Subscription Tiers" loading="lazy" decoding="async" />
-          <div class="card-arrow">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 17L17 7M7 7h10v10"/></svg>
-          </div>
-        </div>
-        <div class="card-text">
-          <div class="card-row">
-            <span class="card-client">Peloton</span>
-            <span class="card-num">05</span>
-          </div>
-          <h3 class="card-title">Rolling out Peloton's redesigned subscription architecture across global enterprise and B2B markets.</h3>
-          <div class="card-tags">
-            <span class="ctag">eCommerce</span>
-            <span class="ctag">B2B</span>
-            <span class="ctag">Subscription</span>
-          </div>
-        </div>
-      </a>
-      
-    </div>
+  <!-- Impact detail drawer -->
+  <div class="impact-drawer" id="impactDrawer" aria-hidden="true">
+    <div class="impact-drawer__scrim" data-impact-close></div>
+    <aside class="impact-drawer__panel" role="dialog" aria-modal="true" aria-labelledby="impactDrawerHead" tabindex="-1">
+      <button class="impact-drawer__close" type="button" data-impact-close aria-label="Close detail">&times;</button>
+      <span class="impact-drawer__eyebrow" id="impactDrawerEyebrow"></span>
+      <span class="impact-drawer__num" id="impactDrawerNum"></span>
+      <h3 class="impact-drawer__head" id="impactDrawerHead"></h3>
+      <p class="impact-drawer__copy" id="impactDrawerCopy"></p>
+    </aside>
   </div>
+  <script>
+  (function(){
+    var drawer = document.getElementById('impactDrawer');
+    if (!drawer) return;
+    var panel  = drawer.querySelector('.impact-drawer__panel');
+    var elEye  = document.getElementById('impactDrawerEyebrow');
+    var elNum  = document.getElementById('impactDrawerNum');
+    var elHead = document.getElementById('impactDrawerHead');
+    var elCopy = document.getElementById('impactDrawerCopy');
+    var lastFocus = null;
+    function open(stat){
+      var d = stat.querySelector('.istat__detail');
+      if (!d) return;
+      elEye.textContent  = d.querySelector('.d-eyebrow').textContent;
+      elNum.innerHTML    = d.querySelector('.d-num').innerHTML;
+      elHead.textContent = d.querySelector('.d-head').textContent;
+      elCopy.textContent = d.querySelector('.d-copy').textContent;
+      lastFocus = stat;
+      drawer.classList.add('is-open');
+      drawer.setAttribute('aria-hidden','false');
+      document.body.style.overflow = 'hidden';
+      panel.focus();
+    }
+    function close(){
+      drawer.classList.remove('is-open');
+      drawer.setAttribute('aria-hidden','true');
+      document.body.style.overflow = '';
+      if (lastFocus) lastFocus.focus();
+    }
+    document.querySelectorAll('.impact-shot__stats .istat').forEach(function(stat){
+      stat.addEventListener('click', function(){ open(stat); });
+    });
+    drawer.querySelectorAll('[data-impact-close]').forEach(function(el){
+      el.addEventListener('click', close);
+    });
+    document.addEventListener('keydown', function(e){
+      if (e.key === 'Escape' && drawer.classList.contains('is-open')) close();
+    });
+  }());
+  </script>
 
+  </div><!-- /.case-sections -->
+  </div><!-- /.case-body -->
+  <!-- Enquiry CTA -->
+  <section class="enquiry" id="contact" aria-label="Get in touch">
+    <div class="enquiry-inner">
+      <h2 class="enquiry-headline">For project enquiries, collaborations, or simply just to say hello</h2>
+      <a class="enquiry-btn" href="mailto:hello@benjaminlynch.co.uk">
+        <span>Send an enquiry</span>
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M7 17L17 7"/>
+          <path d="M8 7h9v9"/>
+        </svg>
+      </a>
+    </div>
+  </section>
 
   <!-- Footer -->
-  <footer id="contact" aria-label="Say hello">
+  <footer aria-label="Footer">
 
     <div class="foot-main">
       <div class="foot-hero">
         <div class="foot-hero-left">
-          <div class="foot-wordmark" aria-hidden="true">
-            <span>Say</span> <span>Hello</span>
-          </div>
-
           <div class="foot-contact">
-            <a class="foot-email" href="mailto:hello@benjaminlynch.co.uk">hello@benjaminlynch.co.uk</a>
-
             <div class="foot-links" role="navigation" aria-label="Footer navigation">
               <a href="https://www.linkedin.com/in/benflynch/" target="_blank" rel="noopener" aria-label="LinkedIn">
                 <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
@@ -2720,5 +3070,64 @@
     }());
 
   </script>
+
+<script>
+(function(){
+  var railLinks = [].slice.call(document.querySelectorAll('.case-rail-link'));
+  if (railLinks.length) {
+    var linkFor = {}, sections = [];
+    railLinks.forEach(function(l){ var id=(l.getAttribute('href')||'').replace('#',''); var s=id&&document.getElementById(id); if(s){ linkFor[id]=l; sections.push(s);} });
+    if (sections.length) {
+      var setActive=function(id){ railLinks.forEach(function(l){ l.classList.toggle('is-active', l===linkFor[id]); }); };
+      if ('IntersectionObserver' in window) {
+        var obs=new IntersectionObserver(function(es){ var v=es.filter(function(e){return e.isIntersecting;}).sort(function(a,b){return b.intersectionRatio-a.intersectionRatio;})[0]; if(v) setActive(v.target.id); }, { rootMargin:'-45% 0px -45% 0px', threshold:0 });
+        sections.forEach(function(s){ obs.observe(s); });
+      }
+      setActive(sections[0].id);
+    }
+  }
+  var rail=document.querySelector('.case-rail');
+  if (rail) {
+    var onScroll=function(){ rail.classList.toggle('is-revealed', window.scrollY>40); };
+    onScroll(); window.addEventListener('scroll', onScroll, { passive:true });
+  }
+})();
+</script>
+  <!-- Next case study floating button -->
+  <button class="next-fab" id="nextCaseFab" type="button" aria-label="Go to next case study: Numan Testosterone">
+    <svg class="next-fab-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M12 5v14M19 12l-7 7-7-7"/>
+    </svg>
+    <span class="next-fab-avatars" aria-hidden="true">
+      <img src="Imagery/Thumbnails/Numan03.jpg" alt="" decoding="async" />
+      <img src="Imagery/Hero/Desktop/PelotonMichigan.jpg" alt="" decoding="async" />
+      <img src="Imagery/Hero/Desktop/PelotonReviews.png" alt="" decoding="async" />
+    </span>
+    <span class="next-fab-label">Next case</span>
+  </button>
+
+  <script>
+    /* Next-case floating button */
+    (function () {
+      var fab = document.getElementById('nextCaseFab');
+      if (!fab) return;
+      var NEXT_URL = 'numan-testosterone.html';
+      var rail = document.querySelector('.case-rail');
+      var endEl = document.getElementById('contact');
+      if (endEl && 'IntersectionObserver' in window) {
+        var io = new IntersectionObserver(function (entries) {
+          entries.forEach(function (e) {
+            fab.classList.toggle('is-visible', e.isIntersecting);
+            if (rail) rail.classList.toggle('is-handed-off', e.isIntersecting);
+          });
+        }, { threshold: 0.12 });
+        io.observe(endEl);
+      } else {
+        fab.classList.add('is-visible');
+      }
+      fab.addEventListener('click', function () { window.location.href = NEXT_URL; });
+    })();
+  </script>
+
 </body>
 </html>
