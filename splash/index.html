@@ -45,6 +45,7 @@
       --bg:           #FBF7F3;
       --ink:          #0E0D0B;
       --ink-mid:      #5C5A56;
+      --accent-green: #1B8E45;
       --ink-light:    #706E6C;
       --rule:         rgba(14,13,11,0.1);
       --rule-strong:  var(--rule-strong);
@@ -2974,29 +2975,23 @@
       to   { opacity: 1; transform: translateY(0); }
     }
 
-    .agent-wrap,
-    .hero-greeting-wrap,
     .hero-headline,
     .hero-descriptor,
-    .hero-contact,
+    .hero-actions,
     .marquee-wrap {
       opacity: 0;
       animation: heroCascade 0.4s cubic-bezier(0.65, 0, 0.35, 1) both;
     }
 
-    .agent-wrap         { animation-delay: 0s;    }
-    .hero-greeting-wrap { animation-delay: 0.15s; }
-    .hero-headline      { animation-delay: 0.30s; }
-    .hero-descriptor    { animation-delay: 0.45s; }
-    .hero-contact       { animation-delay: 0.58s; }
-    .marquee-wrap       { animation-delay: 0.71s; }
+    .hero-headline   { animation-delay: 0.10s; }
+    .hero-descriptor { animation-delay: 0.25s; }
+    .hero-actions    { animation-delay: 0.40s; }
+    .marquee-wrap    { animation-delay: 0.55s; }
 
     @media (prefers-reduced-motion: reduce) {
-      .agent-wrap,
-      .hero-greeting-wrap,
       .hero-headline,
       .hero-descriptor,
-      .hero-contact,
+      .hero-actions,
       .marquee-wrap {
         animation: none;
         opacity: 1;
@@ -3131,28 +3126,101 @@
       /* "safe" matters: with plain `center`, once the content is taller
          than the window the overflow spills off the TOP and can't be
          scrolled to — which is what was clipping the portrait. */
-      justify-content: safe center;
-      padding: clamp(32px, 5vh, 72px) 0;
+      padding: 0;
     }
 
-    /* The full site sized the hero to fill the viewport beneath a
-       fixed nav. With no nav and no sections below it, let the hero
-       take its natural height so the group can centre properly. */
-    .hero { padding: 0; }
+    /* Hero fills the space above the brand strip and centres its content;
+       the strip then sits full-width at the bottom of the viewport. */
+    .hero {
+      flex: 1 1 auto;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: clamp(40px, 6vh, 80px) 0;
+    }
 
     .hero-body { min-height: 0; }
 
     .hero-left {
-      justify-content: center;   /* horizontal centring of the group */
-      padding: 0 40px;
+      justify-content: flex-start;      /* redesign: block anchored left */
+      padding: 0 clamp(28px, 9vw, 150px);
     }
 
-    /* Cap the group so the portrait and the text stay optically
-       centred together on very wide screens. */
     .hero-content-row {
       width: 100%;
-      max-width: 1280px;
+      max-width: 960px;
+      justify-content: flex-start;
     }
+
+    .hero-right-col { max-width: 840px; gap: 26px; }
+
+    /* ─── Redesigned hero: conversational headline, green name,
+       inline photo tile, quick-action buttons ─────────────────── */
+    .hero-headline {
+      font-family: var(--serif);
+      font-weight: 600;
+      font-size: clamp(30px, 3vw, 46px);
+      line-height: 1.14;
+      letter-spacing: -0.02em;
+      max-width: 100%;          /* fill the column so it matches the body width */
+      text-wrap: wrap;          /* greedy fill so the right edge reaches the body's */
+    }
+
+    /* Own class — the template already has an unrelated .hero-name
+       (11px uppercase) that would otherwise shrink this. */
+    .name-green { color: var(--accent-green); }
+
+    .hero-tile {
+      display: inline-block;
+      width: 0.92em;
+      height: 0.92em;
+      margin: 0 0.04em -0.15em calc(0.14em + 2px);   /* nudge onto baseline; +2px gap before the tile */
+      border-radius: 0.2em;
+      overflow: hidden;
+      vertical-align: baseline;
+      transition: transform 0.28s cubic-bezier(0.34, 1.56, 0.64, 1);
+      transform-origin: center;
+      will-change: transform;
+    }
+    .hero-tile img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+    /* Playful hover: a small lift + slight tilt, echoing the buttons.
+       transform is visual-only, so the surrounding words don't reflow. */
+    .hero-tile:hover {
+      transform: translateY(-1px) rotate(-4deg) scale(1.08);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .hero-tile { transition: none; }
+      .hero-tile:hover { transform: none; }
+    }
+
+    .hero-descriptor { font-size: clamp(17px, 1.3vw, 20px); max-width: 100%; text-wrap: pretty; }
+
+    .hero-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 6px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      height: 46px;
+      border-radius: 10px;
+      font-family: var(--sans);
+      font-size: 15px;
+      font-weight: 500;
+      color: #FBF7F3;
+      background: var(--ink);
+      transition: transform 0.2s ease, opacity 0.2s ease;
+    }
+    .btn:hover { transform: translateY(-1px); opacity: 0.92; }
+    .btn-primary { padding: 0 22px; }
+    .btn-icon { width: 46px; }
+    .btn-icon svg { width: 18px; height: 18px; fill: currentColor; }
 
     /* Portrait width lives in one variable so the spacer that aligns
        the coming-soon line can never drift out of sync with it. */
@@ -3160,8 +3228,12 @@
 
     .agent-card-btn { width: var(--portrait-w); }
 
+    /* Full-width brand strip pinned to the bottom, with a hairline
+       divider above it. Sits edge-to-edge (body has no side padding). */
     .marquee-wrap {
-      margin-top: clamp(40px, 6vh, 80px);
+      margin-top: 0;
+      padding: clamp(26px, 4vh, 44px) 0;
+      border-top: 1px solid rgba(14, 13, 11, 0.09);
     }
 
     /* ─── Portrait entrance — matched to the case study heroes ──
@@ -3215,32 +3287,23 @@
 
         <div class="hero-content-row">
 
-          <!-- Left: portrait card -->
-          <div class="agent-wrap">
-            <button class="agent-card-btn" id="agentCardBtn" aria-label="Benjamin Lynch portrait">
-              <img class="agent-card-img" id="agentCardImg" src="Imagery/Self/Portrait_Normal.jpg" alt="Benjamin Lynch portrait" decoding="async" />
-            </button>
-          </div>
-
-          <!-- Right: greeting at top, headline below -->
           <div class="hero-right-col">
 
-            <div class="hero-greeting-wrap">
-              <p class="hero-greeting">Hi I'm <strong>Ben</strong></p>
-            </div>
+            <h1 class="hero-headline">Hey I’m <span class="name-green">Ben</span><span class="hero-tile" aria-hidden="true"><img src="Imagery/Self/ben-tile.jpg" alt="" decoding="async" /></span>, a Staff Product Designer building in the health, fitness, and performance space.</h1>
 
-            <div class="hero-text">
-              <h1 class="hero-headline">
-                A Product Design Lead in the <span class="hero-headline-accent">health, fitness, and performance</span> space.
-              </h1>
-            </div>
+            <p class="hero-descriptor">For 13 years, I’ve designed digital products and services for startups such as Numan, WONE, and Chelsea Digital Ventures, to global brands like Peloton, Nike, and Google. I specialise in helping people take action on their health, no matter how complex the issue.</p>
 
-            <p class="hero-descriptor">
-              With 14 years of industry experience, I specialise in designing digital products and services for small scale start ups up to global tech brands, with a knack for problem solving UX challenges and visual craft.
-            </p>
-
-            <div class="hero-contact">
-              <a class="hero-email" href="mailto:hello@benlynch.co">hello@benlynch.co</a>
+            <div class="hero-actions">
+              <a class="btn btn-primary" href="mailto:hello@benlynch.co">Contact me</a>
+              <a class="btn btn-icon" href="https://www.linkedin.com/in/benflynch/" target="_blank" rel="noopener" aria-label="LinkedIn">
+                <svg viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><path d="M100.28 448H7.4V148.9h92.88zM53.79 108.1C24.09 108.1 0 83.5 0 53.8a53.79 53.79 0 0 1 107.58 0c0 29.7-24.1 54.3-53.79 54.3zM447.9 448h-92.68V302.4c0-34.7-.7-79.2-48.29-79.2-48.29 0-55.69 37.7-55.69 76.7V448h-92.78V148.9h89.08v40.8h1.3c12.4-23.5 42.69-48.3 87.88-48.3 94 0 111.28 61.9 111.28 142.3z"/></svg>
+              </a>
+              <a class="btn btn-icon" href="https://x.com/benlynch" target="_blank" rel="noopener" aria-label="X (Twitter)">
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117L17.083 19.77z"/></svg>
+              </a>
+              <a class="btn btn-icon" href="https://www.strava.com/athletes/41727475" target="_blank" rel="noopener" aria-label="Strava">
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><path d="M15.387 17.944l-2.089-4.116h-3.065L15.387 24l5.15-10.172h-3.066m-7.008-5.599l2.836 5.598h4.172L10.463 0l-7 13.828h4.169"/></svg>
+              </a>
             </div>
 
           </div>
@@ -3505,84 +3568,12 @@
 
     /* Theme locked to light on the splash page. */
 
-    /* ═══════════════════════════════════════════════════════════
-       HERO GREETING
-    ══════════════════════════════════════════════════════════ */
-    const greetingDot     = document.getElementById('greetingDot');
-    const heroGreeting    = document.querySelector('.hero-greeting');
-    const heroHeadline    = document.querySelector('.hero-headline');
+    /* Hero entrance is handled entirely by the CSS heroCascade animation.
+       The old word-by-word greeting script was removed along with the
+       redesigned single-sentence headline. */
 
-    // Save the final greeting markup to restore at the end
-    const greetingHTML = heroGreeting.innerHTML;
-
-    const sleep = ms => new Promise(r => setTimeout(r, ms));
-
-    async function bootSequence() {
-      // CSS handles entrance animation (cascade). Just restore greeting markup
-      // and activate the live indicator if present.
-      heroGreeting.innerHTML = greetingHTML;
-      greetingDot?.classList.add('is-live');
-    }
-
-    // ── Word-level float-in: each word rises and unblurs into place ──
-    async function fadeHeadline() {
-      const lines = [
-        { text: 'I design digital products',           italic: false },
-        { text: 'and services for health, fitness,',    italic: false },
-        { text: 'and performance.',                     italic: false },
-      ];
-
-      heroHeadline.innerHTML = '';
-      heroHeadline.style.opacity = '1';
-
-      const allWords = [];
-
-      for (let li = 0; li < lines.length; li++) {
-        const line = lines[li];
-
-        if (li > 0) {
-          heroHeadline.appendChild(document.createElement('br'));
-        }
-
-        const lineHost = line.italic ? document.createElement('em') : heroHeadline;
-        if (line.italic) heroHeadline.appendChild(lineHost);
-
-        const words = line.text.split(' ');
-        words.forEach((w, i) => {
-          const span = document.createElement('span');
-          span.className = 'word';
-          span.textContent = w;
-          lineHost.appendChild(span);
-          allWords.push(span);
-          if (i < words.length - 1) {
-            lineHost.appendChild(document.createTextNode(' '));
-          }
-        });
-      }
-
-      // Stagger each word with a generous, organic delay
-      const stepMs = 110;
-      for (let i = 0; i < allWords.length; i++) {
-        setTimeout(() => allWords[i].classList.add('is-visible'), i * stepMs);
-      }
-
-      await sleep(allWords.length * stepMs + 900);
-    }
-
-
-    // Start immediately — boot sequence IS the page load
-    bootSequence();
-
-    /* ═══════════════════════════════════════════════════════════
-       MARQUEE — relocate inline under hero contact block
-    ══════════════════════════════════════════════════════════ */
-    (function relocateMarquee() {
-      const marquee      = document.querySelector('.marquee-wrap');
-      const heroRightCol = document.querySelector('.hero-right-col');
-      if (marquee && heroRightCol) {
-        heroRightCol.appendChild(marquee);
-      }
-    })();
+    /* Marquee stays a full-width, edge-to-edge child of <body> — no
+       longer relocated into the hero column. */
 
     /* Pause the logo marquee when it is out of view. The strip contains
        a lot of inline SVG paths, so keeping it animated offscreen is wasteful. */
