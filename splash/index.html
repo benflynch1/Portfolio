@@ -200,6 +200,49 @@
       white-space: nowrap;
     }
 
+    /* ─── Nav brand (logo + status dot) ─────────────────────── */
+    .nav-brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: var(--ink);
+      pointer-events: auto;
+    }
+    .bl-mark { display: inline-flex; }
+    .bl-mark svg {
+      height: 20px;
+      width: auto;
+      display: block;
+      overflow: hidden;         /* crop to the logo frame — blocks reveal as they enter */
+      color: var(--ink);
+    }
+    .nav-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--accent-green);
+      display: inline-block;
+      flex: none;
+    }
+
+    /* Logo load animation — two shapes converge into place.
+       Derived from the supplied motion JSON (offsets relative to
+       each shape's resting position; staggered like the timeline). */
+    @keyframes blConvergeA {
+      from { transform: translate(-8px, 16px); }
+      to   { transform: translate(0, 0); }
+    }
+    @keyframes blConvergeB {
+      from { transform: translate(8px, -16px); }
+      to   { transform: translate(0, 0); }
+    }
+    .bl-mark .bl-a { animation: blConvergeA 1.3s cubic-bezier(0.16, 1, 0.3, 1) both; }
+    .bl-mark .bl-b { animation: blConvergeB 1.3s cubic-bezier(0.16, 1, 0.3, 1) 0.8s both; }
+    @media (prefers-reduced-motion: reduce) {
+      .bl-mark .bl-a, .bl-mark .bl-b { animation: none; }
+    }
+
     /* ─── Nav right group ───────────────────────────────────── */
     .nav-right {
       margin-left: auto;
@@ -207,6 +250,19 @@
       align-items: center;
       gap: 24px;
     }
+    .nav-link {
+      font-family: var(--sans);
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: 0.01em;
+      color: var(--ink);
+      text-decoration: underline;
+      text-underline-offset: 4px;
+      text-decoration-thickness: 1.5px;
+      transition: opacity 0.2s ease;
+      pointer-events: auto;
+    }
+    .nav-link:hover { opacity: 0.6; }
 
     /* ─── Nav: Experience link ──────────────────────────────── */
     .nav-experience {
@@ -3159,7 +3215,7 @@
     .hero-headline {
       font-family: var(--serif);
       font-weight: 600;
-      font-size: clamp(30px, 3vw, 46px);
+      font-size: 38px;
       line-height: 1.14;
       letter-spacing: -0.02em;
       max-width: 100%;          /* fill the column so it matches the body width */
@@ -3195,7 +3251,7 @@
       .hero-tile:hover { transform: none; }
     }
 
-    .hero-descriptor { font-size: clamp(17px, 1.3vw, 20px); max-width: 100%; text-wrap: pretty; }
+    .hero-descriptor { font-size: 21px; max-width: 100%; text-wrap: pretty; }
 
     .hero-actions {
       display: flex;
@@ -3218,7 +3274,36 @@
       transition: transform 0.2s ease, opacity 0.2s ease;
     }
     .btn:hover { transform: translateY(-1px); opacity: 0.92; }
-    .btn-primary { padding: 0 22px; }
+    .btn-primary {
+      height: 48px;
+      padding: 0 26px;
+      border-radius: 999px;        /* fully rounded pill */
+      background: #111111;
+      color: #F8F6F2;
+      position: relative;
+      overflow: hidden;            /* mask the swapping labels */
+      transition: background 0.35s cubic-bezier(0.42, 0, 0.58, 1);
+    }
+    /* override the generic .btn lift so the swap reads cleanly */
+    .btn-primary:hover { background: #383838; transform: none; opacity: 1; }
+
+    /* Text-swap hover (from the supplied motion JSON):
+       outgoing label slides left + fades out, incoming copy
+       slides in from the right + fades in. */
+    .btn-primary .btn-label { display: inline-grid; }
+    .btn-primary .btn-label-text {
+      grid-area: 1 / 1;
+      white-space: nowrap;
+      transition: transform 0.35s cubic-bezier(0.42, 0, 0.58, 1),
+                  opacity   0.35s cubic-bezier(0.42, 0, 0.58, 1);
+    }
+    .btn-primary .btn-label-text--in { transform: translateX(30px); opacity: 0; }
+    .btn-primary:hover .btn-label-text--out { transform: translateX(-30px); opacity: 0; }
+    .btn-primary:hover .btn-label-text--in  { transform: translateX(0);     opacity: 1; }
+    @media (prefers-reduced-motion: reduce) {
+      .btn-primary .btn-label-text { transition: none; }
+    }
+
     .btn-icon { width: 46px; }
     .btn-icon svg { width: 18px; height: 18px; fill: currentColor; }
 
@@ -3271,6 +3356,71 @@
       .hero-left { padding: 0 24px; }
     }
 
+    /* ═══════════════════════════════════════════════════════════
+       SPLASH PREVIEW ADJUSTMENTS
+       Placed last so they win over the shared template rules.
+    ══════════════════════════════════════════════════════════ */
+
+    /* 1) Nav sits flush and static — no floating card, no scroll
+          morph, and the logo no longer animates in on load. */
+    nav { inset: 0 0 auto 0; }
+    .nav-frame {
+      width: 100%;
+      padding: 0 clamp(24px, 5vw, 56px);
+      background: transparent;
+      border: none;
+      border-radius: 0;
+      box-shadow: none;
+      margin: 0;
+      transition: none;
+    }
+    nav.is-scrolled .nav-frame {
+      width: 100%;
+      background: transparent;
+      border: none;
+      border-radius: 0;
+      box-shadow: none;
+    }
+    /* (Logo keeps its converge load animation — see the .bl-a/.bl-b
+       rules in the nav block above.) */
+
+    /* 2) Responsive hero type across standard widths. */
+    .hero-headline   { font-size: clamp(30px, 2.7vw, 42px); }
+    .hero-descriptor { font-size: clamp(17px, 1.45vw, 21px); }
+
+    /* 3) Desktop (>1080px): centre the text block on both axes.
+          Vertical centring already comes from `.hero`; here we add
+          horizontal centring. Text stays left-aligned inside. */
+    @media (min-width: 1081px) {
+      .hero-left        { justify-content: center; padding-left: 40px; padding-right: 40px; }
+      .hero-content-row { justify-content: center; }
+    }
+    /* Tablet & mobile keep the current top-anchored position. */
+
+    /* 4) Bottom brand strip: keep the original scrolling animation,
+          but pin the section to the bottom of the browser window.
+          Body padding reserves the strip's height so the pinned
+          strip never overlaps the hero content. */
+    .marquee-wrap {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 40;
+      background: var(--bg);
+    }
+    body { padding-bottom: clamp(160px, 22vh, 210px); }
+
+    /* Mobile: smaller, tighter brand strip with less vertical padding —
+       it was reading a touch large next to the other elements. The
+       bottom reservation is reduced to match the shorter strip. */
+    @media (max-width: 767px) {
+      .marquee-wrap { padding: 16px 0; }
+      .marquee-item { padding: 0 8px; }
+      .marquee-item svg { height: 78px; }
+      body { padding-bottom: 124px; }
+    }
+
   </style>
 </head>
 <body>
@@ -3280,6 +3430,25 @@
   <div class="cur-ring" id="curRing" aria-hidden="true"></div>
 
   <!-- Nav -->
+  <nav>
+    <div class="nav-frame">
+      <a class="nav-brand" href="index.html" aria-label="Benjamin Lynch — home">
+        <span class="bl-mark" aria-hidden="true">
+          <svg viewBox="0 0 31 13" fill="none" xmlns="http://www.w3.org/2000/svg" focusable="false">
+            <path class="bl-a" fill="currentColor" d="M0.845228 13L12.5614 13C12.7438 13 12.9117 12.9007 12.9996 12.7408L15.7099 7.80803C15.8296 7.59021 15.7711 7.31756 15.5726 7.16797L15.3555 7.00429C15.0463 6.77124 15.1079 6.29033 15.4658 6.14275L16.8015 5.59213C16.9068 5.54869 16.9942 5.47054 17.0491 5.37065L19.593 0.740775C19.7761 0.407553 19.535 9.97732e-08 19.1548 1.16393e-07L7.43863 1.5822e-06C7.25621 1.59017e-06 7.08827 0.0993497 7.00042 0.259227L0.407019 12.2592C0.22393 12.5924 0.465019 13 0.845228 13Z"/>
+            <path class="bl-b" fill="currentColor" d="M30.1406 -3.75676e-08L21.6822 -4.07294e-07C21.5024 -4.15154e-07 21.3364 0.0965543 21.2475 0.25287L17.6957 6.5L14.4248 12.2529C14.2353 12.5862 14.476 13 14.8594 13L23.3178 13C23.4976 13 23.6636 12.9034 23.7525 12.7471L30.5752 0.74713C30.7647 0.413807 30.524 -2.08073e-08 30.1406 -3.75676e-08Z"/>
+          </svg>
+        </span>
+        <span class="nav-dot" aria-hidden="true"></span>
+      </a>
+      <div class="nav-right">
+        <a class="nav-link" href="https://www.linkedin.com/in/benflynch/" target="_blank" rel="noopener">Linkedin</a>
+        <a class="nav-link" href="https://x.com/benlynch" target="_blank" rel="noopener">X</a>
+        <a class="nav-link" href="https://www.strava.com/athletes/41727475" target="_blank" rel="noopener">Strava</a>
+      </div>
+    </div>
+  </nav>
+
   <header class="hero">
 
     <div class="hero-body">
@@ -3294,15 +3463,11 @@
             <p class="hero-descriptor">For 13 years, I’ve designed digital products and services for startups such as Numan, WONE, and Chelsea Digital Ventures, to global brands like Peloton, Nike, and Google. I specialise in helping people take action on their health, no matter how complex the issue.</p>
 
             <div class="hero-actions">
-              <a class="btn btn-primary" href="mailto:hello@benlynch.co">Contact me</a>
-              <a class="btn btn-icon" href="https://www.linkedin.com/in/benflynch/" target="_blank" rel="noopener" aria-label="LinkedIn">
-                <svg viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><path d="M100.28 448H7.4V148.9h92.88zM53.79 108.1C24.09 108.1 0 83.5 0 53.8a53.79 53.79 0 0 1 107.58 0c0 29.7-24.1 54.3-53.79 54.3zM447.9 448h-92.68V302.4c0-34.7-.7-79.2-48.29-79.2-48.29 0-55.69 37.7-55.69 76.7V448h-92.78V148.9h89.08v40.8h1.3c12.4-23.5 42.69-48.3 87.88-48.3 94 0 111.28 61.9 111.28 142.3z"/></svg>
-              </a>
-              <a class="btn btn-icon" href="https://x.com/benlynch" target="_blank" rel="noopener" aria-label="X (Twitter)">
-                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117L17.083 19.77z"/></svg>
-              </a>
-              <a class="btn btn-icon" href="https://www.strava.com/athletes/41727475" target="_blank" rel="noopener" aria-label="Strava">
-                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><path d="M15.387 17.944l-2.089-4.116h-3.065L15.387 24l5.15-10.172h-3.066m-7.008-5.599l2.836 5.598h4.172L10.463 0l-7 13.828h4.169"/></svg>
+              <a class="btn btn-primary" href="mailto:hello@benlynch.co">
+                <span class="btn-label">
+                  <span class="btn-label-text btn-label-text--out">Contact me</span>
+                  <span class="btn-label-text btn-label-text--in" aria-hidden="true">Contact me</span>
+                </span>
               </a>
             </div>
 
