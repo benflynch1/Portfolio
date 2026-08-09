@@ -3206,7 +3206,7 @@
       display: flex;
       flex-direction: column;
       justify-content: center;
-      padding: clamp(40px, 6vh, 80px) 0;
+      padding: clamp(40px, 6vh, 80px) 0 0;   /* no bottom padding — centres the block better against the fixed nav */
     }
 
     .hero-body { min-height: 0; }
@@ -3238,13 +3238,13 @@
 
     /* Own class — the template already has an unrelated .hero-name
        (11px uppercase) that would otherwise shrink this. */
-    .name-green { color: var(--accent-green); }
+    .name-green { color: var(--accent-green); margin-left: 2px; }
 
     .hero-tile {
       display: inline-block;
       width: 0.92em;
       height: 0.92em;
-      margin: 0 0.04em -0.15em calc(0.14em + 2px);   /* nudge onto baseline; +2px gap before the tile */
+      margin: 0 0.04em -0.15em calc(0.14em + 4px);   /* nudge onto baseline; a touch more gap before the tile */
       border-radius: 0.2em;
       overflow: hidden;
       vertical-align: baseline;
@@ -3510,7 +3510,7 @@
 
             <h1 class="hero-headline">Hey I’m <span class="name-green">Ben</span><span class="hero-tile" aria-hidden="true"><img src="Imagery/Self/ben-tile.jpg" alt="" decoding="async" /></span>, a Staff Product Designer building in the health, fitness, and performance space.</h1>
 
-            <p class="hero-descriptor">For 13 years, I’ve designed digital products and services for startups such as Numan, WONE, and Chelsea Digital Ventures, to global brands like Peloton, Nike, and Google. I specialise in helping people take action on their health, no matter how complex the issue.</p>
+            <p class="hero-descriptor">For 13 years, I’ve designed digital products and services for startups such as Numan, WONE, and Chelsea Digital Ventures, to global brands like Peloton, Nike, and Google. I&nbsp;specialise in helping people take action on their health, no matter how complex the issue.</p>
 
             <div class="hero-actions">
               <a class="btn btn-primary" href="mailto:hello@benlynch.co" aria-label="Contact me">
@@ -3813,6 +3813,20 @@
 
     /* Marquee stays a full-width, edge-to-edge child of <body> — no
        longer relocated into the hero column. */
+
+    /* Photo tile: randomise the hover tilt each time it's hovered. */
+    (function () {
+      const tile = document.querySelector('.hero-tile');
+      if (!tile) return;
+      const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      tile.addEventListener('mouseenter', () => {
+        if (reduce) return;
+        const mag = 3 + Math.random() * 5;                 // 3–8 degrees
+        const deg = (Math.random() < 0.5 ? -1 : 1) * mag;  // random direction each hover
+        tile.style.transform = 'translateY(-1px) rotate(' + deg.toFixed(2) + 'deg) scale(1.08)';
+      });
+      tile.addEventListener('mouseleave', () => { tile.style.transform = ''; });
+    })();
 
     /* Pause the logo marquee when it is out of view. The strip contains
        a lot of inline SVG paths, so keeping it animated offscreen is wasteful. */
