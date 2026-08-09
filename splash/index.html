@@ -224,6 +224,14 @@
       background: var(--accent-green);
       display: inline-block;
       flex: none;
+      /* Appears after the logo's converge animation settles (~2.1s). */
+      opacity: 0;
+      transform: scale(0.3);
+      animation: navDotIn 0.45s cubic-bezier(0.16, 1, 0.3, 1) 2.15s both;
+    }
+    @keyframes navDotIn {
+      from { opacity: 0; transform: scale(0.3); }
+      to   { opacity: 1; transform: scale(1); }
     }
 
     /* Logo load animation — two shapes converge into place.
@@ -241,6 +249,7 @@
     .bl-mark .bl-b { animation: blConvergeB 1.3s cubic-bezier(0.16, 1, 0.3, 1) 0.8s both; }
     @media (prefers-reduced-motion: reduce) {
       .bl-mark .bl-a, .bl-mark .bl-b { animation: none; }
+      .nav-dot { animation: none; opacity: 1; transform: none; }
     }
 
     /* ─── Nav right group ───────────────────────────────────── */
