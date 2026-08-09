@@ -3411,14 +3411,12 @@
     }
     body { padding-bottom: clamp(160px, 22vh, 210px); }
 
-    /* Mobile: smaller, tighter brand strip with less vertical padding —
-       it was reading a touch large next to the other elements. The
-       bottom reservation is reduced to match the shorter strip. */
+    /* Mobile: hide the brand strip entirely — it crowded the hero on
+       small screens. Drop the reserved bottom space so the hero can
+       use the full height. */
     @media (max-width: 767px) {
-      .marquee-wrap { padding: 16px 0; }
-      .marquee-item { padding: 0 8px; }
-      .marquee-item svg { height: 78px; }
-      body { padding-bottom: 124px; }
+      .marquee-wrap { display: none; }
+      body { padding-bottom: 0; }
     }
 
   </style>
