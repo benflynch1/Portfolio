@@ -3292,21 +3292,34 @@
     /* override the generic .btn lift so the swap reads cleanly */
     .btn-primary:hover { background: #383838; transform: none; opacity: 1; }
 
-    /* Text-swap hover (from the supplied motion JSON):
-       outgoing label slides left + fades out, incoming copy
-       slides in from the right + fades in. */
-    .btn-primary .btn-label { display: inline-grid; }
-    .btn-primary .btn-label-text {
-      grid-area: 1 / 1;
-      white-space: nowrap;
-      transition: transform 0.35s cubic-bezier(0.42, 0, 0.58, 1),
-                  opacity   0.35s cubic-bezier(0.42, 0, 0.58, 1);
+    /* Letter-swap hover (à la fancycomponents.dev/letter-swap):
+       each letter slides up out of view while its stacked copy
+       slides up into place, staggered left → right. */
+    .btn-primary .ls { display: inline-flex; }
+    .btn-primary .ls-char {
+      position: relative;
+      display: inline-block;
+      overflow: hidden;
+      line-height: 1.25;
     }
-    .btn-primary .btn-label-text--in { transform: translateX(30px); opacity: 0; }
-    .btn-primary:hover .btn-label-text--out { transform: translateX(-30px); opacity: 0; }
-    .btn-primary:hover .btn-label-text--in  { transform: translateX(0);     opacity: 1; }
+    .btn-primary .ls-a,
+    .btn-primary .ls-b {
+      display: block;
+      transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+      transition-delay: calc(var(--i, 0) * 0.03s);
+    }
+    .btn-primary .ls-b {
+      position: absolute;
+      left: 0;
+      top: 0;
+      transform: translateY(100%);
+    }
+    .btn-primary:hover .ls-a { transform: translateY(-100%); }
+    .btn-primary:hover .ls-b { transform: translateY(0); }
     @media (prefers-reduced-motion: reduce) {
-      .btn-primary .btn-label-text { transition: none; }
+      .btn-primary .ls-a,
+      .btn-primary .ls-b { transition: none; }
+      .btn-primary .ls-b { display: none; }
     }
 
     .btn-icon { width: 46px; }
@@ -3491,10 +3504,18 @@
             <p class="hero-descriptor">For 13 years, I’ve designed digital products and services for startups such as Numan, WONE, and Chelsea Digital Ventures, to global brands like Peloton, Nike, and Google. I specialise in helping people take action on their health, no matter how complex the issue.</p>
 
             <div class="hero-actions">
-              <a class="btn btn-primary" href="mailto:hello@benlynch.co">
-                <span class="btn-label">
-                  <span class="btn-label-text btn-label-text--out">Contact me</span>
-                  <span class="btn-label-text btn-label-text--in" aria-hidden="true">Contact me</span>
+              <a class="btn btn-primary" href="mailto:hello@benlynch.co" aria-label="Contact me">
+                <span class="ls" aria-hidden="true">
+                  <span class="ls-char" style="--i:0"><span class="ls-a">C</span><span class="ls-b">C</span></span>
+                  <span class="ls-char" style="--i:1"><span class="ls-a">o</span><span class="ls-b">o</span></span>
+                  <span class="ls-char" style="--i:2"><span class="ls-a">n</span><span class="ls-b">n</span></span>
+                  <span class="ls-char" style="--i:3"><span class="ls-a">t</span><span class="ls-b">t</span></span>
+                  <span class="ls-char" style="--i:4"><span class="ls-a">a</span><span class="ls-b">a</span></span>
+                  <span class="ls-char" style="--i:5"><span class="ls-a">c</span><span class="ls-b">c</span></span>
+                  <span class="ls-char" style="--i:6"><span class="ls-a">t</span><span class="ls-b">t</span></span>
+                  <span class="ls-char" style="--i:7"><span class="ls-a">&nbsp;</span><span class="ls-b">&nbsp;</span></span>
+                  <span class="ls-char" style="--i:8"><span class="ls-a">m</span><span class="ls-b">m</span></span>
+                  <span class="ls-char" style="--i:9"><span class="ls-a">e</span><span class="ls-b">e</span></span>
                 </span>
               </a>
             </div>
