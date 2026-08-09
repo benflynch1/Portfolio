@@ -3388,6 +3388,31 @@
     .hero-headline   { font-size: clamp(30px, 2.7vw, 42px); }
     .hero-descriptor { font-size: clamp(17px, 1.45vw, 21px); }
 
+    /* Coming-soon note under the CTA. Icon rotates subtly on hover. */
+    .coming-soon {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 16px;
+      font-family: var(--sans);
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--ink-mid);
+    }
+    .coming-soon-icon { display: inline-flex; }
+    .coming-soon-icon svg {
+      width: 15px;
+      height: 15px;
+      display: block;
+      stroke: currentColor;
+      transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .coming-soon:hover .coming-soon-icon svg { transform: rotate(45deg); }
+    @media (prefers-reduced-motion: reduce) {
+      .coming-soon-icon svg { transition: none; }
+      .coming-soon:hover .coming-soon-icon svg { transform: none; }
+    }
+
     /* 3) Desktop (>1080px): centre the text block on both axes.
           Vertical centring already comes from `.hero`; here we add
           horizontal centring. Text stays left-aligned inside. */
@@ -3468,6 +3493,22 @@
                 </span>
               </a>
             </div>
+
+            <p class="coming-soon">
+              <span class="coming-soon-icon" aria-hidden="true">
+                <svg viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" focusable="false">
+                  <rect x="5" y="0.5" width="4" height="3" rx="1.5" stroke="currentColor"/>
+                  <rect x="5" y="10.5" width="4" height="3" rx="1.5" stroke="currentColor"/>
+                  <rect x="13.5" y="5" width="4" height="3" rx="1.5" transform="rotate(90 13.5 5)" stroke="currentColor"/>
+                  <rect x="3.5" y="5" width="4" height="3" rx="1.5" transform="rotate(90 3.5 5)" stroke="currentColor"/>
+                  <rect x="10.1819" y="0.989577" width="4" height="3" rx="1.5" transform="rotate(45 10.1819 0.989577)" stroke="currentColor"/>
+                  <rect x="3.11084" y="8.06062" width="4" height="3" rx="1.5" transform="rotate(45 3.11084 8.06062)" stroke="currentColor"/>
+                  <rect x="13.0104" y="10.182" width="4" height="3" rx="1.5" transform="rotate(135 13.0104 10.182)" stroke="currentColor"/>
+                  <rect x="5.93938" y="3.1109" width="4" height="3" rx="1.5" transform="rotate(135 5.93938 3.1109)" stroke="currentColor"/>
+                </svg>
+              </span>
+              Case studies coming soon
+            </p>
 
           </div>
 
